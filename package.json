@@ -1,0 +1,13 @@
+{
+  "name": "umbral-os",
+  "version": "1.0.0",
+  "description": "Sistema de gestión de consultores con sincronización Google Drive",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": ["consultores", "gestión", "sync", "google-drive"],
+  "author": "",
+  "license": "MIT"
+}
