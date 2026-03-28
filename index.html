@@ -1,969 +1,1408 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umbral OS</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #0f0f0f;
-            --secondary: #1a1a1a;
-            --accent: #0066cc;
-            --accent-light: #e6f2ff;
-            --text-primary: #f5f5f5;
-            --text-secondary: #a0a0a0;
-            --border: #333;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--primary);
-            color: var(--text-primary);
-            overflow: hidden;
-        }
-
-        .app {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 280px;
-            background: var(--secondary);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .sidebar-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .add-btn {
-            width: 100%;
-            padding: 10px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .add-btn:hover {
-            background: #0052a3;
-        }
-
-        .consultants-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-        }
-
-        .consultant-item {
-            padding: 12px;
-            margin-bottom: 8px;
-            background: var(--primary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-        }
-
-        .consultant-item:hover {
-            border-color: var(--accent);
-            background: #252525;
-        }
-
-        .consultant-item.active {
-            border-left-color: var(--accent);
-            background: #1f2937;
-        }
-
-        .consultant-name {
-            font-weight: 500;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .consultant-company {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        /* MAIN CONTENT */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .content-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-            background: var(--secondary);
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .header-title {
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .sync-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            padding: 6px 12px;
-            background: var(--primary);
-            border-radius: 4px;
-        }
-
-        .sync-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .tabs {
-            display: flex;
-            gap: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .tab-btn {
-            padding: 12px 16px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 14px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .tab-btn:hover {
-            color: var(--text-primary);
-        }
-
-        .tab-btn.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        .tab-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        /* INPUTS */
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="date"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px 12px;
-            background: var(--primary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-family: inherit;
-            margin-bottom: 12px;
-            transition: all 0.2s;
-        }
-
-        input:focus,
-        textarea:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: var(--text-secondary);
-        }
-
-        .btn {
-            padding: 10px 16px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-            margin-right: 8px;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #0052a3;
-        }
-
-        .btn-secondary {
-            background: var(--primary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 12px;
-            margin-right: 4px;
-        }
-
-        /* WELCOME */
-        .welcome {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .welcome-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .welcome-date {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-        }
-
-        .welcome-quote {
-            font-size: 18px;
-            font-style: italic;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            line-height: 1.6;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .welcome-author {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        /* DOCUMENTS */
-        .drop-zone {
-            border: 2px dashed var(--border);
-            border-radius: 8px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .drop-zone:hover,
-        .drop-zone.drag-over {
-            border-color: var(--accent);
-            background: #1a2332;
-        }
-
-        .drop-zone-text {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .documents-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .document-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: var(--primary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-        }
-
-        .document-info {
-            flex: 1;
-        }
-
-        .document-name {
-            font-weight: 500;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .document-meta {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        /* TABLA */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 12px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--primary);
-            font-weight: 600;
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-        }
-
-        tr:hover {
-            background: #252525;
-        }
-
-        /* CHAT */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .message {
-            display: flex;
-            gap: 12px;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .message.user {
-            justify-content: flex-end;
-        }
-
-        .message-content {
-            max-width: 70%;
-            padding: 12px;
-            border-radius: 8px;
-        }
-
-        .message.assistant .message-content {
-            background: var(--primary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-        }
-
-        .message.user .message-content {
-            background: var(--accent);
-            color: white;
-        }
-
-        .chat-input-area {
-            display: flex;
-            gap: 8px;
-        }
-
-        .chat-input-area input {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
-        /* MODAL */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal.hidden {
-            display: none;
-        }
-
-        .modal-content {
-            background: var(--secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 24px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            animation: modalSlideIn 0.3s ease;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal-header {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-        }
-
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--primary);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .max-width {
-            max-width: 800px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umbral OS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0e0f0c;
+  --surface: #161710;
+  --card: #1c1e17;
+  --border: #2a2d22;
+  --accent: #c8e060;
+  --accent-dim: #a8bc4a;
+  --text: #e8eadf;
+  --text-muted: #7a7d6e;
+  --text-faint: #3d3f35;
+  --ok: #60c882;
+  --warn: #e0b060;
+  --danger: #e06060;
+  --orange: #e08040;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 19px;
+  color: var(--accent);
+}
+
+header span {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hdr-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sync-badge {
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.sync-badge.synced {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.global-item {
+  padding: 9px 13px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+
+.global-item:hover {
+  background: rgba(200, 224, 96, 0.05);
+  color: var(--text);
+}
+
+.global-item.active {
+  background: rgba(200, 224, 96, 0.08);
+  border-left: 3px solid var(--accent);
+  padding-left: 10px;
+  color: var(--accent);
+}
+
+.sidebar-section {
+  padding: 9px 13px 7px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-add {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  width: 21px;
+  height: 21px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-add:hover {
+  background: rgba(200, 224, 96, 0.1);
+}
+
+.consultant-list {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.consultant-item {
+  padding: 8px 13px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--text-faint);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.consultant-item:hover {
+  background: rgba(200, 224, 96, 0.05);
+}
+
+.consultant-item.active {
+  background: rgba(200, 224, 96, 0.08);
+  border-left: 3px solid var(--accent);
+  padding-left: 10px;
+}
+
+.c-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+  flex-shrink: 0;
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.c-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.c-name {
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10.5px;
+}
+
+.c-area {
+  color: var(--text-muted);
+  font-size: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.led-grey {
+  background: #3d3f35;
+}
+
+.led-green {
+  background: var(--ok);
+  box-shadow: 0 0 5px var(--ok);
+}
+
+.led-yellow {
+  background: var(--warn);
+  box-shadow: 0 0 5px var(--warn);
+  animation: pulse 2s infinite;
+}
+
+.led-orange {
+  background: var(--orange);
+  box-shadow: 0 0 5px var(--orange);
+  animation: pulse 1.4s infinite;
+}
+
+.led-red {
+  background: var(--danger);
+  box-shadow: 0 0 6px var(--danger);
+  animation: pulse 0.9s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.led-legend {
+  padding: 9px 11px;
+  border-top: 1px solid var(--border);
+  font-size: 8.5px;
+  color: var(--text-faint);
+  line-height: 2;
+}
+
+.main-area {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tab {
+  padding: 8px 13px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.view {
+  flex: 1;
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+}
+
+.view.active {
+  display: flex;
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.welcome-section {
+  text-align: center;
+  padding: 28px 18px;
+  color: var(--text-muted);
+}
+
+.welcome-section h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--text);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.phrase {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+  margin: 8px 0 20px;
+}
+
+.section-title {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px 13px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  font-size: 11px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.card-meta {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-faint);
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: 5px;
+  padding: 24px 18px;
+  text-align: center;
+  transition: all 0.25s;
+  margin-bottom: 14px;
+  background: var(--card);
+  cursor: pointer;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(200, 224, 96, 0.04);
+}
+
+.drop-zone p {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.doc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 9px 12px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-name {
+  font-size: 10px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.doc-meta {
+  font-size: 8.5px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.btn-icon {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.msg {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: fadeUp 0.3s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.msg-label {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.msg.user .msg-label {
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.msg-bubble {
+  padding: 10px 13px;
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 1.85;
+}
+
+.msg.user .msg-bubble {
+  background: rgba(200, 224, 96, 0.07);
+  border: 1px solid rgba(200, 224, 96, 0.15);
+  color: var(--text);
+  align-self: flex-end;
+  max-width: 80%;
+}
+
+.msg.assistant .msg-bubble {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.msg.assistant .msg-bubble strong {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.input-area {
+  padding: 10px 18px 13px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 7px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.input-wrap {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  display: flex;
+  align-items: flex-end;
+  transition: border-color 0.2s;
+}
+
+.input-wrap:focus-within {
+  border-color: var(--accent);
+}
+
+.input-wrap textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  padding: 8px 11px;
+  resize: none;
+  outline: none;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.input-wrap textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.btn-send {
+  padding: 8px 14px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.btn-send:hover {
+  background: var(--accent-dim);
+}
+
+.btn-send:disabled {
+  background: var(--text-faint);
+  cursor: default;
+}
+
+.btn-sm {
+  padding: 5px 11px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  background: var(--accent-dim);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+th {
+  padding: 7px 8px;
+  text-align: left;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--text-faint);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+tr:hover td {
+  background: rgba(200, 224, 96, 0.02);
+}
+
+td input,
+td select {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  width: 100%;
+  outline: none;
+  padding: 1px 0;
+}
+
+td input:focus,
+td select:focus {
+  border-bottom: 1px solid var(--accent);
+}
+
+td select option {
+  background: var(--card);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 22px;
+  width: 400px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  margin-bottom: 14px;
+  color: var(--accent);
+}
+
+.field {
+  margin-bottom: 10px;
+}
+
+.field label {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 7px 9px;
+  outline: none;
+  border-radius: 3px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--accent);
+}
+
+.field select option {
+  background: var(--card);
+}
+
+.modal-footer {
+  display: flex;
+  gap: 7px;
+  margin-top: 13px;
+  justify-content: flex-end;
+}
+</style>
 </head>
 <body>
-    <div class="app">
-        <!-- SIDEBAR -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-title">📋 Consultores</div>
-                <button class="add-btn" onclick="openAddModal()">+ Agregar</button>
-            </div>
-            <div class="consultants-list" id="consultantsList"></div>
-        </div>
 
-        <!-- MAIN CONTENT -->
-        <div class="main-content">
-            <div class="content-header">
-                <div class="header-top">
-                    <div class="header-title" id="headerTitle">Bienvenido</div>
-                    <div class="sync-status">
-                        <div class="sync-dot"></div>
-                        <span>Sincronizado</span>
-                    </div>
-                </div>
-                <div class="tabs" id="tabs"></div>
-            </div>
+<header>
+  <h1>Umbral OS</h1>
+  <span>v1 · Gestor de Consultores</span>
+  <div class="hdr-right">
+    <div class="sync-badge synced" id="syncBadge">✓ Sincronizado</div>
+  </div>
+</header>
 
-            <div class="tab-content" id="content"></div>
-        </div>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="global-item active" id="globalItem" onclick="selectGlobal()">
+      <span style="font-size:13px">⊞</span>
+      <span>Vista general</span>
+      <div class="led led-grey" id="globalLed"></div>
+    </div>
+    
+    <div class="sidebar-section">
+      Consultores
+      <button class="btn-add" onclick="openAddConsultant()">+</button>
+    </div>
+    
+    <div class="consultant-list" id="consultantList"></div>
+    
+    <div class="led-legend">
+      <div style="display:flex;align-items:center;gap:5px">
+        <div class="led led-red" style="animation:none"></div>
+        <span>Hoy/mañana</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <div class="led led-orange" style="animation:none"></div>
+        <span>Urgente</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <div class="led led-yellow" style="animation:none"></div>
+        <span>Próximo</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px">
+        <div class="led led-green" style="animation:none"></div>
+        <span>Sin urgencia</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+    <div class="tabs">
+      <div class="tab active" data-view="welcome" onclick="switchView('welcome')">🌅 Hoy</div>
+      <div class="tab" data-view="chat" onclick="switchView('chat')">💬 Chat</div>
+      <div class="tab" data-view="documents" onclick="switchView('documents')">📄 Documentos</div>
+      <div class="tab" data-view="notes" onclick="switchView('notes')">📝 Notas</div>
+      <div class="tab" data-view="index" onclick="switchView('index')">📐 Planos</div>
+      <div class="tab" data-view="info" onclick="switchView('info')">⚙️ Info</div>
     </div>
 
-    <!-- MODAL -->
-    <div class="modal hidden" id="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Agregar Consultor</span>
-                <button style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 24px;" onclick="closeAddModal()">×</button>
-            </div>
-            <div class="form-group">
-                <label class="label">Nombre del Contacto</label>
-                <input type="text" id="inputName" placeholder="Juan Pérez">
-            </div>
-            <div class="form-group">
-                <label class="label">Nombre de la Empresa</label>
-                <input type="text" id="inputCompany" placeholder="Estructuras XYZ">
-            </div>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn btn-primary" onclick="addConsultant()">Crear Consultor</button>
-                <button class="btn btn-secondary" onclick="closeAddModal()">Cancelar</button>
-            </div>
+    <!-- VIEW: WELCOME -->
+    <div class="view active" id="view-welcome">
+      <div class="content-area">
+        <div class="welcome-section">
+          <h2 id="welcomeTitle">Buenos días</h2>
+          <div style="font-size:9.5px;color:var(--text-muted);margin-bottom:6px" id="welcomeDate"></div>
+          <div class="phrase" id="welcomeQuote"></div>
         </div>
+        <div id="welcomeContent"></div>
+      </div>
     </div>
 
-    <script>
-        // QUOTES
-        const QUOTES = [
-            { text: "La única fuente de conocimiento es la experiencia.", author: "Albert Einstein" },
-            { text: "El éxito no es definitivo, el fracaso no es fatal.", author: "Winston Churchill" },
-            { text: "La creatividad es la inteligencia divirtiéndose.", author: "Albert Einstein" },
-            { text: "No podemos cambiar lo que no sabemos. El conocimiento es poder.", author: "R. F. Smith" },
-            { text: "El futuro pertenece a quienes creen en la belleza de sus sueños.", author: "Eleanor Roosevelt" },
-            { text: "La persistencia es el camino del éxito.", author: "Charlie Chaplin" },
-        ];
+    <!-- VIEW: CHAT -->
+    <div class="view" id="view-chat">
+      <div class="chat-area" id="chatArea">
+        <div class="empty-state">Comienza una conversación</div>
+      </div>
+      <div class="input-area">
+        <div class="input-wrap">
+          <textarea id="query" placeholder="Pregunta sobre el consultor..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}" oninput="autoResize(this)"></textarea>
+        </div>
+        <button class="btn-send" id="btnSend" onclick="sendMessage()">↑</button>
+      </div>
+    </div>
 
-        // STATE
-        let consultants = [];
-        let activeConsultant = null;
-        let activeTab = 'welcome';
+    <!-- VIEW: DOCUMENTS -->
+    <div class="view" id="view-documents">
+      <div class="content-area">
+        <div class="drop-zone" id="dropZone">
+          <div style="font-size:24px;margin-bottom:7px;opacity:.5">📄</div>
+          <p>Arrastra un <strong style="color:var(--accent)">PDF</strong> aquí<br><span style="font-size:9px;opacity:.6">Minuta · Correo · Contrato</span></p>
+        </div>
+        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;display:none" id="docListTitle">Documentos</div>
+        <div id="docList"></div>
+      </div>
+    </div>
 
-        // INIT
-        function init() {
-            loadConsultants();
-            renderConsultants();
-            if (consultants.length > 0) {
-                setActiveConsultant(consultants[0].id);
-            }
-        }
+    <!-- VIEW: NOTES -->
+    <div class="view" id="view-notes">
+      <div class="content-area">
+        <div class="section-title">Notas del Consultor</div>
+        <textarea id="notesArea" style="width:100%;height:400px;background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:12px;border-radius:3px;resize:vertical" placeholder="Notas personales, correos, horarios..."></textarea>
+        <button class="btn-sm btn-primary" onclick="saveNotes()" style="margin-top:10px">Guardar</button>
+      </div>
+    </div>
 
-        // LOAD/SAVE
-        function loadConsultants() {
-            const stored = localStorage.getItem('umbralOS_consultants');
-            consultants = stored ? JSON.parse(stored) : [];
-        }
+    <!-- VIEW: INDEX (PLANOS) -->
+    <div class="view" id="view-index">
+      <div style="padding:8px 18px;border-bottom:1px solid var(--border);display:flex;gap:7px;flex-shrink:0">
+        <button class="btn-sm btn-primary" onclick="openAddPlano()">+ Agregar plano</button>
+      </div>
+      <div class="content-area">
+        <table>
+          <thead>
+            <tr>
+              <th>Clave</th>
+              <th>Nombre</th>
+              <th>Fecha entrega</th>
+              <th>Estado</th>
+              <th>Revisión</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="indexBody">
+            <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">Sin planos registrados</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-        function saveConsultants() {
-            localStorage.setItem('umbralOS_consultants', JSON.stringify(consultants));
-        }
+    <!-- VIEW: INFO -->
+    <div class="view" id="view-info">
+      <div class="content-area">
+        <div class="section-title">Información del Consultor</div>
+        <div class="field">
+          <label>Nombre</label>
+          <input type="text" id="infoName" readonly style="opacity:0.7">
+        </div>
+        <div class="field">
+          <label>Área / Especialidad</label>
+          <input type="text" id="infoArea" readonly style="opacity:0.7">
+        </div>
+        <div class="field">
+          <label>Teléfono</label>
+          <input type="tel" id="infoPhone" placeholder="Ej. +52 1234567890">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="infoEmail" placeholder="Ej. consultor@empresa.com">
+        </div>
+        <div class="field">
+          <label>Horarios</label>
+          <textarea id="infoSchedule" rows="3" placeholder="Lunes a Jueves, 9:00 AM - 5:00 PM"></textarea>
+        </div>
+        <div class="field">
+          <label>Tiempo de entrega típico (días)</label>
+          <input type="number" id="infoDeliveryDays" min="0" max="90" placeholder="Ej. 14">
+        </div>
+        <button class="btn-sm btn-primary" onclick="saveInfo()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-        // CONSULTANTS
-        function renderConsultants() {
-            const list = document.getElementById('consultantsList');
-            list.innerHTML = consultants.map(c => `
-                <div class="consultant-item ${activeConsultant === c.id ? 'active' : ''}" onclick="setActiveConsultant('${c.id}')">
-                    <div class="consultant-name">${c.name}</div>
-                    <div class="consultant-company">${c.company}</div>
-                </div>
-            `).join('');
-        }
+<!-- MODALS -->
+<div class="modal-overlay" id="modalAddConsultant">
+  <div class="modal">
+    <h3>Agregar Consultor</h3>
+    <div class="field">
+      <label>Nombre</label>
+      <input type="text" id="newName" placeholder="Ej. Ing. García">
+    </div>
+    <div class="field">
+      <label>Área / Especialidad</label>
+      <input type="text" id="newArea" placeholder="Ej. Estructural, Eléctrico...">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-ghost" onclick="closeModal('modalAddConsultant')">Cancelar</button>
+      <button class="btn-sm btn-primary" onclick="addConsultant()">Agregar →</button>
+    </div>
+  </div>
+</div>
 
-        function setActiveConsultant(id) {
-            activeConsultant = id;
-            activeTab = 'welcome';
-            renderConsultants();
-            renderContent();
-        }
+<div class="modal-overlay" id="modalAddPlano">
+  <div class="modal">
+    <h3>Agregar Plano</h3>
+    <div class="field">
+      <label>Clave</label>
+      <input type="text" id="pClave" placeholder="Ej. P001">
+    </div>
+    <div class="field">
+      <label>Nombre</label>
+      <input type="text" id="pNombre" placeholder="Ej. Plano Estructural">
+    </div>
+    <div class="field">
+      <label>Fecha de entrega</label>
+      <input type="date" id="pFecha">
+    </div>
+    <div class="field">
+      <label>Estado</label>
+      <select id="pEstado">
+        <option>Pendiente</option>
+        <option>Recibido</option>
+        <option>Revisado</option>
+        <option>Parcial</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Revisión</label>
+      <input type="text" id="pRevision" placeholder="Rev.0">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-ghost" onclick="closeModal('modalAddPlano')">Cancelar</button>
+      <button class="btn-sm btn-primary" onclick="addPlano()">Agregar →</button>
+    </div>
+  </div>
+</div>
 
-        function addConsultant() {
-            const name = document.getElementById('inputName').value.trim();
-            const company = document.getElementById('inputCompany').value.trim();
-            
-            if (!name || !company) {
-                alert('Completa todos los campos');
-                return;
-            }
+<script>
+const PHRASES = [
+  { text: "No se sufre más por lo que sucede que por lo que imaginamos que sucederá.", author: "Séneca" },
+  { text: "Tienes poder sobre tu mente, no sobre los eventos externos. Cuando te das cuenta de esto, encuentras tu fortaleza.", author: "Marco Aurelio" },
+  { text: "Si sufres por las cosas externas, el dolor no se debe a ellas sino a tu valoración de ellas.", author: "Marco Aurelio" },
+  { text: "El dolor es inevitable. El sufrimiento es opcional.", author: "Haruki Murakami" },
+  { text: "Si solo lees los libros que todos leen, solo puedes pensar lo que todos piensan.", author: "Haruki Murakami" },
+  { text: "La persistencia es el camino del éxito.", author: "Charlie Chaplin" },
+];
 
-            consultants.push({
-                id: Date.now(),
-                name,
-                company,
-                phone: '',
-                email: '',
-                schedule: '',
-                notes: '',
-                documents: [],
-                planes: [],
-                created: new Date().toISOString()
-            });
+const COLORS = ['#c8e060', '#a060e0', '#e0a060', '#60a0e0', '#e06060', '#a0c860', '#60c8c8', '#c860c8', '#8080e0', '#c89060'];
 
-            saveConsultants();
-            renderConsultants();
-            setActiveConsultant(consultants[consultants.length - 1].id);
-            closeAddModal();
-        }
+let consultants = [];
+let activeId = null;
+let activeView = 'welcome';
 
-        // MODAL
-        function openAddModal() {
-            document.getElementById('modal').classList.remove('hidden');
-            document.getElementById('inputName').focus();
-        }
+// Initialize
+async function init() {
+  loadData();
+  updateSidebar();
+  renderWelcome();
+  setupDropZone();
+}
 
-        function closeAddModal() {
-            document.getElementById('modal').classList.add('hidden');
-            document.getElementById('inputName').value = '';
-            document.getElementById('inputCompany').value = '';
-        }
+function loadData() {
+  const stored = localStorage.getItem('umbral_consultants');
+  consultants = stored ? JSON.parse(stored) : [];
+}
 
-        // TABS
-        function renderTabs() {
-            if (!activeConsultant) return;
-            
-            const tabs = ['welcome', 'info', 'notes', 'documents', 'planes', 'calendar', 'chat'];
-            const tabsDiv = document.getElementById('tabs');
-            
-            tabsDiv.innerHTML = tabs.map(tab => `
-                <button class="tab-btn ${activeTab === tab ? 'active' : ''}" onclick="setTab('${tab}')">
-                    ${tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-            `).join('');
-        }
+function saveData() {
+  localStorage.setItem('umbral_consultants', JSON.stringify(consultants));
+}
 
-        function setTab(tab) {
-            activeTab = tab;
-            renderContent();
-        }
+function getActive() {
+  return consultants.find(c => c.id === activeId);
+}
 
-        // CONTENT
-        function renderContent() {
-            renderTabs();
-            const content = document.getElementById('content');
-            const consultant = consultants.find(c => c.id === activeConsultant);
+// SIDEBAR
+function updateSidebar() {
+  document.getElementById('globalItem').className = activeId === null ? 'global-item active' : 'global-item';
+  
+  const list = document.getElementById('consultantList');
+  list.innerHTML = '';
+  
+  consultants.forEach((c, i) => {
+    const item = document.createElement('div');
+    item.className = 'consultant-item' + (activeId === c.id ? ' active' : '');
+    item.onclick = () => selectConsultant(c.id);
+    item.innerHTML = `
+      <div class="c-avatar" style="background:${COLORS[i % 10]}">${c.name.charAt(0).toUpperCase()}</div>
+      <div class="c-info">
+        <div class="c-name">${c.name}</div>
+        <div class="c-area">${c.area}</div>
+      </div>
+      <div class="led led-grey"></div>
+    `;
+    list.appendChild(item);
+  });
+}
 
-            if (!consultant) {
-                content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><p>Agrega un consultor para comenzar</p></div>';
-                document.getElementById('headerTitle').textContent = 'Bienvenido';
-                return;
-            }
+function selectGlobal() {
+  activeId = null;
+  updateSidebar();
+  renderCurrentView();
+}
 
-            document.getElementById('headerTitle').textContent = consultant.company;
+function selectConsultant(id) {
+  activeId = id;
+  updateSidebar();
+  renderCurrentView();
+}
 
-            if (activeTab === 'welcome') {
-                const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-                const today = new Date();
-                const dateStr = today.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                
-                content.innerHTML = `
-                    <div class="welcome">
-                        <div class="welcome-title">Umbral OS</div>
-                        <div class="welcome-date">${dateStr}</div>
-                        <div class="welcome-quote">"${quote.text}"</div>
-                        <div class="welcome-author">— ${quote.author}</div>
-                    </div>
-                `;
-            } else if (activeTab === 'info') {
-                content.innerHTML = `
-                    <div class="max-width">
-                        <div class="form-group">
-                            <label class="label">Nombre del Contacto</label>
-                            <input type="text" value="${consultant.name}" onchange="updateConsultant(activeConsultant, 'name', this.value)">
-                        </div>
-                        <div class="form-group">
-                            <label class="label">Empresa</label>
-                            <input type="text" value="${consultant.company}" onchange="updateConsultant(activeConsultant, 'company', this.value)">
-                        </div>
-                        <div class="form-group">
-                            <label class="label">Teléfono</label>
-                            <input type="tel" value="${consultant.phone || ''}" onchange="updateConsultant(activeConsultant, 'phone', this.value)">
-                        </div>
-                        <div class="form-group">
-                            <label class="label">Email</label>
-                            <input type="email" value="${consultant.email || ''}" onchange="updateConsultant(activeConsultant, 'email', this.value)">
-                        </div>
-                        <div class="form-group">
-                            <label class="label">Horarios / Schedule</label>
-                            <textarea onchange="updateConsultant(activeConsultant, 'schedule', this.value)" placeholder="Ej: Lunes a Jueves, 9:00 AM - 5:00 PM">${consultant.schedule || ''}</textarea>
-                        </div>
-                        <button class="btn btn-primary">Guardar Cambios</button>
-                        <button class="btn btn-danger" onclick="deleteConsultant(activeConsultant)">Eliminar Consultor</button>
-                    </div>
-                `;
-            } else if (activeTab === 'notes') {
-                content.innerHTML = `
-                    <div class="max-width">
-                        <div class="form-group">
-                            <label class="label">Notas Personales</label>
-                            <textarea style="min-height: 400px;" onchange="updateConsultant(activeConsultant, 'notes', this.value)" placeholder="Agrega notas, correos, o información de juntas...">${consultant.notes || ''}</textarea>
-                        </div>
-                        <button class="btn btn-primary">Guardar Notas</button>
-                    </div>
-                `;
-            } else if (activeTab === 'documents') {
-                content.innerHTML = `
-                    <div class="max-width">
-                        <div class="drop-zone" ondrop="handleDrop(event, activeConsultant)" ondragover="event.preventDefault(); this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')">
-                            <div class="drop-zone-text">
-                                <p>📤 Arrastra PDFs o Excel aquí</p>
-                                <p style="font-size: 12px; margin-top: 8px;">o haz clic para seleccionar</p>
-                            </div>
-                        </div>
-                        ${consultant.documents.length > 0 ? `
-                            <h3 style="margin-bottom: 12px; font-size: 14px; font-weight: 600;">Documentos</h3>
-                            <div class="documents-list">
-                                ${consultant.documents.map((doc, idx) => `
-                                    <div class="document-item">
-                                        <div class="document-info">
-                                            <div class="document-name">${doc.name}</div>
-                                            <div class="document-meta">Subido: ${new Date(doc.uploadDate).toLocaleDateString('es-MX')}</div>
-                                        </div>
-                                        <button class="btn btn-danger btn-small" onclick="deleteDocument(activeConsultant, ${idx})">Eliminar</button>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : '<p style="color: var(--text-secondary); text-align: center; padding: 40px;">No hay documentos</p>'}
-                    </div>
-                `;
-            } else if (activeTab === 'planes') {
-                content.innerHTML = `
-                    <div class="max-width">
-                        <button class="btn btn-primary" onclick="addPlano(activeConsultant)">+ Agregar Plano</button>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Clave</th>
-                                    <th>Nombre</th>
-                                    <th>Fecha Entrega</th>
-                                    <th>Revisión</th>
-                                    <th>Entregado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${consultant.planes && consultant.planes.length > 0 ? consultant.planes.map((p, idx) => `
-                                    <tr>
-                                        <td><input type="text" value="${p.clave || ''}" placeholder="P001" style="width: 100%; padding: 4px;"></td>
-                                        <td><input type="text" value="${p.nombre || ''}" placeholder="Nombre" style="width: 100%; padding: 4px;"></td>
-                                        <td><input type="date" value="${p.fechaEntrega || ''}" style="width: 100%; padding: 4px;"></td>
-                                        <td><input type="text" value="${p.revision || ''}" placeholder="v1.0" style="width: 80px; padding: 4px;"></td>
-                                        <td style="text-align: center;"><input type="checkbox" ${p.delivered ? 'checked' : ''}></td>
-                                    </tr>
-                                `).join('') : '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">No hay planos registrados</td></tr>'}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            } else if (activeTab === 'calendar') {
-                const now = new Date();
-                const year = now.getFullYear();
-                const month = now.getMonth();
-                const firstDay = new Date(year, month, 1);
-                const lastDay = new Date(year, month + 1, 0);
-                const daysInMonth = lastDay.getDate();
-                const startingDayOfWeek = firstDay.getDay();
-                
-                let daysHTML = '';
-                for (let i = 0; i < startingDayOfWeek; i++) {
-                    daysHTML += '<div class="calendar-day"></div>';
-                }
-                for (let day = 1; day <= daysInMonth; day++) {
-                    daysHTML += `<div class="calendar-day">${day}</div>`;
-                }
+// VIEWS
+function switchView(v) {
+  activeView = v;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
+  document.querySelectorAll('.view').forEach(v2 => v2.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  renderCurrentView();
+}
 
-                content.innerHTML = `
-                    <div class="max-width">
-                        <div style="background: var(--primary); border-radius: 8px; padding: 16px; border: 1px solid var(--border);">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                                <h3>${now.toLocaleDateString('es-MX', {month: 'long', year: 'numeric'})}</h3>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; font-size: 12px; margin-bottom: 12px;">
-                                ${['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sab'].map(d => `<div style="text-align: center; font-weight: bold; color: var(--text-secondary); padding: 8px;">${d}</div>`).join('')}
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
-                                ${daysHTML}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else if (activeTab === 'chat') {
-                content.innerHTML = `
-                    <div class="chat-container">
-                        <div class="chat-messages" id="chatMessages">
-                            <div class="empty-state">
-                                <div class="empty-state-icon">💬</div>
-                                <p>Inicia una conversación</p>
-                            </div>
-                        </div>
-                        <div class="chat-input-area">
-                            <input type="text" placeholder="Haz una pregunta..." id="chatInput" onkeypress="if(event.key === 'Enter') sendMessage()">
-                            <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
-                        </div>
-                    </div>
-                `;
-            }
-        }
+function renderCurrentView() {
+  if (activeView === 'welcome') renderWelcome();
+  else if (activeView === 'chat') renderChat();
+  else if (activeView === 'documents') renderDocuments();
+  else if (activeView === 'notes') renderNotes();
+  else if (activeView === 'index') renderIndex();
+  else if (activeView === 'info') renderInfo();
+}
 
-        function updateConsultant(id, field, value) {
-            const c = consultants.find(x => x.id === id);
-            if (c) {
-                c[field] = value;
-                saveConsultants();
-            }
-        }
+function renderWelcome() {
+  const today = new Date();
+  const dayNames = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  const monthNames = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const dateStr = `${dayNames[today.getDay()]}, ${today.getDate()} de ${monthNames[today.getMonth()]} de ${today.getFullYear()}`;
+  
+  document.getElementById('welcomeDate').textContent = dateStr;
+  
+  const phrase = PHRASES[Math.floor(Math.random() * PHRASES.length)];
+  document.getElementById('welcomeQuote').innerHTML = `"${phrase.text}" <span style="color:var(--text-faint)">— ${phrase.author}</span>`;
+  
+  let html = '';
+  if (consultants.length) {
+    html = '<div class="section-title">Próximas tareas</div>';
+    consultants.forEach(c => {
+      html += `
+        <div class="card" style="border-left:3px solid var(--accent)">
+          <div class="card-body">
+            <div class="card-title">${c.name}</div>
+            <div class="card-meta">${c.area}</div>
+          </div>
+        </div>
+      `;
+    });
+  } else {
+    html = '<div class="empty-state">Agrega un consultor para comenzar</div>';
+  }
+  document.getElementById('welcomeContent').innerHTML = html;
+}
 
-        function deleteConsultant(id) {
-            if (confirm('¿Eliminar este consultor? No se puede deshacer.')) {
-                consultants = consultants.filter(c => c.id !== id);
-                saveConsultants();
-                activeConsultant = consultants.length > 0 ? consultants[0].id : null;
-                renderConsultants();
-                renderContent();
-            }
-        }
+function renderChat() {
+  const chatArea = document.getElementById('chatArea');
+  if (chatArea.children.length === 1 && chatArea.children[0].className === 'empty-state') {
+    // Keep welcome message
+  }
+}
 
-        function deleteDocument(id, idx) {
-            const c = consultants.find(x => x.id === id);
-            if (c && confirm('¿Eliminar este documento?')) {
-                c.documents.splice(idx, 1);
-                saveConsultants();
-                renderContent();
-            }
-        }
+function renderDocuments() {
+  const active = getActive();
+  if (!active) {
+    document.getElementById('docList').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
+    return;
+  }
+  
+  const docs = active.documents || [];
+  document.getElementById('docListTitle').style.display = docs.length ? 'block' : 'none';
+  
+  let html = '';
+  docs.forEach((doc, idx) => {
+    html += `
+      <div class="doc-card">
+        <div>📄</div>
+        <div style="flex:1">
+          <div class="doc-name">${doc.name}</div>
+          <div class="doc-meta">${doc.date}</div>
+        </div>
+        <button class="btn-icon" onclick="removeDoc(${idx})">🗑</button>
+      </div>
+    `;
+  });
+  
+  document.getElementById('docList').innerHTML = html || '<div class="empty-state">Sin documentos</div>';
+}
 
-        function addPlano(id) {
-            const c = consultants.find(x => x.id === id);
-            if (c) {
-                c.planes.push({id: Date.now(), clave: '', nombre: '', fechaEntrega: '', revision: '', delivered: false});
-                saveConsultants();
-                renderContent();
-            }
-        }
+function renderNotes() {
+  const active = getActive();
+  if (!active) {
+    document.getElementById('notesArea').value = '';
+    document.getElementById('notesArea').disabled = true;
+    return;
+  }
+  document.getElementById('notesArea').disabled = false;
+  document.getElementById('notesArea').value = active.notes || '';
+}
 
-        function handleDrop(e, id) {
-            e.preventDefault();
-            e.target.classList.remove('drag-over');
-            const files = e.dataTransfer.files;
-            const c = consultants.find(x => x.id === id);
-            if (c) {
-                Array.from(files).forEach(file => {
-                    c.documents.push({
-                        name: file.name,
-                        size: file.size,
-                        uploadDate: new Date().toISOString()
-                    });
-                });
-                saveConsultants();
-                renderContent();
-            }
-        }
+function renderIndex() {
+  const active = getActive();
+  if (!active) {
+    document.getElementById('indexBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">Selecciona un consultor</td></tr>';
+    return;
+  }
+  
+  const planes = active.planes || [];
+  let html = '';
+  
+  if (planes.length === 0) {
+    html = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">Sin planos registrados</td></tr>';
+  } else {
+    planes.forEach((p, i) => {
+      html += `
+        <tr>
+          <td><input value="${p.clave || ''}" onchange="updatePlano(${i}, 'clave', this.value)"></td>
+          <td><input value="${p.nombre || ''}" onchange="updatePlano(${i}, 'nombre', this.value)"></td>
+          <td><input type="date" value="${p.fecha || ''}" onchange="updatePlano(${i}, 'fecha', this.value)"></td>
+          <td><select onchange="updatePlano(${i}, 'estado', this.value)">
+            <option ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+            <option ${p.estado === 'Recibido' ? 'selected' : ''}>Recibido</option>
+            <option ${p.estado === 'Revisado' ? 'selected' : ''}>Revisado</option>
+            <option ${p.estado === 'Parcial' ? 'selected' : ''}>Parcial</option>
+          </select></td>
+          <td><input value="${p.revision || ''}" onchange="updatePlano(${i}, 'revision', this.value)"></td>
+          <td style="text-align:center;cursor:pointer;color:var(--danger)" onclick="removePlano(${i})">✕</td>
+        </tr>
+      `;
+    });
+  }
+  
+  document.getElementById('indexBody').innerHTML = html;
+}
 
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            if (!message) return;
+function renderInfo() {
+  const active = getActive();
+  if (!active) {
+    document.getElementById('infoName').value = '';
+    document.getElementById('infoArea').value = '';
+    document.getElementById('infoPhone').value = '';
+    document.getElementById('infoEmail').value = '';
+    document.getElementById('infoSchedule').value = '';
+    document.getElementById('infoDeliveryDays').value = '';
+    document.querySelectorAll('#view-info input, #view-info textarea').forEach(el => el.disabled = true);
+    return;
+  }
+  
+  document.querySelectorAll('#view-info input, #view-info textarea').forEach(el => el.disabled = false);
+  document.getElementById('infoName').value = active.name;
+  document.getElementById('infoArea').value = active.area;
+  document.getElementById('infoPhone').value = active.phone || '';
+  document.getElementById('infoEmail').value = active.email || '';
+  document.getElementById('infoSchedule').value = active.schedule || '';
+  document.getElementById('infoDeliveryDays').value = active.deliveryDays || '';
+}
 
-            const messagesDiv = document.getElementById('chatMessages');
-            if (messagesDiv.querySelector('.empty-state')) {
-                messagesDiv.innerHTML = '';
-            }
+// MODALS
+function openModal(id) {
+  document.getElementById(id).className = 'modal-overlay open';
+}
 
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user';
-            userMsg.innerHTML = `<div class="message-content">${message}</div>`;
-            messagesDiv.appendChild(userMsg);
+function closeModal(id) {
+  document.getElementById(id).className = 'modal-overlay';
+}
 
-            input.value = '';
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) m.className = 'modal-overlay';
+  });
+});
 
-            // Simular respuesta IA
-            setTimeout(() => {
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'message assistant';
-                aiMsg.innerHTML = `<div class="message-content">He procesado tu pregunta basándome en los documentos de ${consultants.find(c => c.id === activeConsultant)?.company || 'este consultor'}.</div>`;
-                messagesDiv.appendChild(aiMsg);
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            }, 500);
-        }
+function openAddConsultant() {
+  openModal('modalAddConsultant');
+  setTimeout(() => document.getElementById('newName').focus(), 100);
+}
 
-        // INIT
-        window.addEventListener('load', init);
-    </script>
+function addConsultant() {
+  const name = document.getElementById('newName').value.trim();
+  const area = document.getElementById('newArea').value.trim();
+  
+  if (!name || !area) {
+    alert('Completa todos los campos');
+    return;
+  }
+  
+  const consultant = {
+    id: 'c_' + Date.now(),
+    name,
+    area,
+    phone: '',
+    email: '',
+    schedule: '',
+    notes: '',
+    documents: [],
+    planes: [],
+    deliveryDays: 0
+  };
+  
+  consultants.push(consultant);
+  saveData();
+  closeModal('modalAddConsultant');
+  document.getElementById('newName').value = '';
+  document.getElementById('newArea').value = '';
+  
+  updateSidebar();
+  selectConsultant(consultant.id);
+}
+
+function openAddPlano() {
+  document.getElementById('pClave').value = '';
+  document.getElementById('pNombre').value = '';
+  document.getElementById('pFecha').value = '';
+  document.getElementById('pEstado').value = 'Pendiente';
+  document.getElementById('pRevision').value = '';
+  openModal('modalAddPlano');
+  setTimeout(() => document.getElementById('pClave').focus(), 100);
+}
+
+function addPlano() {
+  const active = getActive();
+  if (!active) return;
+  
+  if (!active.planes) active.planes = [];
+  
+  active.planes.push({
+    clave: document.getElementById('pClave').value,
+    nombre: document.getElementById('pNombre').value,
+    fecha: document.getElementById('pFecha').value,
+    estado: document.getElementById('pEstado').value,
+    revision: document.getElementById('pRevision').value
+  });
+  
+  saveData();
+  closeModal('modalAddPlano');
+  renderIndex();
+}
+
+function updatePlano(i, field, val) {
+  const active = getActive();
+  if (active && active.planes && active.planes[i]) {
+    active.planes[i][field] = val;
+    saveData();
+  }
+}
+
+function removePlano(i) {
+  const active = getActive();
+  if (active && active.planes) {
+    active.planes.splice(i, 1);
+    saveData();
+    renderIndex();
+  }
+}
+
+function saveNotes() {
+  const active = getActive();
+  if (active) {
+    active.notes = document.getElementById('notesArea').value;
+    saveData();
+    alert('Notas guardadas ✓');
+  }
+}
+
+function saveInfo() {
+  const active = getActive();
+  if (active) {
+    active.phone = document.getElementById('infoPhone').value;
+    active.email = document.getElementById('infoEmail').value;
+    active.schedule = document.getElementById('infoSchedule').value;
+    active.deliveryDays = parseInt(document.getElementById('infoDeliveryDays').value) || 0;
+    saveData();
+    alert('Información guardada ✓');
+  }
+}
+
+function removeDoc(idx) {
+  const active = getActive();
+  if (active && active.documents) {
+    active.documents.splice(idx, 1);
+    saveData();
+    renderDocuments();
+  }
+}
+
+function setupDropZone() {
+  const dz = document.getElementById('dropZone');
+  dz.addEventListener('dragover', e => {
+    e.preventDefault();
+    dz.classList.add('dragover');
+  });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === 'application/pdf') {
+      addDocument(file);
+    }
+  });
+}
+
+function addDocument(file) {
+  const active = getActive();
+  if (!active) {
+    alert('Selecciona un consultor primero');
+    return;
+  }
+  
+  if (!active.documents) active.documents = [];
+  
+  const today = new Date().toLocaleDateString('es-MX');
+  active.documents.push({
+    name: file.name,
+    date: today,
+    size: Math.round(file.size / 1024) + ' KB'
+  });
+  
+  saveData();
+  renderDocuments();
+}
+
+function sendMessage() {
+  const active = getActive();
+  if (!active) {
+    alert('Selecciona un consultor');
+    return;
+  }
+  
+  const query = document.getElementById('query').value.trim();
+  if (!query) return;
+  
+  const chatArea = document.getElementById('chatArea');
+  const empty = chatArea.querySelector('.empty-state');
+  if (empty) empty.remove();
+  
+  // User message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg user';
+  userMsg.innerHTML = `
+    <div class="msg-label">Tú</div>
+    <div class="msg-bubble">${query}</div>
+  `;
+  chatArea.appendChild(userMsg);
+  
+  document.getElementById('query').value = '';
+  chatArea.scrollTop = chatArea.scrollHeight;
+  
+  // Simulate assistant response
+  setTimeout(() => {
+    const assistantMsg = document.createElement('div');
+    assistantMsg.className = 'msg assistant';
+    assistantMsg.innerHTML = `
+      <div class="msg-label">${active.name}</div>
+      <div class="msg-bubble">He procesado tu pregunta sobre <strong>${active.name}</strong>. ${active.documents?.length ? 'Tengo ' + active.documents.length + ' documento(s) cargado(s).' : 'Carga documentos para respuestas más precisas.'}</div>
+    `;
+    chatArea.appendChild(assistantMsg);
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }, 500);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
+}
+
+// Initialize on load
+init();
+</script>
+
 </body>
 </html>
