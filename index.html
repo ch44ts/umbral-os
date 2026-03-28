@@ -29,11 +29,14 @@
   --orange: #e08040;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Mono', monospace;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -53,6 +56,12 @@ header h1 {
   font-family: 'DM Serif Display', serif;
   font-size: 19px;
   color: var(--accent);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+header h1:hover {
+  opacity: 0.8;
 }
 
 header span {
@@ -82,16 +91,12 @@ header span {
   gap: 5px;
 }
 
-.sync-badge.synced {
-  border-color: var(--ok);
-  color: var(--ok);
-}
-
 .layout {
   display: grid;
   grid-template-columns: 240px 1fr;
   flex: 1;
   overflow: hidden;
+  position: relative;
 }
 
 .sidebar {
@@ -225,6 +230,8 @@ header span {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+  padding-bottom: 0;
 }
 
 .view {
@@ -237,6 +244,24 @@ header span {
 
 .view.active {
   display: block;
+}
+
+.section-title {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }
 
 .week-grid {
@@ -253,19 +278,11 @@ header span {
   padding: 12px;
   cursor: pointer;
   transition: all 0.2s;
-  text-align: center;
-  min-height: 140px;
-  display: flex;
-  flex-direction: column;
 }
 
 .week-day.today {
   border-color: var(--accent);
   background: rgba(200, 224, 96, 0.08);
-}
-
-.week-day.next-week {
-  opacity: 0.4;
 }
 
 .week-day:hover {
@@ -286,24 +303,6 @@ header span {
   margin-bottom: 8px;
 }
 
-.week-day-events {
-  font-size: 8px;
-  color: var(--text-muted);
-  text-align: left;
-}
-
-.event-tag {
-  display: inline-block;
-  padding: 2px 5px;
-  background: var(--border);
-  border-radius: 2px;
-  margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
 .task-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -314,10 +313,6 @@ header span {
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
-}
-
-.task-left {
-  flex: 1;
 }
 
 .task-title {
@@ -339,44 +334,154 @@ header span {
   font-size: 8px;
   font-weight: 500;
   color: var(--bg);
+  margin-right: 6px;
 }
 
-.section-title {
-  font-size: 9px;
-  letter-spacing: 3px;
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.field label {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-bottom: 4px;
 }
 
-.section-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-/* CHAT FLOTANTE */
-.chat-floating {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 400px;
-  height: 320px;
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-bottom: none;
-  border-right: none;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 8px;
+  outline: none;
+  border-radius: 3px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--accent);
+}
+
+.field select option {
+  background: var(--card);
+}
+
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: 5px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--card);
+  margin-bottom: 20px;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(200, 224, 96, 0.05);
+}
+
+.doc-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.doc-name {
+  font-size: 10px;
+  color: var(--text);
+}
+
+.doc-date {
+  font-size: 8px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.btn-small {
+  padding: 4px 8px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 8px;
+  transition: all 0.2s;
+}
+
+.btn-small:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.btn-delete-consultant {
+  width: 80px;
+  padding: 12px 8px;
+  background: var(--danger);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-size: 9px;
+  cursor: pointer;
+  margin-top: auto;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-delete-consultant:hover {
+  background: #dc2626;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* CHAT CLAUDE STYLE */
+.chat-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 360px;
+  height: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   z-index: 100;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  max-height: 500px;
+  min-height: 80px;
 }
 
 .chat-header {
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
@@ -390,12 +495,27 @@ header span {
   color: var(--accent);
 }
 
-.chat-close {
+.chat-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-btn {
   background: none;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
   font-size: 16px;
+  transition: color 0.2s;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-btn:hover {
+  color: var(--text);
 }
 
 .chat-messages {
@@ -406,6 +526,7 @@ header span {
   flex-direction: column;
   gap: 8px;
   scrollbar-width: thin;
+  min-height: 0;
 }
 
 .msg {
@@ -439,15 +560,16 @@ header span {
 
 .msg-bubble {
   padding: 8px 10px;
-  border-radius: 3px;
+  border-radius: 8px;
   font-size: 10px;
   line-height: 1.6;
 }
 
 .msg.user .msg-bubble {
-  background: rgba(200, 224, 96, 0.1);
-  border: 1px solid rgba(200, 224, 96, 0.2);
-  color: var(--text);
+  background: var(--accent);
+  color: var(--bg);
+  margin-left: auto;
+  max-width: 90%;
 }
 
 .msg.assistant .msg-bubble {
@@ -455,40 +577,15 @@ header span {
   border: 1px solid var(--border);
   color: var(--text-muted);
   font-size: 9.5px;
-}
-
-.consultant-chips {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  flex-shrink: 0;
-  scrollbar-width: thin;
-  max-height: 60px;
-  overflow-y: auto;
-}
-
-.chip {
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-size: 8px;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-
-.chip.selected {
-  border-color: var(--accent);
-  background: rgba(200, 224, 96, 0.15);
+  max-width: 90%;
 }
 
 .chat-input-area {
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-top: 1px solid var(--border);
   display: flex;
-  gap: 6px;
+  gap: 8px;
+  align-items: flex-end;
   flex-shrink: 0;
 }
 
@@ -496,9 +593,10 @@ header span {
   flex: 1;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: 6px;
   display: flex;
   align-items: flex-end;
+  padding: 0 10px;
 }
 
 .chat-input-wrap textarea {
@@ -507,32 +605,46 @@ header span {
   border: none;
   color: var(--text);
   font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  padding: 6px 8px;
+  font-size: 10px;
+  padding: 8px 0;
   resize: none;
   outline: none;
-  max-height: 60px;
+  max-height: 80px;
 }
 
 .chat-input-wrap textarea::placeholder {
   color: var(--text-faint);
 }
 
-.btn-send-chat {
-  padding: 6px 10px;
-  background: var(--accent);
-  color: var(--bg);
+.chat-action-btn {
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  background: none;
   border: none;
-  font-size: 12px;
+  color: var(--accent);
   cursor: pointer;
-  border-radius: 3px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
 }
 
-.btn-send-chat:hover {
-  background: var(--accent-dim);
+.chat-action-btn:hover {
+  opacity: 0.8;
 }
 
-/* MODAL EVENTO */
+.chat-collapsed {
+  height: auto;
+}
+
+.chat-collapsed .chat-messages,
+.chat-collapsed .chat-input-area {
+  display: none;
+}
+
+/* MODAL */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -554,6 +666,8 @@ header span {
   padding: 20px;
   width: 400px;
   max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal h3 {
@@ -561,39 +675,6 @@ header span {
   font-size: 16px;
   margin-bottom: 14px;
   color: var(--accent);
-}
-
-.field {
-  margin-bottom: 12px;
-}
-
-.field label {
-  display: block;
-  font-size: 8px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  padding: 8px;
-  outline: none;
-  border-radius: 3px;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: var(--accent);
 }
 
 .modal-footer {
@@ -611,6 +692,7 @@ header span {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  transition: all 0.2s;
 }
 
 .btn-primary {
@@ -633,85 +715,125 @@ header span {
   color: var(--text);
 }
 
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-faint);
-  font-size: 11px;
+.calendar-hourly {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 10px;
 }
 
-.drop-zone {
-  border: 2px dashed var(--border);
-  border-radius: 5px;
-  padding: 30px;
-  text-align: center;
+.cal-time-labels {
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.cal-time-label {
+  height: 60px;
+  padding: 4px;
+  font-size: 8px;
+  color: var(--text-muted);
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.2;
+}
+
+.cal-slots {
+  display: flex;
+  flex-direction: column;
+}
+
+.cal-slot {
+  height: 60px;
+  border-bottom: 1px solid var(--border);
+  padding: 2px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.cal-slot:hover {
+  background: rgba(200, 224, 96, 0.03);
+}
+
+.cal-event {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  padding: 3px;
+  border-radius: 2px;
+  font-size: 8px;
+  color: white;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.2s;
-  background: var(--card);
-  margin-bottom: 20px;
 }
 
-.drop-zone:hover,
-.drop-zone.dragover {
-  border-color: var(--accent);
-  background: rgba(200, 224, 96, 0.05);
+.cal-event:hover {
+  filter: brightness(1.1);
 }
 
-.drop-zone p {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.doc-item {
+.cal-event-menu {
+  position: fixed;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 10px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border-radius: 4px;
+  z-index: 300;
+  min-width: 120px;
 }
 
-.doc-name {
+.cal-event-menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
   font-size: 10px;
   color: var(--text);
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.doc-date {
-  font-size: 8px;
-  color: var(--text-muted);
-  margin-top: 2px;
+.cal-event-menu-item:hover {
+  background: rgba(200, 224, 96, 0.1);
 }
 
-.btn-small {
-  padding: 4px 8px;
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
+.color-picker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.color-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
   cursor: pointer;
-  border-radius: 3px;
-  font-size: 8px;
+  border: 2px solid transparent;
+  transition: all 0.2s;
 }
 
-.btn-small:hover {
-  border-color: var(--danger);
-  color: var(--danger);
+.color-option:hover {
+  border-color: var(--text);
 }
 
-textarea {
-  resize: vertical;
-  min-height: 100px;
+.color-option.selected {
+  border-color: white;
 }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Umbral OS</h1>
-  <span>v2 · Gestor Ejecutivo</span>
+  <h1 onclick="goToDashboard()">Umbral OS</h1>
+  <span>v3 · Ejecutivo</span>
   <div class="hdr-right">
-    <div class="sync-badge synced">✓ Sincronizado</div>
+    <div class="sync-badge">✓ Sincronizado</div>
   </div>
 </header>
 
@@ -728,15 +850,14 @@ textarea {
   <!-- MAIN AREA -->
   <div class="main-area">
     <div class="tabs">
-      <div class="tab active" data-view="home" onclick="switchView('home')">🌅 Hoy</div>
+      <div class="tab active" data-view="dashboard" onclick="switchView('dashboard')">📊 Dashboard</div>
       <div class="tab" data-view="documents" onclick="switchView('documents')">📁 Documentos</div>
       <div class="tab" data-view="info" onclick="switchView('info')">⚙️ Info</div>
-      <div class="tab" data-view="tasks" onclick="switchView('tasks')">✅ Tareas</div>
     </div>
 
     <div class="view-container">
-      <!-- HOME -->
-      <div class="view active" id="view-home">
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard">
         <div class="section-title">Esta semana</div>
         <div class="week-grid" id="weekGrid"></div>
         
@@ -744,40 +865,36 @@ textarea {
         <div id="tasksHome"></div>
       </div>
 
-      <!-- CONSULTANT DOCUMENTS -->
+      <!-- DOCUMENTOS -->
       <div class="view" id="view-documents">
         <div id="documentsContent"></div>
       </div>
 
-      <!-- CONSULTANT INFO -->
+      <!-- INFO -->
       <div class="view" id="view-info">
-        <div id="infoContent"></div>
-      </div>
-
-      <!-- TASKS -->
-      <div class="view" id="view-tasks">
-        <div id="tasksList"></div>
+        <div class="info-container" id="infoContent"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CHAT FLOTANTE -->
-<div class="chat-floating" id="chatFloating">
+<!-- CHAT CLAUDE STYLE -->
+<div class="chat-container" id="chatContainer">
   <div class="chat-header">
     <h3>Chat</h3>
-    <button class="chat-close" onclick="toggleChat()">−</button>
+    <div class="chat-controls">
+      <button class="chat-btn" title="Acciones">+</button>
+      <button class="chat-btn" onclick="toggleChat()" title="Minimizar">−</button>
+    </div>
   </div>
-  
-  <div class="consultant-chips" id="consultantChips"></div>
   
   <div class="chat-messages" id="chatMessages"></div>
   
   <div class="chat-input-area">
     <div class="chat-input-wrap">
-      <textarea id="chatInput" placeholder="Pregunta o agrega tarea..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
+      <textarea id="chatInput" placeholder="Pregunta o agrega tarea..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}" oninput="autoResizeChat(this)"></textarea>
     </div>
-    <button class="btn-send-chat" onclick="sendChatMessage()">↑</button>
+    <button class="chat-action-btn" onclick="sendChatMessage()" title="Enviar">↑</button>
   </div>
 </div>
 
@@ -806,7 +923,7 @@ textarea {
     <h3>Agregar Evento / Tarea</h3>
     <div class="field">
       <label>Descripción</label>
-      <textarea id="eventDesc" placeholder="Ej. Entrega de planos estructurales" rows="2"></textarea>
+      <textarea id="eventDesc" placeholder="Ej. Entrega de planos estructurales" rows="2" style="min-height:60px;resize:vertical"></textarea>
     </div>
     <div class="field">
       <label>Consultor (opcional)</label>
@@ -819,12 +936,21 @@ textarea {
       <input type="date" id="eventDate">
     </div>
     <div class="field">
+      <label>Hora</label>
+      <input type="time" id="eventTime" value="09:00">
+    </div>
+    <div class="field">
       <label>Tipo</label>
       <select id="eventType">
         <option value="task">Tarea</option>
+        <option value="meeting">Reunión</option>
         <option value="review">Revisión</option>
         <option value="delivery">Entrega</option>
       </select>
+    </div>
+    <div class="field">
+      <label>Color</label>
+      <div class="color-picker" id="colorPicker"></div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modalAddEvent')">Cancelar</button>
@@ -833,16 +959,37 @@ textarea {
   </div>
 </div>
 
+<!-- COLOR PICKER MENU EVENTO -->
+<div class="cal-event-menu" id="eventColorMenu" style="display:none">
+  <div class="cal-event-menu-item" style="background:#c8e060" onclick="setEventColor('#c8e060'); closeEventMenu()">Accent</div>
+  <div class="cal-event-menu-item" style="background:#60c882" onclick="setEventColor('#60c882'); closeEventMenu()">Verde</div>
+  <div class="cal-event-menu-item" style="background:#e0b060" onclick="setEventColor('#e0b060'); closeEventMenu()">Naranja</div>
+  <div class="cal-event-menu-item" style="background:#e06060" onclick="setEventColor('#e06060'); closeEventMenu()">Rojo</div>
+  <div class="cal-event-menu-item" style="background:#60a0e0" onclick="setEventColor('#60a0e0'); closeEventMenu()">Azul</div>
+  <div class="cal-event-menu-item" style="background:#a060e0" onclick="setEventColor('#a060e0'); closeEventMenu()">Púrpura</div>
+  <hr style="border:none;border-top:1px solid var(--border);margin:4px 0">
+  <div class="cal-event-menu-item" style="color:var(--danger)" onclick="deleteEventFromMenu(); closeEventMenu()">🗑 Eliminar</div>
+</div>
+
 <script>
 const COLORS = ['#c8e060', '#a060e0', '#e0a060', '#60a0e0', '#e06060', '#a0c860', '#60c8c8', '#c860c8', '#8080e0', '#c89060'];
+const EVENT_COLORS = {
+  '#c8e060': 'Accent',
+  '#60c882': 'Verde',
+  '#e0b060': 'Naranja',
+  '#e06060': 'Rojo',
+  '#60a0e0': 'Azul',
+  '#a060e0': 'Púrpura'
+};
 
 let consultants = [];
 let tasks = [];
 let selectedConsultantForChat = null;
-let activeView = 'home';
-let calendarSelectedDate = null;
+let activeView = 'dashboard';
+let eventColorSelected = '#c8e060';
+let contextEvent = null;
 
-// DATA MANAGEMENT
+// DATA
 function loadData() {
   const c = localStorage.getItem('umbral_consultants');
   const t = localStorage.getItem('umbral_tasks');
@@ -855,11 +1002,17 @@ function saveData() {
   localStorage.setItem('umbral_tasks', JSON.stringify(tasks));
 }
 
+function goToDashboard() {
+  selectedConsultantForChat = null;
+  switchView('dashboard');
+  updateSidebar();
+}
+
 // SIDEBAR
 function updateSidebar() {
   const list = document.getElementById('consultantList');
   list.innerHTML = consultants.map((c, i) => `
-    <div class="consultant-item" onclick="selectConsultant('${c.id}')">
+    <div class="consultant-item ${selectedConsultantForChat === c.id ? 'active' : ''}" onclick="selectConsultant('${c.id}')">
       <div class="c-avatar" style="background:${COLORS[i%10]};color:var(--bg)">${c.name.charAt(0)}</div>
       <div class="c-info">
         <div class="c-name">${c.name}</div>
@@ -867,21 +1020,13 @@ function updateSidebar() {
       </div>
     </div>
   `).join('');
-  
-  updateConsultantChips();
 }
 
 function selectConsultant(id) {
   selectedConsultantForChat = id;
-  updateConsultantChips();
-}
-
-function updateConsultantChips() {
-  const chips = document.getElementById('consultantChips');
-  chips.innerHTML = '<div class="chip" onclick="selectedConsultantForChat=null;updateConsultantChips()" style="'+(selectedConsultantForChat===null?'border-color:var(--accent);background:rgba(200,224,96,0.15)':'')+'">General</div>' + 
-    consultants.map((c, i) => `
-      <div class="chip" style="${selectedConsultantForChat===c.id?'border-color:var(--accent);background:rgba(200,224,96,0.15);':''}background:${COLORS[i%10]}33;color:${COLORS[i%10]}" onclick="selectedConsultantForChat='${c.id}';updateConsultantChips()">${c.name}</div>
-    `).join('');
+  updateSidebar();
+  if (activeView === 'documents') renderDocuments();
+  else if (activeView === 'info') renderInfo();
 }
 
 // VIEWS
@@ -891,13 +1036,12 @@ function switchView(v) {
   document.querySelectorAll('.view').forEach(v2 => v2.classList.remove('active'));
   document.getElementById('view-' + v).classList.add('active');
   
-  if (v === 'home') renderHome();
+  if (v === 'dashboard') renderDashboard();
   else if (v === 'documents') renderDocuments();
   else if (v === 'info') renderInfo();
-  else if (v === 'tasks') renderTasksList();
 }
 
-function renderHome() {
+function renderDashboard() {
   renderWeeklyCalendar();
   renderTasksHome();
 }
@@ -907,7 +1051,6 @@ function renderWeeklyCalendar() {
   today.setHours(0, 0, 0, 0);
   
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-  const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
   
   let html = '';
   for (let i = 0; i < 14; i++) {
@@ -923,16 +1066,13 @@ function renderWeeklyCalendar() {
     });
     
     html += `
-      <div class="week-day ${isToday?'today':''} ${!isThisWeek?'next-week':''}" onclick="openEventModal('${d.toISOString().split('T')[0]}')">
-        <div class="week-day-header">${dayNames[d.getDay()]} ${d.getDate()}</div>
+      <div class="week-day ${isToday?'today':''}" onclick="openEventModal('${d.toISOString().split('T')[0]}')">
+        <div class="week-day-header">${dayNames[d.getDay()]}</div>
         <div class="week-day-num">${d.getDate()}</div>
-        <div class="week-day-events">
-          ${dayEvents.map(e => {
-            const c = consultants.find(x => x.id === e.consultant);
-            const color = c ? COLORS[consultants.indexOf(c) % 10] : 'var(--accent)';
-            return `<div class="event-tag" style="background:${color}44;color:${color};border:1px solid ${color}66">${e.title.substring(0,12)}</div>`;
-          }).join('')}
+        <div style="font-size:8px;color:var(--text-muted);margin-top:6px">
+          ${dayEvents.length} evento${dayEvents.length!==1?'s':''}
         </div>
+        ${!isThisWeek ? `<div style="position:absolute;top:4px;right:4px;font-size:9px;opacity:0.4">próxima</div>` : ''}
       </div>
     `;
   }
@@ -941,7 +1081,12 @@ function renderWeeklyCalendar() {
 }
 
 function renderTasksHome() {
-  const tasksList = tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+  const tasksList = tasks.sort((a, b) => {
+    const aDate = new Date(a.date + ' ' + a.time);
+    const bDate = new Date(b.date + ' ' + b.time);
+    return aDate - bDate;
+  });
+  
   let html = '';
   
   if (tasksList.length === 0) {
@@ -962,15 +1107,14 @@ function renderTasksHome() {
       else if (daysLeft <= 7) urgColor = 'var(--warn)';
       
       html += `
-        <div class="task-card" style="border-left:3px solid ${urgColor}">
-          <div class="task-left">
-            <div class="task-title">${t.title}</div>
+        <div class="task-card" style="border-left:3px solid ${urgColor};background:${t.color}11" onclick="editEvent('${t.id}')">
+          <div style="flex:1">
+            <div class="task-title" style="color:${t.color}">${t.title}</div>
             <div class="task-meta">
-              ${c ? `<span class="task-consultant-badge" style="background:${color};margin-right:6px">${c.name}</span>` : ''}
-              ${t.date} ${daysLeft === 0 ? '(Hoy)' : daysLeft < 0 ? '(Vencido)' : `(en ${daysLeft} días)`}
+              ${c ? `<span class="task-consultant-badge" style="background:${color}">${c.name}</span>` : ''}
+              ${t.date} ${t.time} · ${t.type}
             </div>
           </div>
-          <button class="btn-small" onclick="deleteTask('${t.id}')">✕</button>
         </div>
       `;
     });
@@ -981,7 +1125,7 @@ function renderTasksHome() {
 
 function renderDocuments() {
   if (!selectedConsultantForChat) {
-    document.getElementById('documentsContent').innerHTML = '<div class="empty-state">Selecciona un consultor en la lista</div>';
+    document.getElementById('documentsContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
     return;
   }
   
@@ -995,7 +1139,7 @@ function renderDocuments() {
       <div style="font-size:11px;color:var(--text-muted)">${c.area}</div>
     </div>
     
-    <div class="section-title">Documentos del Consultor</div>
+    <div class="section-title">Documentos</div>
     <div class="drop-zone" id="dropZone">
       <div style="font-size:24px;margin-bottom:8px">📄</div>
       <p>Arrastra documentos aquí</p>
@@ -1026,14 +1170,13 @@ function renderDocuments() {
 
 function renderInfo() {
   if (!selectedConsultantForChat) {
-    document.getElementById('infoContent').innerHTML = '<div class="empty-state">Selecciona un consultor en la lista</div>';
+    document.getElementById('infoContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
     return;
   }
   
   const c = consultants.find(x => x.id === selectedConsultantForChat);
   const i = consultants.indexOf(c);
   const color = COLORS[i % 10];
-  
   const hasContract = c.contract;
   
   let html = `
@@ -1042,21 +1185,21 @@ function renderInfo() {
       <div style="font-size:11px;color:var(--text-muted)">${c.area}</div>
     </div>
     
-    <div class="section-title">Información de Contacto</div>
+    <div class="section-title">Contacto</div>
     <div class="field">
       <label>Teléfono</label>
-      <input type="tel" id="infoPhone" value="${c.phone || ''}" placeholder="+52 1234567890" onchange="updateConsultantInfo('${c.id}', 'phone', this.value)">
+      <input type="tel" value="${c.phone || ''}" placeholder="+52 1234567890" onchange="updateConsultantInfo('${c.id}', 'phone', this.value)" style="resize:none;min-height:auto;height:auto;padding:6px">
     </div>
     <div class="field">
       <label>Email</label>
-      <input type="email" id="infoEmail" value="${c.email || ''}" placeholder="consultor@empresa.com" onchange="updateConsultantInfo('${c.id}', 'email', this.value)">
+      <input type="email" value="${c.email || ''}" placeholder="consultor@empresa.com" onchange="updateConsultantInfo('${c.id}', 'email', this.value)" style="resize:none;min-height:auto;height:auto;padding:6px">
     </div>
     <div class="field">
-      <label>Horarios / Disponibilidad</label>
-      <textarea id="infoSchedule" placeholder="Lunes a Jueves, 9:00 AM - 5:00 PM" onchange="updateConsultantInfo('${c.id}', 'schedule', this.value)">${c.schedule || ''}</textarea>
+      <label>Horarios</label>
+      <textarea onchange="updateConsultantInfo('${c.id}', 'schedule', this.value)">${c.schedule || ''}</textarea>
     </div>
     
-    <div class="section-title">Contrato / Cotización</div>
+    <div class="section-title">Contrato</div>
     ${hasContract ? `
       <div class="doc-item" style="margin-bottom:14px">
         <div>
@@ -1065,95 +1208,37 @@ function renderInfo() {
         </div>
         <button class="btn-small" onclick="removeContract('${c.id}')">✕</button>
       </div>
-      <button class="btn-small" style="background:var(--accent);color:var(--bg);margin-bottom:16px" onclick="downloadContract('${c.id}')">Descargar Contrato</button>
+      <button class="btn-small" style="background:var(--accent);color:var(--bg);margin-bottom:16px;width:100%" onclick="downloadContract('${c.id}')">Descargar</button>
     ` : `
-      <div class="drop-zone" id="contractZone" style="margin-bottom:14px">
+      <div class="drop-zone" id="contractZone" style="margin-bottom:14px;cursor:pointer">
         <div style="font-size:20px;margin-bottom:8px">📋</div>
-        <p>Arrastra contrato/cotización aquí</p>
+        <p>Arrastra contrato aquí</p>
       </div>
     `}
     
-    <div class="section-title">Acciones</div>
-    <button class="btn-small" style="background:var(--danger);color:white;width:100%" onclick="deleteConsultant('${c.id}')">🗑 Eliminar Consultor</button>
+    <div style="flex:1"></div>
+    <button class="btn-delete-consultant" onclick="deleteConsultant('${c.id}')">Eliminar</button>
   `;
   
-  document.getElementById('infoContent').innerHTML = html;
+  const container = document.getElementById('infoContent');
+  container.innerHTML = html;
   
-  // Setup contract drop zone if no contract exists
   if (!hasContract) {
     const cz = document.getElementById('contractZone');
     if (cz) {
-      cz.addEventListener('dragover', e => {
-        e.preventDefault();
-        cz.classList.add('dragover');
-      });
+      cz.addEventListener('dragover', e => { e.preventDefault(); cz.classList.add('dragover'); });
       cz.addEventListener('dragleave', () => cz.classList.remove('dragover'));
       cz.addEventListener('drop', e => {
         e.preventDefault();
         cz.classList.remove('dragover');
         const file = e.dataTransfer.files[0];
-        if (file) {
-          uploadContract(c.id, file);
-        }
+        if (file) uploadContract(c.id, file);
       });
     }
   }
 }
 
-function renderTasksList() {
-  const allTasks = tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
-  let html = '<div class="section-title">Todas las tareas</div>';
-  
-  if (allTasks.length === 0) {
-    html += '<div class="empty-state">Sin tareas</div>';
-  } else {
-    allTasks.forEach(t => {
-      const d = new Date(t.date);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const daysLeft = Math.floor((d - today) / (1000 * 60 * 60 * 24));
-      
-      const c = consultants.find(x => x.id === t.consultant);
-      const color = c ? COLORS[consultants.indexOf(c) % 10] : 'var(--text-muted)';
-      
-      let urgColor = 'var(--ok)';
-      if (daysLeft <= 0) urgColor = 'var(--danger)';
-      else if (daysLeft <= 3) urgColor = 'var(--orange)';
-      else if (daysLeft <= 7) urgColor = 'var(--warn)';
-      
-      html += `
-        <div class="task-card" style="border-left:3px solid ${urgColor}">
-          <div class="task-left">
-            <div class="task-title">${t.title}</div>
-            <div class="task-meta">
-              ${c ? `<span class="task-consultant-badge" style="background:${color};margin-right:6px">${c.name}</span>` : ''}
-              ${t.date} · ${t.type}
-            </div>
-          </div>
-          <button class="btn-small" onclick="deleteTask('${t.id}')">✕</button>
-        </div>
-      `;
-    });
-  }
-  
-  document.getElementById('tasksList').innerHTML = html;
-}
-
-// MODALS
-function openModal(id) {
-  document.getElementById(id).className = 'modal-overlay open';
-}
-
-function closeModal(id) {
-  document.getElementById(id).className = 'modal-overlay';
-}
-
-document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', e => {
-    if (e.target === m) m.className = 'modal-overlay';
-  });
-});
-
+// CONSULTORES
 function openAddConsultant() {
   openModal('modalAddConsultant');
   setTimeout(() => document.getElementById('newConsultantName').focus(), 100);
@@ -1169,22 +1254,116 @@ function addConsultant() {
     id: 'c_' + Date.now(),
     name,
     area,
-    documents: []
+    phone: '',
+    email: '',
+    schedule: '',
+    documents: [],
+    contract: null
   });
   
   saveData();
   closeModal('modalAddConsultant');
   updateSidebar();
+  updateEventConsultantSelect();
   
   document.getElementById('newConsultantName').value = '';
   document.getElementById('newConsultantArea').value = '';
-  
-  // Update event modal select
-  updateEventConsultantSelect();
 }
 
+function deleteConsultant(id) {
+  if (confirm('¿Eliminar este consultor?')) {
+    consultants = consultants.filter(c => c.id !== id);
+    tasks = tasks.filter(t => t.consultant !== id);
+    saveData();
+    selectedConsultantForChat = null;
+    updateSidebar();
+    renderInfo();
+  }
+}
+
+function updateConsultantInfo(id, field, value) {
+  const c = consultants.find(x => x.id === id);
+  if (c) {
+    c[field] = value;
+    saveData();
+  }
+}
+
+function uploadContract(id, file) {
+  const c = consultants.find(x => x.id === id);
+  if (c) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      c.contract = {
+        name: file.name,
+        date: new Date().toLocaleDateString('es-MX'),
+        data: e.target.result
+      };
+      saveData();
+      renderInfo();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function removeContract(id) {
+  const c = consultants.find(x => x.id === id);
+  if (c) {
+    delete c.contract;
+    saveData();
+    renderInfo();
+  }
+}
+
+function downloadContract(id) {
+  const c = consultants.find(x => x.id === id);
+  if (c && c.contract) {
+    const link = document.createElement('a');
+    link.href = c.contract.data;
+    link.download = c.contract.name;
+    link.click();
+  }
+}
+
+function removeDoc(id, idx) {
+  const c = consultants.find(x => x.id === id);
+  if (c && c.documents) {
+    c.documents.splice(idx, 1);
+    saveData();
+    renderDocuments();
+  }
+}
+
+function setupDropZone(id) {
+  const dz = document.getElementById('dropZone');
+  if (!dz) return;
+  
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const c = consultants.find(x => x.id === id);
+      if (!c.documents) c.documents = [];
+      c.documents.push({
+        name: file.name,
+        date: new Date().toLocaleDateString('es-MX'),
+        size: Math.round(file.size / 1024) + 'KB'
+      });
+      saveData();
+      renderDocuments();
+    }
+  });
+}
+
+// EVENTOS
 function openEventModal(date) {
   document.getElementById('eventDate').value = date;
+  document.getElementById('eventTime').value = '09:00';
+  eventColorSelected = '#c8e060';
+  renderColorPicker();
   updateEventConsultantSelect();
   openModal('modalAddEvent');
   setTimeout(() => document.getElementById('eventDesc').focus(), 100);
@@ -1196,46 +1375,77 @@ function updateEventConsultantSelect() {
     consultants.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 }
 
+function renderColorPicker() {
+  const cp = document.getElementById('colorPicker');
+  cp.innerHTML = Object.entries(EVENT_COLORS).map(([color, name]) => `
+    <div class="color-option ${color === eventColorSelected ? 'selected' : ''}" style="background:${color}" onclick="eventColorSelected='${color}';renderColorPicker()"></div>
+  `).join('');
+}
+
 function addEvent() {
   const title = document.getElementById('eventDesc').value.trim();
   const date = document.getElementById('eventDate').value;
+  const time = document.getElementById('eventTime').value;
   const consultant = document.getElementById('eventConsultant').value || null;
   const type = document.getElementById('eventType').value;
   
   if (!title || !date) return;
   
-  // Parse dates from title
-  const dateMatch = title.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
-  const finalDate = dateMatch ? `20${dateMatch[3]}`.slice(0, 4) + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[1].padStart(2, '0') : date;
-  
   tasks.push({
     id: 't_' + Date.now(),
     title,
-    date: finalDate,
-    consultant: consultant || null,
-    type
+    date,
+    time,
+    consultant,
+    type,
+    color: eventColorSelected
   });
   
   saveData();
   closeModal('modalAddEvent');
   
-  document.getElementById('eventDesc').value = '';
-  document.getElementById('eventDate').value = '';
-  document.getElementById('eventConsultant').value = '';
-  
-  if (activeView === 'home') {
-    renderHome();
-  } else if (activeView === 'tasks') {
-    renderTasksList();
+  if (activeView === 'dashboard') renderDashboard();
+}
+
+function deleteEventFromMenu() {
+  if (contextEvent) {
+    tasks = tasks.filter(t => t.id !== contextEvent);
+    saveData();
+    if (activeView === 'dashboard') renderDashboard();
+    contextEvent = null;
   }
 }
 
-function deleteTask(id) {
-  tasks = tasks.filter(t => t.id !== id);
-  saveData();
-  renderHome();
-  renderTasksList();
+function setEventColor(color) {
+  if (contextEvent) {
+    const e = tasks.find(t => t.id === contextEvent);
+    if (e) {
+      e.color = color;
+      saveData();
+      if (activeView === 'dashboard') renderDashboard();
+    }
+  }
 }
+
+function editEvent(id) {
+  contextEvent = id;
+  const e = tasks.find(t => t.id === id);
+  if (!e) return;
+  const menu = document.getElementById('eventColorMenu');
+  menu.style.display = 'block';
+  menu.style.left = (event.clientX - 100) + 'px';
+  menu.style.top = (event.clientY + 10) + 'px';
+}
+
+function closeEventMenu() {
+  document.getElementById('eventColorMenu').style.display = 'none';
+}
+
+document.addEventListener('click', e => {
+  if (e.target.id !== 'eventColorMenu' && !e.target.closest('.cal-event-menu')) {
+    closeEventMenu();
+  }
+});
 
 // CHAT
 function sendChatMessage() {
@@ -1244,11 +1454,9 @@ function sendChatMessage() {
   
   if (!message) return;
   
-  // Add user message
   addChatMessage(message, 'user');
   input.value = '';
   
-  // Parse dates and create task
   const dateMatch = message.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
   if (dateMatch) {
     const date = `20${dateMatch[3]}`.slice(0, 4) + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[1].padStart(2, '0');
@@ -1257,8 +1465,10 @@ function sendChatMessage() {
       id: 't_' + Date.now(),
       title: message,
       date,
+      time: '09:00',
       consultant: selectedConsultantForChat || null,
-      type: 'task'
+      type: 'task',
+      color: '#c8e060'
     });
     
     saveData();
@@ -1267,10 +1477,9 @@ function sendChatMessage() {
     const scope = c ? `para ${c.name}` : 'general';
     addChatMessage(`✓ Tarea agregada ${scope} para ${date}`, 'assistant');
     
-    renderHome();
-    renderTasksList();
+    if (activeView === 'dashboard') renderDashboard();
   } else {
-    addChatMessage('Para agregar una tarea, incluye una fecha: ej. "Revisar planos 15/04/2025"', 'assistant');
+    addChatMessage('Incluye una fecha: ej. "Revisar planos 15/04/2025"', 'assistant');
   }
 }
 
@@ -1287,107 +1496,37 @@ function addChatMessage(text, role) {
 }
 
 function toggleChat() {
-  document.getElementById('chatFloating').style.transform = 
-    document.getElementById('chatFloating').style.transform === 'translateY(100%)' ? 'translateY(0)' : 'translateY(100%)';
+  const chat = document.getElementById('chatContainer');
+  chat.classList.toggle('chat-collapsed');
 }
 
-// DOCUMENTOS
-function setupDropZone(consultantId) {
-  const dz = document.getElementById('dropZone');
-  if (!dz) return;
-  
-  dz.addEventListener('dragover', e => {
-    e.preventDefault();
-    dz.classList.add('dragover');
+function autoResizeChat(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
+}
+
+// MODAL
+function openModal(id) {
+  document.getElementById(id).className = 'modal-overlay open';
+}
+
+function closeModal(id) {
+  document.getElementById(id).className = 'modal-overlay';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) m.className = 'modal-overlay';
   });
-  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
-  dz.addEventListener('drop', e => {
-    e.preventDefault();
-    dz.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      const c = consultants.find(x => x.id === consultantId);
-      if (!c.documents) c.documents = [];
-      c.documents.push({
-        name: file.name,
-        date: new Date().toLocaleDateString('es-MX'),
-        size: Math.round(file.size / 1024) + 'KB'
-      });
-      saveData();
-      renderConsultant();
-    }
-  });
-}
-
-function removeDoc(consultantId, idx) {
-  const c = consultants.find(x => x.id === consultantId);
-  if (c && c.documents) {
-    c.documents.splice(idx, 1);
-    saveData();
-    renderDocuments();
-  }
-}
-
-function updateConsultantInfo(consultantId, field, value) {
-  const c = consultants.find(x => x.id === consultantId);
-  if (c) {
-    c[field] = value;
-    saveData();
-  }
-}
-
-function uploadContract(consultantId, file) {
-  const c = consultants.find(x => x.id === consultantId);
-  if (c) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      c.contract = {
-        name: file.name,
-        date: new Date().toLocaleDateString('es-MX'),
-        data: e.target.result
-      };
-      saveData();
-      renderInfo();
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
-function removeContract(consultantId) {
-  const c = consultants.find(x => x.id === consultantId);
-  if (c) {
-    delete c.contract;
-    saveData();
-    renderInfo();
-  }
-}
-
-function downloadContract(consultantId) {
-  const c = consultants.find(x => x.id === consultantId);
-  if (c && c.contract) {
-    const link = document.createElement('a');
-    link.href = c.contract.data;
-    link.download = c.contract.name;
-    link.click();
-  }
-}
-
-function deleteConsultant(consultantId) {
-  if (confirm(`¿Eliminar a ${consultants.find(x => x.id === consultantId).name}? Esta acción no se puede deshacer.`)) {
-    consultants = consultants.filter(c => c.id !== consultantId);
-    selectedConsultantForChat = null;
-    saveData();
-    updateSidebar();
-    document.getElementById('infoContent').innerHTML = '<div class="empty-state">Selecciona un consultor en la lista</div>';
-  }
-}
+});
 
 // INIT
 function init() {
   loadData();
   updateSidebar();
   updateEventConsultantSelect();
-  renderHome();
+  renderDashboard();
+  renderColorPicker();
 }
 
 init();
