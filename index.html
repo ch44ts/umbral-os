@@ -80,7 +80,6 @@ header span {
   display: flex;
   align-items: center;
   gap: 5px;
-  white-space: nowrap;
 }
 
 .sync-badge.synced {
@@ -101,30 +100,6 @@ header span {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-.global-item {
-  padding: 9px 13px;
-  cursor: pointer;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: var(--text-muted);
-  transition: all 0.15s;
-}
-
-.global-item:hover {
-  background: rgba(200, 224, 96, 0.05);
-  color: var(--text);
-}
-
-.global-item.active {
-  background: rgba(200, 224, 96, 0.08);
-  border-left: 3px solid var(--accent);
-  padding-left: 10px;
-  color: var(--accent);
 }
 
 .sidebar-section {
@@ -163,7 +138,6 @@ header span {
   flex: 1;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
 }
 
 .consultant-item {
@@ -196,8 +170,6 @@ header span {
   font-size: 10px;
   font-weight: 500;
   flex-shrink: 0;
-  background: var(--accent);
-  color: var(--bg);
 }
 
 .c-info {
@@ -213,61 +185,6 @@ header span {
   font-size: 10.5px;
 }
 
-.c-area {
-  color: var(--text-muted);
-  font-size: 9px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.led {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.led-grey {
-  background: #3d3f35;
-}
-
-.led-green {
-  background: var(--ok);
-  box-shadow: 0 0 5px var(--ok);
-}
-
-.led-yellow {
-  background: var(--warn);
-  box-shadow: 0 0 5px var(--warn);
-  animation: pulse 2s infinite;
-}
-
-.led-orange {
-  background: var(--orange);
-  box-shadow: 0 0 5px var(--orange);
-  animation: pulse 1.4s infinite;
-}
-
-.led-red {
-  background: var(--danger);
-  box-shadow: 0 0 6px var(--danger);
-  animation: pulse 0.9s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.led-legend {
-  padding: 9px 11px;
-  border-top: 1px solid var(--border);
-  font-size: 8.5px;
-  color: var(--text-faint);
-  line-height: 2;
-}
-
 .main-area {
   display: flex;
   flex-direction: column;
@@ -280,7 +197,6 @@ header span {
   background: var(--surface);
   flex-shrink: 0;
   overflow-x: auto;
-  scrollbar-width: none;
 }
 
 .tab {
@@ -304,46 +220,125 @@ header span {
   border-bottom-color: var(--accent);
 }
 
-.view {
+.view-container {
   flex: 1;
-  overflow: hidden;
-  display: none;
-  flex-direction: column;
-}
-
-.view.active {
   display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.content-area {
+.view {
   flex: 1;
   overflow-y: auto;
   padding: 16px 20px;
+  display: none;
   scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
 }
 
-.welcome-section {
+.view.active {
+  display: block;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.week-day {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
   text-align: center;
-  padding: 28px 18px;
-  color: var(--text-muted);
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
 }
 
-.welcome-section h2 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px;
+.week-day.today {
+  border-color: var(--accent);
+  background: rgba(200, 224, 96, 0.08);
+}
+
+.week-day.next-week {
+  opacity: 0.4;
+}
+
+.week-day:hover {
+  border-color: var(--accent);
+}
+
+.week-day-header {
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.week-day-num {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.week-day-events {
+  font-size: 8px;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.event-tag {
+  display: inline-block;
+  padding: 2px 5px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.task-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.task-left {
+  flex: 1;
+}
+
+.task-title {
+  font-size: 11px;
   color: var(--text);
-  font-style: italic;
-  margin-bottom: 10px;
+  margin-bottom: 3px;
+  font-weight: 500;
 }
 
-.phrase {
-  font-size: 10px;
+.task-meta {
+  font-size: 8.5px;
   color: var(--text-muted);
-  line-height: 1.7;
-  border-left: 2px solid var(--accent);
-  padding-left: 10px;
-  margin: 8px 0 20px;
+}
+
+.task-consultant-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 500;
+  color: var(--bg);
 }
 
 .section-title {
@@ -364,124 +359,59 @@ header span {
   background: var(--border);
 }
 
-.card {
-  background: var(--card);
+/* CHAT FLOTANTE */
+.chat-floating {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 400px;
+  height: 320px;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 10px 13px;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-}
-
-.card-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.card-title {
-  font-size: 11px;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-
-.card-meta {
-  font-size: 9px;
-  color: var(--text-muted);
-}
-
-.empty-state {
-  text-align: center;
-  padding: 30px 20px;
-  color: var(--text-faint);
-  font-size: 11px;
-  line-height: 1.9;
-}
-
-.drop-zone {
-  border: 2px dashed var(--border);
-  border-radius: 5px;
-  padding: 24px 18px;
-  text-align: center;
-  transition: all 0.25s;
-  margin-bottom: 14px;
-  background: var(--card);
-  cursor: pointer;
-}
-
-.drop-zone:hover,
-.drop-zone.dragover {
-  border-color: var(--accent);
-  background: rgba(200, 224, 96, 0.04);
-}
-
-.drop-zone p {
-  font-size: 10px;
-  color: var(--text-muted);
-  line-height: 1.8;
-}
-
-.doc-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 9px 12px;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.doc-name {
-  font-size: 10px;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.doc-meta {
-  font-size: 8.5px;
-  color: var(--text-muted);
-  margin-top: 1px;
-}
-
-.btn-icon {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 10px;
-  width: 24px;
-  height: 24px;
-  border-radius: 3px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.btn-icon:hover {
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-.chat-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 14px 18px;
+  border-bottom: none;
+  border-right: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  z-index: 100;
+}
+
+.chat-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.chat-header h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.chat-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
 }
 
 .msg {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   animation: fadeUp 0.3s ease;
 }
 
@@ -497,190 +427,116 @@ header span {
 }
 
 .msg-label {
-  font-size: 8px;
-  letter-spacing: 2px;
+  font-size: 7px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text-faint);
 }
 
 .msg.user .msg-label {
   color: var(--accent);
-  opacity: 0.7;
 }
 
 .msg-bubble {
-  padding: 10px 13px;
+  padding: 8px 10px;
   border-radius: 3px;
-  font-size: 11px;
-  line-height: 1.85;
+  font-size: 10px;
+  line-height: 1.6;
 }
 
 .msg.user .msg-bubble {
-  background: rgba(200, 224, 96, 0.07);
-  border: 1px solid rgba(200, 224, 96, 0.15);
+  background: rgba(200, 224, 96, 0.1);
+  border: 1px solid rgba(200, 224, 96, 0.2);
   color: var(--text);
-  align-self: flex-end;
-  max-width: 80%;
 }
 
 .msg.assistant .msg-bubble {
   background: var(--card);
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--text-muted);
+  font-size: 9.5px;
 }
 
-.msg.assistant .msg-bubble strong {
-  color: var(--accent);
-  font-weight: 500;
-}
-
-.input-area {
-  padding: 10px 18px 13px;
-  border-top: 1px solid var(--border);
+.consultant-chips {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
   display: flex;
-  gap: 7px;
-  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 4px;
   flex-shrink: 0;
-}
-
-.input-wrap {
-  flex: 1;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  display: flex;
-  align-items: flex-end;
-  transition: border-color 0.2s;
-}
-
-.input-wrap:focus-within {
-  border-color: var(--accent);
-}
-
-.input-wrap textarea {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  line-height: 1.6;
-  padding: 8px 11px;
-  resize: none;
-  outline: none;
-  max-height: 80px;
+  scrollbar-width: thin;
+  max-height: 60px;
   overflow-y: auto;
 }
 
-.input-wrap textarea::placeholder {
-  color: var(--text-faint);
-}
-
-.btn-send {
-  padding: 8px 14px;
-  background: var(--accent);
-  color: var(--bg);
-  border: none;
-  font-size: 15px;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: all 0.2s;
-}
-
-.btn-send:hover {
-  background: var(--accent-dim);
-}
-
-.btn-send:disabled {
-  background: var(--text-faint);
-  cursor: default;
-}
-
-.btn-sm {
-  padding: 5px 11px;
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: var(--bg);
-}
-
-.btn-primary:hover {
-  background: var(--accent-dim);
-}
-
-.btn-ghost {
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-}
-
-.btn-ghost:hover {
-  color: var(--text);
-  border-color: var(--text-muted);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 10px;
-}
-
-th {
-  padding: 7px 8px;
-  text-align: left;
+.chip {
+  padding: 3px 8px;
+  border-radius: 20px;
   font-size: 8px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
   white-space: nowrap;
 }
 
-td {
-  padding: 6px 8px;
-  border-bottom: 1px solid var(--text-faint);
-  color: var(--text);
-  vertical-align: middle;
+.chip.selected {
+  border-color: var(--accent);
+  background: rgba(200, 224, 96, 0.15);
 }
 
-tr:hover td {
-  background: rgba(200, 224, 96, 0.02);
+.chat-input-area {
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
-td input,
-td select {
+.chat-input-wrap {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.chat-input-wrap textarea {
+  flex: 1;
   background: transparent;
   border: none;
   color: var(--text);
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  width: 100%;
+  font-size: 9px;
+  padding: 6px 8px;
+  resize: none;
   outline: none;
-  padding: 1px 0;
+  max-height: 60px;
 }
 
-td input:focus,
-td select:focus {
-  border-bottom: 1px solid var(--accent);
+.chat-input-wrap textarea::placeholder {
+  color: var(--text-faint);
 }
 
-td select option {
-  background: var(--card);
+.btn-send-chat {
+  padding: 6px 10px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
 }
 
+.btn-send-chat:hover {
+  background: var(--accent-dim);
+}
+
+/* MODAL EVENTO */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.78);
+  background: rgba(0, 0, 0, 0.7);
   display: none;
   align-items: center;
   justify-content: center;
@@ -695,22 +551,20 @@ td select option {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 22px;
+  padding: 20px;
   width: 400px;
   max-width: 95vw;
-  max-height: 90vh;
-  overflow-y: auto;
 }
 
 .modal h3 {
   font-family: 'DM Serif Display', serif;
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 14px;
   color: var(--accent);
 }
 
 .field {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .field label {
@@ -731,7 +585,7 @@ td select option {
   color: var(--text);
   font-family: 'DM Mono', monospace;
   font-size: 11px;
-  padding: 7px 9px;
+  padding: 8px;
   outline: none;
   border-radius: 3px;
 }
@@ -742,15 +596,112 @@ td select option {
   border-color: var(--accent);
 }
 
-.field select option {
-  background: var(--card);
-}
-
 .modal-footer {
   display: flex;
-  gap: 7px;
-  margin-top: 13px;
+  gap: 8px;
+  margin-top: 16px;
   justify-content: flex-end;
+}
+
+.btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  background: var(--accent-dim);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.btn-ghost:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: 5px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--card);
+  margin-bottom: 20px;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(200, 224, 96, 0.05);
+}
+
+.drop-zone p {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.doc-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.doc-name {
+  font-size: 10px;
+  color: var(--text);
+}
+
+.doc-date {
+  font-size: 8px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.btn-small {
+  padding: 4px 8px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 8px;
+}
+
+.btn-small:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 </style>
 </head>
@@ -758,287 +709,179 @@ td select option {
 
 <header>
   <h1>Umbral OS</h1>
-  <span>v1 · Gestor de Consultores</span>
+  <span>v2 · Gestor Ejecutivo</span>
   <div class="hdr-right">
-    <div class="sync-badge synced" id="syncBadge">✓ Sincronizado</div>
+    <div class="sync-badge synced">✓ Sincronizado</div>
   </div>
 </header>
 
 <div class="layout">
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="global-item active" id="globalItem" onclick="selectGlobal()">
-      <span style="font-size:13px">⊞</span>
-      <span>Vista general</span>
-      <div class="led led-grey" id="globalLed"></div>
-    </div>
-    
     <div class="sidebar-section">
       Consultores
       <button class="btn-add" onclick="openAddConsultant()">+</button>
     </div>
-    
     <div class="consultant-list" id="consultantList"></div>
-    
-    <div class="led-legend">
-      <div style="display:flex;align-items:center;gap:5px">
-        <div class="led led-red" style="animation:none"></div>
-        <span>Hoy/mañana</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:5px">
-        <div class="led led-orange" style="animation:none"></div>
-        <span>Urgente</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:5px">
-        <div class="led led-yellow" style="animation:none"></div>
-        <span>Próximo</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:5px">
-        <div class="led led-green" style="animation:none"></div>
-        <span>Sin urgencia</span>
-      </div>
-    </div>
   </div>
 
   <!-- MAIN AREA -->
   <div class="main-area">
     <div class="tabs">
-      <div class="tab active" data-view="welcome" onclick="switchView('welcome')">🌅 Hoy</div>
-      <div class="tab" data-view="chat" onclick="switchView('chat')">💬 Chat</div>
-      <div class="tab" data-view="documents" onclick="switchView('documents')">📄 Documentos</div>
-      <div class="tab" data-view="notes" onclick="switchView('notes')">📝 Notas</div>
-      <div class="tab" data-view="index" onclick="switchView('index')">📐 Planos</div>
+      <div class="tab active" data-view="home" onclick="switchView('home')">🌅 Hoy</div>
+      <div class="tab" data-view="documents" onclick="switchView('documents')">📁 Documentos</div>
       <div class="tab" data-view="info" onclick="switchView('info')">⚙️ Info</div>
+      <div class="tab" data-view="tasks" onclick="switchView('tasks')">✅ Tareas</div>
     </div>
 
-    <!-- VIEW: WELCOME -->
-    <div class="view active" id="view-welcome">
-      <div class="content-area">
-        <div class="welcome-section">
-          <h2 id="welcomeTitle">Buenos días</h2>
-          <div style="font-size:9.5px;color:var(--text-muted);margin-bottom:6px" id="welcomeDate"></div>
-          <div class="phrase" id="welcomeQuote"></div>
-        </div>
-        <div id="welcomeContent"></div>
+    <div class="view-container">
+      <!-- HOME -->
+      <div class="view active" id="view-home">
+        <div class="section-title">Esta semana</div>
+        <div class="week-grid" id="weekGrid"></div>
+        
+        <div class="section-title">Tareas pendientes</div>
+        <div id="tasksHome"></div>
       </div>
-    </div>
 
-    <!-- VIEW: CHAT -->
-    <div class="view" id="view-chat">
-      <div class="chat-area" id="chatArea">
-        <div class="empty-state">Comienza una conversación</div>
+      <!-- CONSULTANT DOCUMENTS -->
+      <div class="view" id="view-documents">
+        <div id="documentsContent"></div>
       </div>
-      <div class="input-area">
-        <div class="input-wrap">
-          <textarea id="query" placeholder="Pregunta sobre el consultor..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}" oninput="autoResize(this)"></textarea>
-        </div>
-        <button class="btn-send" id="btnSend" onclick="sendMessage()">↑</button>
-      </div>
-    </div>
 
-    <!-- VIEW: DOCUMENTS -->
-    <div class="view" id="view-documents">
-      <div class="content-area">
-        <div class="drop-zone" id="dropZone">
-          <div style="font-size:24px;margin-bottom:7px;opacity:.5">📄</div>
-          <p>Arrastra un <strong style="color:var(--accent)">PDF</strong> aquí<br><span style="font-size:9px;opacity:.6">Minuta · Correo · Contrato</span></p>
-        </div>
-        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;display:none" id="docListTitle">Documentos</div>
-        <div id="docList"></div>
+      <!-- CONSULTANT INFO -->
+      <div class="view" id="view-info">
+        <div id="infoContent"></div>
       </div>
-    </div>
 
-    <!-- VIEW: NOTES -->
-    <div class="view" id="view-notes">
-      <div class="content-area">
-        <div class="section-title">Notas del Consultor</div>
-        <textarea id="notesArea" style="width:100%;height:400px;background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:12px;border-radius:3px;resize:vertical" placeholder="Notas personales, correos, horarios..."></textarea>
-        <button class="btn-sm btn-primary" onclick="saveNotes()" style="margin-top:10px">Guardar</button>
-      </div>
-    </div>
-
-    <!-- VIEW: INDEX (PLANOS) -->
-    <div class="view" id="view-index">
-      <div style="padding:8px 18px;border-bottom:1px solid var(--border);display:flex;gap:7px;flex-shrink:0">
-        <button class="btn-sm btn-primary" onclick="openAddPlano()">+ Agregar plano</button>
-      </div>
-      <div class="content-area">
-        <table>
-          <thead>
-            <tr>
-              <th>Clave</th>
-              <th>Nombre</th>
-              <th>Fecha entrega</th>
-              <th>Estado</th>
-              <th>Revisión</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="indexBody">
-            <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">Sin planos registrados</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- VIEW: INFO -->
-    <div class="view" id="view-info">
-      <div class="content-area">
-        <div class="section-title">Información del Consultor</div>
-        <div class="field">
-          <label>Nombre</label>
-          <input type="text" id="infoName" readonly style="opacity:0.7">
-        </div>
-        <div class="field">
-          <label>Área / Especialidad</label>
-          <input type="text" id="infoArea" readonly style="opacity:0.7">
-        </div>
-        <div class="field">
-          <label>Teléfono</label>
-          <input type="tel" id="infoPhone" placeholder="Ej. +52 1234567890">
-        </div>
-        <div class="field">
-          <label>Email</label>
-          <input type="email" id="infoEmail" placeholder="Ej. consultor@empresa.com">
-        </div>
-        <div class="field">
-          <label>Horarios</label>
-          <textarea id="infoSchedule" rows="3" placeholder="Lunes a Jueves, 9:00 AM - 5:00 PM"></textarea>
-        </div>
-        <div class="field">
-          <label>Tiempo de entrega típico (días)</label>
-          <input type="number" id="infoDeliveryDays" min="0" max="90" placeholder="Ej. 14">
-        </div>
-        <button class="btn-sm btn-primary" onclick="saveInfo()">Guardar</button>
+      <!-- TASKS -->
+      <div class="view" id="view-tasks">
+        <div id="tasksList"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODALS -->
+<!-- CHAT FLOTANTE -->
+<div class="chat-floating" id="chatFloating">
+  <div class="chat-header">
+    <h3>Chat</h3>
+    <button class="chat-close" onclick="toggleChat()">−</button>
+  </div>
+  
+  <div class="consultant-chips" id="consultantChips"></div>
+  
+  <div class="chat-messages" id="chatMessages"></div>
+  
+  <div class="chat-input-area">
+    <div class="chat-input-wrap">
+      <textarea id="chatInput" placeholder="Pregunta o agrega tarea..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
+    </div>
+    <button class="btn-send-chat" onclick="sendChatMessage()">↑</button>
+  </div>
+</div>
+
+<!-- MODAL AGREGAR CONSULTOR -->
 <div class="modal-overlay" id="modalAddConsultant">
   <div class="modal">
     <h3>Agregar Consultor</h3>
     <div class="field">
       <label>Nombre</label>
-      <input type="text" id="newName" placeholder="Ej. Ing. García">
+      <input type="text" id="newConsultantName" placeholder="Ej. Ing. García">
     </div>
     <div class="field">
       <label>Área / Especialidad</label>
-      <input type="text" id="newArea" placeholder="Ej. Estructural, Eléctrico...">
+      <input type="text" id="newConsultantArea" placeholder="Ej. Estructural">
     </div>
     <div class="modal-footer">
-      <button class="btn-sm btn-ghost" onclick="closeModal('modalAddConsultant')">Cancelar</button>
-      <button class="btn-sm btn-primary" onclick="addConsultant()">Agregar →</button>
+      <button class="btn btn-ghost" onclick="closeModal('modalAddConsultant')">Cancelar</button>
+      <button class="btn btn-primary" onclick="addConsultant()">Agregar</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modalAddPlano">
+<!-- MODAL AGREGAR EVENTO -->
+<div class="modal-overlay" id="modalAddEvent">
   <div class="modal">
-    <h3>Agregar Plano</h3>
+    <h3>Agregar Evento / Tarea</h3>
     <div class="field">
-      <label>Clave</label>
-      <input type="text" id="pClave" placeholder="Ej. P001">
+      <label>Descripción</label>
+      <textarea id="eventDesc" placeholder="Ej. Entrega de planos estructurales" rows="2"></textarea>
     </div>
     <div class="field">
-      <label>Nombre</label>
-      <input type="text" id="pNombre" placeholder="Ej. Plano Estructural">
-    </div>
-    <div class="field">
-      <label>Fecha de entrega</label>
-      <input type="date" id="pFecha">
-    </div>
-    <div class="field">
-      <label>Estado</label>
-      <select id="pEstado">
-        <option>Pendiente</option>
-        <option>Recibido</option>
-        <option>Revisado</option>
-        <option>Parcial</option>
+      <label>Consultor (opcional)</label>
+      <select id="eventConsultant">
+        <option value="">General</option>
       </select>
     </div>
     <div class="field">
-      <label>Revisión</label>
-      <input type="text" id="pRevision" placeholder="Rev.0">
+      <label>Fecha</label>
+      <input type="date" id="eventDate">
+    </div>
+    <div class="field">
+      <label>Tipo</label>
+      <select id="eventType">
+        <option value="task">Tarea</option>
+        <option value="review">Revisión</option>
+        <option value="delivery">Entrega</option>
+      </select>
     </div>
     <div class="modal-footer">
-      <button class="btn-sm btn-ghost" onclick="closeModal('modalAddPlano')">Cancelar</button>
-      <button class="btn-sm btn-primary" onclick="addPlano()">Agregar →</button>
+      <button class="btn btn-ghost" onclick="closeModal('modalAddEvent')">Cancelar</button>
+      <button class="btn btn-primary" onclick="addEvent()">Agregar</button>
     </div>
   </div>
 </div>
 
 <script>
-const PHRASES = [
-  { text: "No se sufre más por lo que sucede que por lo que imaginamos que sucederá.", author: "Séneca" },
-  { text: "Tienes poder sobre tu mente, no sobre los eventos externos. Cuando te das cuenta de esto, encuentras tu fortaleza.", author: "Marco Aurelio" },
-  { text: "Si sufres por las cosas externas, el dolor no se debe a ellas sino a tu valoración de ellas.", author: "Marco Aurelio" },
-  { text: "El dolor es inevitable. El sufrimiento es opcional.", author: "Haruki Murakami" },
-  { text: "Si solo lees los libros que todos leen, solo puedes pensar lo que todos piensan.", author: "Haruki Murakami" },
-  { text: "La persistencia es el camino del éxito.", author: "Charlie Chaplin" },
-];
-
 const COLORS = ['#c8e060', '#a060e0', '#e0a060', '#60a0e0', '#e06060', '#a0c860', '#60c8c8', '#c860c8', '#8080e0', '#c89060'];
 
 let consultants = [];
-let activeId = null;
-let activeView = 'welcome';
+let tasks = [];
+let selectedConsultantForChat = null;
+let activeView = 'home';
+let calendarSelectedDate = null;
 
-// Initialize
-async function init() {
-  loadData();
-  updateSidebar();
-  renderWelcome();
-  setupDropZone();
-}
-
+// DATA MANAGEMENT
 function loadData() {
-  const stored = localStorage.getItem('umbral_consultants');
-  consultants = stored ? JSON.parse(stored) : [];
+  const c = localStorage.getItem('umbral_consultants');
+  const t = localStorage.getItem('umbral_tasks');
+  consultants = c ? JSON.parse(c) : [];
+  tasks = t ? JSON.parse(t) : [];
 }
 
 function saveData() {
   localStorage.setItem('umbral_consultants', JSON.stringify(consultants));
-}
-
-function getActive() {
-  return consultants.find(c => c.id === activeId);
+  localStorage.setItem('umbral_tasks', JSON.stringify(tasks));
 }
 
 // SIDEBAR
 function updateSidebar() {
-  document.getElementById('globalItem').className = activeId === null ? 'global-item active' : 'global-item';
-  
   const list = document.getElementById('consultantList');
-  list.innerHTML = '';
-  
-  consultants.forEach((c, i) => {
-    const item = document.createElement('div');
-    item.className = 'consultant-item' + (activeId === c.id ? ' active' : '');
-    item.onclick = () => selectConsultant(c.id);
-    item.innerHTML = `
-      <div class="c-avatar" style="background:${COLORS[i % 10]}">${c.name.charAt(0).toUpperCase()}</div>
+  list.innerHTML = consultants.map((c, i) => `
+    <div class="consultant-item" onclick="selectConsultant('${c.id}')">
+      <div class="c-avatar" style="background:${COLORS[i%10]};color:var(--bg)">${c.name.charAt(0)}</div>
       <div class="c-info">
         <div class="c-name">${c.name}</div>
-        <div class="c-area">${c.area}</div>
+        <div style="font-size:8px;color:var(--text-muted)">${c.area}</div>
       </div>
-      <div class="led led-grey"></div>
-    `;
-    list.appendChild(item);
-  });
-}
-
-function selectGlobal() {
-  activeId = null;
-  updateSidebar();
-  renderCurrentView();
+    </div>
+  `).join('');
+  
+  updateConsultantChips();
 }
 
 function selectConsultant(id) {
-  activeId = id;
-  updateSidebar();
-  renderCurrentView();
+  selectedConsultantForChat = id;
+  updateConsultantChips();
+}
+
+function updateConsultantChips() {
+  const chips = document.getElementById('consultantChips');
+  chips.innerHTML = '<div class="chip" onclick="selectedConsultantForChat=null;updateConsultantChips()" style="'+(selectedConsultantForChat===null?'border-color:var(--accent);background:rgba(200,224,96,0.15)':'')+'">General</div>' + 
+    consultants.map((c, i) => `
+      <div class="chip" style="${selectedConsultantForChat===c.id?'border-color:var(--accent);background:rgba(200,224,96,0.15);':''}background:${COLORS[i%10]}33;color:${COLORS[i%10]}" onclick="selectedConsultantForChat='${c.id}';updateConsultantChips()">${c.name}</div>
+    `).join('');
 }
 
 // VIEWS
@@ -1047,148 +890,253 @@ function switchView(v) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
   document.querySelectorAll('.view').forEach(v2 => v2.classList.remove('active'));
   document.getElementById('view-' + v).classList.add('active');
-  renderCurrentView();
+  
+  if (v === 'home') renderHome();
+  else if (v === 'documents') renderDocuments();
+  else if (v === 'info') renderInfo();
+  else if (v === 'tasks') renderTasksList();
 }
 
-function renderCurrentView() {
-  if (activeView === 'welcome') renderWelcome();
-  else if (activeView === 'chat') renderChat();
-  else if (activeView === 'documents') renderDocuments();
-  else if (activeView === 'notes') renderNotes();
-  else if (activeView === 'index') renderIndex();
-  else if (activeView === 'info') renderInfo();
+function renderHome() {
+  renderWeeklyCalendar();
+  renderTasksHome();
 }
 
-function renderWelcome() {
+function renderWeeklyCalendar() {
   const today = new Date();
-  const dayNames = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-  const monthNames = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-  const dateStr = `${dayNames[today.getDay()]}, ${today.getDate()} de ${monthNames[today.getMonth()]} de ${today.getFullYear()}`;
+  today.setHours(0, 0, 0, 0);
   
-  document.getElementById('welcomeDate').textContent = dateStr;
-  
-  const phrase = PHRASES[Math.floor(Math.random() * PHRASES.length)];
-  document.getElementById('welcomeQuote').innerHTML = `"${phrase.text}" <span style="color:var(--text-faint)">— ${phrase.author}</span>`;
+  const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
   
   let html = '';
-  if (consultants.length) {
-    html = '<div class="section-title">Próximas tareas</div>';
-    consultants.forEach(c => {
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+    
+    const isToday = d.getTime() === today.getTime();
+    const isThisWeek = i < 7;
+    const dayEvents = tasks.filter(t => {
+      const tDate = new Date(t.date);
+      tDate.setHours(0, 0, 0, 0);
+      return tDate.getTime() === d.getTime();
+    });
+    
+    html += `
+      <div class="week-day ${isToday?'today':''} ${!isThisWeek?'next-week':''}" onclick="openEventModal('${d.toISOString().split('T')[0]}')">
+        <div class="week-day-header">${dayNames[d.getDay()]} ${d.getDate()}</div>
+        <div class="week-day-num">${d.getDate()}</div>
+        <div class="week-day-events">
+          ${dayEvents.map(e => {
+            const c = consultants.find(x => x.id === e.consultant);
+            const color = c ? COLORS[consultants.indexOf(c) % 10] : 'var(--accent)';
+            return `<div class="event-tag" style="background:${color}44;color:${color};border:1px solid ${color}66">${e.title.substring(0,12)}</div>`;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+  
+  document.getElementById('weekGrid').innerHTML = html;
+}
+
+function renderTasksHome() {
+  const tasksList = tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+  let html = '';
+  
+  if (tasksList.length === 0) {
+    html = '<div class="empty-state">Sin tareas pendientes</div>';
+  } else {
+    tasksList.slice(0, 5).forEach(t => {
+      const d = new Date(t.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const daysLeft = Math.floor((d - today) / (1000 * 60 * 60 * 24));
+      
+      const c = consultants.find(x => x.id === t.consultant);
+      const color = c ? COLORS[consultants.indexOf(c) % 10] : 'var(--text-muted)';
+      
+      let urgColor = 'var(--ok)';
+      if (daysLeft <= 0) urgColor = 'var(--danger)';
+      else if (daysLeft <= 3) urgColor = 'var(--orange)';
+      else if (daysLeft <= 7) urgColor = 'var(--warn)';
+      
       html += `
-        <div class="card" style="border-left:3px solid var(--accent)">
-          <div class="card-body">
-            <div class="card-title">${c.name}</div>
-            <div class="card-meta">${c.area}</div>
+        <div class="task-card" style="border-left:3px solid ${urgColor}">
+          <div class="task-left">
+            <div class="task-title">${t.title}</div>
+            <div class="task-meta">
+              ${c ? `<span class="task-consultant-badge" style="background:${color};margin-right:6px">${c.name}</span>` : ''}
+              ${t.date} ${daysLeft === 0 ? '(Hoy)' : daysLeft < 0 ? '(Vencido)' : `(en ${daysLeft} días)`}
+            </div>
           </div>
+          <button class="btn-small" onclick="deleteTask('${t.id}')">✕</button>
         </div>
       `;
     });
-  } else {
-    html = '<div class="empty-state">Agrega un consultor para comenzar</div>';
   }
-  document.getElementById('welcomeContent').innerHTML = html;
-}
-
-function renderChat() {
-  const chatArea = document.getElementById('chatArea');
-  if (chatArea.children.length === 1 && chatArea.children[0].className === 'empty-state') {
-    // Keep welcome message
-  }
+  
+  document.getElementById('tasksHome').innerHTML = html;
 }
 
 function renderDocuments() {
-  const active = getActive();
-  if (!active) {
-    document.getElementById('docList').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
+  if (!selectedConsultantForChat) {
+    document.getElementById('documentsContent').innerHTML = '<div class="empty-state">Selecciona un consultor en la lista</div>';
     return;
   }
   
-  const docs = active.documents || [];
-  document.getElementById('docListTitle').style.display = docs.length ? 'block' : 'none';
+  const c = consultants.find(x => x.id === selectedConsultantForChat);
+  const i = consultants.indexOf(c);
+  const color = COLORS[i % 10];
   
-  let html = '';
+  let html = `
+    <div style="background:${color}15;border:1px solid ${color}44;border-radius:4px;padding:14px;margin-bottom:16px;border-left:3px solid ${color}">
+      <div style="font-size:14px;font-weight:600;color:${color};margin-bottom:4px">${c.name}</div>
+      <div style="font-size:11px;color:var(--text-muted)">${c.area}</div>
+    </div>
+    
+    <div class="section-title">Documentos del Consultor</div>
+    <div class="drop-zone" id="dropZone">
+      <div style="font-size:24px;margin-bottom:8px">📄</div>
+      <p>Arrastra documentos aquí</p>
+    </div>
+    
+    <div id="docList"></div>
+  `;
+  
+  document.getElementById('documentsContent').innerHTML = html;
+  
+  const docs = c.documents || [];
+  let docsHtml = '';
   docs.forEach((doc, idx) => {
-    html += `
-      <div class="doc-card">
-        <div>📄</div>
-        <div style="flex:1">
-          <div class="doc-name">${doc.name}</div>
-          <div class="doc-meta">${doc.date}</div>
+    docsHtml += `
+      <div class="doc-item">
+        <div>
+          <div class="doc-name">📄 ${doc.name}</div>
+          <div class="doc-date">${doc.date}</div>
         </div>
-        <button class="btn-icon" onclick="removeDoc(${idx})">🗑</button>
+        <button class="btn-small" onclick="removeDoc('${c.id}', ${idx})">✕</button>
       </div>
     `;
   });
+  document.getElementById('docList').innerHTML = docsHtml || '<div class="empty-state">Sin documentos</div>';
   
-  document.getElementById('docList').innerHTML = html || '<div class="empty-state">Sin documentos</div>';
+  setupDropZone(c.id);
 }
 
-function renderNotes() {
-  const active = getActive();
-  if (!active) {
-    document.getElementById('notesArea').value = '';
-    document.getElementById('notesArea').disabled = true;
-    return;
-  }
-  document.getElementById('notesArea').disabled = false;
-  document.getElementById('notesArea').value = active.notes || '';
-}
-
-function renderIndex() {
-  const active = getActive();
-  if (!active) {
-    document.getElementById('indexBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">Selecciona un consultor</td></tr>';
+function renderInfo() {
+  if (!selectedConsultantForChat) {
+    document.getElementById('infoContent').innerHTML = '<div class="empty-state">Selecciona un consultor en la lista</div>';
     return;
   }
   
-  const planes = active.planes || [];
-  let html = '';
+  const c = consultants.find(x => x.id === selectedConsultantForChat);
+  const i = consultants.indexOf(c);
+  const color = COLORS[i % 10];
   
-  if (planes.length === 0) {
-    html = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">Sin planos registrados</td></tr>';
+  const hasContract = c.contract;
+  
+  let html = `
+    <div style="background:${color}15;border:1px solid ${color}44;border-radius:4px;padding:14px;margin-bottom:16px;border-left:3px solid ${color}">
+      <div style="font-size:14px;font-weight:600;color:${color};margin-bottom:4px">${c.name}</div>
+      <div style="font-size:11px;color:var(--text-muted)">${c.area}</div>
+    </div>
+    
+    <div class="section-title">Información de Contacto</div>
+    <div class="field">
+      <label>Teléfono</label>
+      <input type="tel" id="infoPhone" value="${c.phone || ''}" placeholder="+52 1234567890" onchange="updateConsultantInfo('${c.id}', 'phone', this.value)">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="infoEmail" value="${c.email || ''}" placeholder="consultor@empresa.com" onchange="updateConsultantInfo('${c.id}', 'email', this.value)">
+    </div>
+    <div class="field">
+      <label>Horarios / Disponibilidad</label>
+      <textarea id="infoSchedule" placeholder="Lunes a Jueves, 9:00 AM - 5:00 PM" onchange="updateConsultantInfo('${c.id}', 'schedule', this.value)">${c.schedule || ''}</textarea>
+    </div>
+    
+    <div class="section-title">Contrato / Cotización</div>
+    ${hasContract ? `
+      <div class="doc-item" style="margin-bottom:14px">
+        <div>
+          <div class="doc-name">📋 ${hasContract.name}</div>
+          <div class="doc-date">${hasContract.date}</div>
+        </div>
+        <button class="btn-small" onclick="removeContract('${c.id}')">✕</button>
+      </div>
+      <button class="btn-small" style="background:var(--accent);color:var(--bg);margin-bottom:16px" onclick="downloadContract('${c.id}')">Descargar Contrato</button>
+    ` : `
+      <div class="drop-zone" id="contractZone" style="margin-bottom:14px">
+        <div style="font-size:20px;margin-bottom:8px">📋</div>
+        <p>Arrastra contrato/cotización aquí</p>
+      </div>
+    `}
+    
+    <div class="section-title">Acciones</div>
+    <button class="btn-small" style="background:var(--danger);color:white;width:100%" onclick="deleteConsultant('${c.id}')">🗑 Eliminar Consultor</button>
+  `;
+  
+  document.getElementById('infoContent').innerHTML = html;
+  
+  // Setup contract drop zone if no contract exists
+  if (!hasContract) {
+    const cz = document.getElementById('contractZone');
+    if (cz) {
+      cz.addEventListener('dragover', e => {
+        e.preventDefault();
+        cz.classList.add('dragover');
+      });
+      cz.addEventListener('dragleave', () => cz.classList.remove('dragover'));
+      cz.addEventListener('drop', e => {
+        e.preventDefault();
+        cz.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file) {
+          uploadContract(c.id, file);
+        }
+      });
+    }
+  }
+}
+
+function renderTasksList() {
+  const allTasks = tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+  let html = '<div class="section-title">Todas las tareas</div>';
+  
+  if (allTasks.length === 0) {
+    html += '<div class="empty-state">Sin tareas</div>';
   } else {
-    planes.forEach((p, i) => {
+    allTasks.forEach(t => {
+      const d = new Date(t.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const daysLeft = Math.floor((d - today) / (1000 * 60 * 60 * 24));
+      
+      const c = consultants.find(x => x.id === t.consultant);
+      const color = c ? COLORS[consultants.indexOf(c) % 10] : 'var(--text-muted)';
+      
+      let urgColor = 'var(--ok)';
+      if (daysLeft <= 0) urgColor = 'var(--danger)';
+      else if (daysLeft <= 3) urgColor = 'var(--orange)';
+      else if (daysLeft <= 7) urgColor = 'var(--warn)';
+      
       html += `
-        <tr>
-          <td><input value="${p.clave || ''}" onchange="updatePlano(${i}, 'clave', this.value)"></td>
-          <td><input value="${p.nombre || ''}" onchange="updatePlano(${i}, 'nombre', this.value)"></td>
-          <td><input type="date" value="${p.fecha || ''}" onchange="updatePlano(${i}, 'fecha', this.value)"></td>
-          <td><select onchange="updatePlano(${i}, 'estado', this.value)">
-            <option ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-            <option ${p.estado === 'Recibido' ? 'selected' : ''}>Recibido</option>
-            <option ${p.estado === 'Revisado' ? 'selected' : ''}>Revisado</option>
-            <option ${p.estado === 'Parcial' ? 'selected' : ''}>Parcial</option>
-          </select></td>
-          <td><input value="${p.revision || ''}" onchange="updatePlano(${i}, 'revision', this.value)"></td>
-          <td style="text-align:center;cursor:pointer;color:var(--danger)" onclick="removePlano(${i})">✕</td>
-        </tr>
+        <div class="task-card" style="border-left:3px solid ${urgColor}">
+          <div class="task-left">
+            <div class="task-title">${t.title}</div>
+            <div class="task-meta">
+              ${c ? `<span class="task-consultant-badge" style="background:${color};margin-right:6px">${c.name}</span>` : ''}
+              ${t.date} · ${t.type}
+            </div>
+          </div>
+          <button class="btn-small" onclick="deleteTask('${t.id}')">✕</button>
+        </div>
       `;
     });
   }
   
-  document.getElementById('indexBody').innerHTML = html;
-}
-
-function renderInfo() {
-  const active = getActive();
-  if (!active) {
-    document.getElementById('infoName').value = '';
-    document.getElementById('infoArea').value = '';
-    document.getElementById('infoPhone').value = '';
-    document.getElementById('infoEmail').value = '';
-    document.getElementById('infoSchedule').value = '';
-    document.getElementById('infoDeliveryDays').value = '';
-    document.querySelectorAll('#view-info input, #view-info textarea').forEach(el => el.disabled = true);
-    return;
-  }
-  
-  document.querySelectorAll('#view-info input, #view-info textarea').forEach(el => el.disabled = false);
-  document.getElementById('infoName').value = active.name;
-  document.getElementById('infoArea').value = active.area;
-  document.getElementById('infoPhone').value = active.phone || '';
-  document.getElementById('infoEmail').value = active.email || '';
-  document.getElementById('infoSchedule').value = active.schedule || '';
-  document.getElementById('infoDeliveryDays').value = active.deliveryDays || '';
+  document.getElementById('tasksList').innerHTML = html;
 }
 
 // MODALS
@@ -1208,119 +1156,146 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
 
 function openAddConsultant() {
   openModal('modalAddConsultant');
-  setTimeout(() => document.getElementById('newName').focus(), 100);
+  setTimeout(() => document.getElementById('newConsultantName').focus(), 100);
 }
 
 function addConsultant() {
-  const name = document.getElementById('newName').value.trim();
-  const area = document.getElementById('newArea').value.trim();
+  const name = document.getElementById('newConsultantName').value.trim();
+  const area = document.getElementById('newConsultantArea').value.trim();
   
-  if (!name || !area) {
-    alert('Completa todos los campos');
-    return;
-  }
+  if (!name || !area) return;
   
-  const consultant = {
+  consultants.push({
     id: 'c_' + Date.now(),
     name,
     area,
-    phone: '',
-    email: '',
-    schedule: '',
-    notes: '',
-    documents: [],
-    planes: [],
-    deliveryDays: 0
-  };
-  
-  consultants.push(consultant);
-  saveData();
-  closeModal('modalAddConsultant');
-  document.getElementById('newName').value = '';
-  document.getElementById('newArea').value = '';
-  
-  updateSidebar();
-  selectConsultant(consultant.id);
-}
-
-function openAddPlano() {
-  document.getElementById('pClave').value = '';
-  document.getElementById('pNombre').value = '';
-  document.getElementById('pFecha').value = '';
-  document.getElementById('pEstado').value = 'Pendiente';
-  document.getElementById('pRevision').value = '';
-  openModal('modalAddPlano');
-  setTimeout(() => document.getElementById('pClave').focus(), 100);
-}
-
-function addPlano() {
-  const active = getActive();
-  if (!active) return;
-  
-  if (!active.planes) active.planes = [];
-  
-  active.planes.push({
-    clave: document.getElementById('pClave').value,
-    nombre: document.getElementById('pNombre').value,
-    fecha: document.getElementById('pFecha').value,
-    estado: document.getElementById('pEstado').value,
-    revision: document.getElementById('pRevision').value
+    documents: []
   });
   
   saveData();
-  closeModal('modalAddPlano');
-  renderIndex();
+  closeModal('modalAddConsultant');
+  updateSidebar();
+  
+  document.getElementById('newConsultantName').value = '';
+  document.getElementById('newConsultantArea').value = '';
+  
+  // Update event modal select
+  updateEventConsultantSelect();
 }
 
-function updatePlano(i, field, val) {
-  const active = getActive();
-  if (active && active.planes && active.planes[i]) {
-    active.planes[i][field] = val;
-    saveData();
+function openEventModal(date) {
+  document.getElementById('eventDate').value = date;
+  updateEventConsultantSelect();
+  openModal('modalAddEvent');
+  setTimeout(() => document.getElementById('eventDesc').focus(), 100);
+}
+
+function updateEventConsultantSelect() {
+  const sel = document.getElementById('eventConsultant');
+  sel.innerHTML = '<option value="">General</option>' + 
+    consultants.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function addEvent() {
+  const title = document.getElementById('eventDesc').value.trim();
+  const date = document.getElementById('eventDate').value;
+  const consultant = document.getElementById('eventConsultant').value || null;
+  const type = document.getElementById('eventType').value;
+  
+  if (!title || !date) return;
+  
+  // Parse dates from title
+  const dateMatch = title.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+  const finalDate = dateMatch ? `20${dateMatch[3]}`.slice(0, 4) + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[1].padStart(2, '0') : date;
+  
+  tasks.push({
+    id: 't_' + Date.now(),
+    title,
+    date: finalDate,
+    consultant: consultant || null,
+    type
+  });
+  
+  saveData();
+  closeModal('modalAddEvent');
+  
+  document.getElementById('eventDesc').value = '';
+  document.getElementById('eventDate').value = '';
+  document.getElementById('eventConsultant').value = '';
+  
+  if (activeView === 'home') {
+    renderHome();
+  } else if (activeView === 'tasks') {
+    renderTasksList();
   }
 }
 
-function removePlano(i) {
-  const active = getActive();
-  if (active && active.planes) {
-    active.planes.splice(i, 1);
+function deleteTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
+  saveData();
+  renderHome();
+  renderTasksList();
+}
+
+// CHAT
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  // Add user message
+  addChatMessage(message, 'user');
+  input.value = '';
+  
+  // Parse dates and create task
+  const dateMatch = message.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+  if (dateMatch) {
+    const date = `20${dateMatch[3]}`.slice(0, 4) + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[1].padStart(2, '0');
+    
+    tasks.push({
+      id: 't_' + Date.now(),
+      title: message,
+      date,
+      consultant: selectedConsultantForChat || null,
+      type: 'task'
+    });
+    
     saveData();
-    renderIndex();
+    
+    const c = consultants.find(x => x.id === selectedConsultantForChat);
+    const scope = c ? `para ${c.name}` : 'general';
+    addChatMessage(`✓ Tarea agregada ${scope} para ${date}`, 'assistant');
+    
+    renderHome();
+    renderTasksList();
+  } else {
+    addChatMessage('Para agregar una tarea, incluye una fecha: ej. "Revisar planos 15/04/2025"', 'assistant');
   }
 }
 
-function saveNotes() {
-  const active = getActive();
-  if (active) {
-    active.notes = document.getElementById('notesArea').value;
-    saveData();
-    alert('Notas guardadas ✓');
-  }
+function addChatMessage(text, role) {
+  const container = document.getElementById('chatMessages');
+  const msg = document.createElement('div');
+  msg.className = 'msg ' + role;
+  msg.innerHTML = `
+    <div class="msg-label">${role === 'user' ? 'Tú' : 'Asistente'}</div>
+    <div class="msg-bubble">${text}</div>
+  `;
+  container.appendChild(msg);
+  container.scrollTop = container.scrollHeight;
 }
 
-function saveInfo() {
-  const active = getActive();
-  if (active) {
-    active.phone = document.getElementById('infoPhone').value;
-    active.email = document.getElementById('infoEmail').value;
-    active.schedule = document.getElementById('infoSchedule').value;
-    active.deliveryDays = parseInt(document.getElementById('infoDeliveryDays').value) || 0;
-    saveData();
-    alert('Información guardada ✓');
-  }
+function toggleChat() {
+  document.getElementById('chatFloating').style.transform = 
+    document.getElementById('chatFloating').style.transform === 'translateY(100%)' ? 'translateY(0)' : 'translateY(100%)';
 }
 
-function removeDoc(idx) {
-  const active = getActive();
-  if (active && active.documents) {
-    active.documents.splice(idx, 1);
-    saveData();
-    renderDocuments();
-  }
-}
-
-function setupDropZone() {
+// DOCUMENTOS
+function setupDropZone(consultantId) {
   const dz = document.getElementById('dropZone');
+  if (!dz) return;
+  
   dz.addEventListener('dragover', e => {
     e.preventDefault();
     dz.classList.add('dragover');
@@ -1330,77 +1305,91 @@ function setupDropZone() {
     e.preventDefault();
     dz.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (file && file.type === 'application/pdf') {
-      addDocument(file);
+    if (file) {
+      const c = consultants.find(x => x.id === consultantId);
+      if (!c.documents) c.documents = [];
+      c.documents.push({
+        name: file.name,
+        date: new Date().toLocaleDateString('es-MX'),
+        size: Math.round(file.size / 1024) + 'KB'
+      });
+      saveData();
+      renderConsultant();
     }
   });
 }
 
-function addDocument(file) {
-  const active = getActive();
-  if (!active) {
-    alert('Selecciona un consultor primero');
-    return;
+function removeDoc(consultantId, idx) {
+  const c = consultants.find(x => x.id === consultantId);
+  if (c && c.documents) {
+    c.documents.splice(idx, 1);
+    saveData();
+    renderDocuments();
   }
-  
-  if (!active.documents) active.documents = [];
-  
-  const today = new Date().toLocaleDateString('es-MX');
-  active.documents.push({
-    name: file.name,
-    date: today,
-    size: Math.round(file.size / 1024) + ' KB'
-  });
-  
-  saveData();
-  renderDocuments();
 }
 
-function sendMessage() {
-  const active = getActive();
-  if (!active) {
-    alert('Selecciona un consultor');
-    return;
+function updateConsultantInfo(consultantId, field, value) {
+  const c = consultants.find(x => x.id === consultantId);
+  if (c) {
+    c[field] = value;
+    saveData();
   }
-  
-  const query = document.getElementById('query').value.trim();
-  if (!query) return;
-  
-  const chatArea = document.getElementById('chatArea');
-  const empty = chatArea.querySelector('.empty-state');
-  if (empty) empty.remove();
-  
-  // User message
-  const userMsg = document.createElement('div');
-  userMsg.className = 'msg user';
-  userMsg.innerHTML = `
-    <div class="msg-label">Tú</div>
-    <div class="msg-bubble">${query}</div>
-  `;
-  chatArea.appendChild(userMsg);
-  
-  document.getElementById('query').value = '';
-  chatArea.scrollTop = chatArea.scrollHeight;
-  
-  // Simulate assistant response
-  setTimeout(() => {
-    const assistantMsg = document.createElement('div');
-    assistantMsg.className = 'msg assistant';
-    assistantMsg.innerHTML = `
-      <div class="msg-label">${active.name}</div>
-      <div class="msg-bubble">He procesado tu pregunta sobre <strong>${active.name}</strong>. ${active.documents?.length ? 'Tengo ' + active.documents.length + ' documento(s) cargado(s).' : 'Carga documentos para respuestas más precisas.'}</div>
-    `;
-    chatArea.appendChild(assistantMsg);
-    chatArea.scrollTop = chatArea.scrollHeight;
-  }, 500);
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
+function uploadContract(consultantId, file) {
+  const c = consultants.find(x => x.id === consultantId);
+  if (c) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      c.contract = {
+        name: file.name,
+        date: new Date().toLocaleDateString('es-MX'),
+        data: e.target.result
+      };
+      saveData();
+      renderInfo();
+    };
+    reader.readAsDataURL(file);
+  }
 }
 
-// Initialize on load
+function removeContract(consultantId) {
+  const c = consultants.find(x => x.id === consultantId);
+  if (c) {
+    delete c.contract;
+    saveData();
+    renderInfo();
+  }
+}
+
+function downloadContract(consultantId) {
+  const c = consultants.find(x => x.id === consultantId);
+  if (c && c.contract) {
+    const link = document.createElement('a');
+    link.href = c.contract.data;
+    link.download = c.contract.name;
+    link.click();
+  }
+}
+
+function deleteConsultant(consultantId) {
+  if (confirm(`¿Eliminar a ${consultants.find(x => x.id === consultantId).name}? Esta acción no se puede deshacer.`)) {
+    consultants = consultants.filter(c => c.id !== consultantId);
+    selectedConsultantForChat = null;
+    saveData();
+    updateSidebar();
+    document.getElementById('infoContent').innerHTML = '<div class="empty-state">Selecciona un consultor en la lista</div>';
+  }
+}
+
+// INIT
+function init() {
+  loadData();
+  updateSidebar();
+  updateEventConsultantSelect();
+  renderHome();
+}
+
 init();
 </script>
 
