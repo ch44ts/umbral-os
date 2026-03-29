@@ -900,6 +900,89 @@ header span {
   background: var(--accent-dim);
 }
 
+/* CONFIRMATION BANNER */
+.confirmation-banner {
+  position: fixed;
+  bottom: 280px;
+  left: 0;
+  right: 0;
+  background: var(--danger);
+  color: white;
+  padding: 16px 20px;
+  display: none;
+  align-items: center;
+  gap: 16px;
+  z-index: 35;
+  box-shadow: 0 -4px 12px rgba(224, 96, 96, 0.3);
+  font-family: 'DM Serif Display', serif;
+  font-size: 13px;
+}
+
+.confirmation-banner.show {
+  display: flex;
+}
+
+.confirmation-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.confirmation-action {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.confirmation-description {
+  font-size: 11px;
+  opacity: 0.95;
+  font-family: 'DM Mono', monospace;
+}
+
+.confirmation-buttons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-confirm {
+  background: white;
+  color: var(--danger);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.btn-confirm:hover {
+  background: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.btn-cancel {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 .view-wrapper {
   padding-bottom: 280px;
 }
@@ -991,14 +1074,12 @@ header span {
     <div class="view-wrapper">
       <!-- CALENDAR -->
       <div class="view active" id="view-calendar">
-        <div class="cal-header">
-          <div style="display:flex;gap:8px;align-items:center">
-            <div id="calWeekLabel" style="font-size:11px;color:var(--text)"></div>
-          </div>
-          <div class="cal-nav">
-            <button onclick="calPrevWeek()">← Anterior</button>
-            <button onclick="calToday()">Hoy</button>
-            <button onclick="calNextWeek()">Próxima →</button>
+        <div style="padding:8px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface)">
+          <div id="calWeekLabel" style="font-size:11px;color:var(--text);font-weight:600;letter-spacing:1px"></div>
+          <div style="display:flex;gap:6px">
+            <button onclick="calPrevWeek()" style="padding:4px 10px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;border-radius:3px;font-size:9px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">← Anterior</button>
+            <button onclick="calToday()" style="padding:4px 10px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;border-radius:3px;font-size:9px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Hoy</button>
+            <button onclick="calNextWeek()" style="padding:4px 10px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;border-radius:3px;font-size:9px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Próxima →</button>
           </div>
         </div>
         
@@ -1034,6 +1115,18 @@ header span {
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION BANNER -->
+<div class="confirmation-banner" id="confirmationBanner">
+  <div class="confirmation-content">
+    <div class="confirmation-action" id="confirmationAction">Acción pendiente</div>
+    <div class="confirmation-description" id="confirmationDescription">Confirma esta acción</div>
+  </div>
+  <div class="confirmation-buttons">
+    <button class="btn-confirm" onclick="confirmAction()">✓ Confirmar</button>
+    <button class="btn-cancel" onclick="cancelAction()">✕ Cancelar</button>
   </div>
 </div>
 
@@ -1130,6 +1223,32 @@ let selectedConsultantForChat = null;
 let activeView = 'calendar';
 let calWeekStart = new Date();
 calWeekStart.setDate(calWeekStart.getDate() - calWeekStart.getDay());
+
+// CONFIRMATION
+let pendingAction = null;
+let pendingActionData = null;
+
+function showConfirmation(action, description, callback) {
+  pendingAction = callback;
+  pendingActionData = null;
+  
+  document.getElementById('confirmationAction').textContent = action;
+  document.getElementById('confirmationDescription').textContent = description;
+  document.getElementById('confirmationBanner').classList.add('show');
+}
+
+function confirmAction() {
+  if (pendingAction) {
+    pendingAction(pendingActionData);
+  }
+  cancelAction();
+}
+
+function cancelAction() {
+  document.getElementById('confirmationBanner').classList.remove('show');
+  pendingAction = null;
+  pendingActionData = null;
+}
 
 // DATA
 function loadData() {
@@ -1591,72 +1710,100 @@ function sendChatMessage() {
   input.value = '';
   input.style.height = 'auto';
   
-  // Análisis del mensaje
-  const lowerMsg = message.toLowerCase();
-  let response = '';
-  let found = false;
+  // Mostrar indicador de carga
+  addChatMessage('Procesando...', 'assistant');
   
-  // Detectar si es una tarea con fecha
-  const dateMatch = message.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
-  if (dateMatch) {
-    const date = `20${dateMatch[3]}`.slice(0, 4) + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[1].padStart(2, '0');
+  // Llamar a Haiku a través del backend (Vercel)
+  callHaikuAPI(message);
+}
+
+async function callHaikuAPI(userMessage) {
+  try {
+    // Preparar contexto del programa
+    const context = {
+      consultants: consultants,
+      tasks: tasks,
+      selectedConsultant: consultants.find(c => c.id === selectedConsultantForChat),
+      currentView: activeView,
+      currentWeek: {
+        start: calWeekStart.toISOString().split('T')[0],
+        end: new Date(calWeekStart.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      }
+    };
     
-    tasks.push({
-      id: 't_' + Date.now(),
-      title: message,
-      date,
-      time: '09:00',
-      consultant: selectedConsultantForChat || null,
-      type: 'task',
-      color: '#c8e060'
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: userMessage,
+        context: context
+      })
     });
     
-    saveData();
-    const c = consultants.find(x => x.id === selectedConsultantForChat);
-    const scope = c ? `para ${c.name}` : 'general';
-    response = `✓ Tarea agregada ${scope}. Fecha: ${date}`;
-    found = true;
+    const data = await response.json();
     
+    // Remover mensaje de "Procesando..."
+    const messages = document.getElementById('chatMessages');
+    messages.removeChild(messages.lastChild);
+    
+    // Mostrar respuesta de Haiku
+    if (data.response) {
+      addChatMessage(data.response, 'assistant');
+    }
+    
+    // Si hay una acción pendiente de confirmación
+    if (data.action) {
+      showConfirmation(
+        data.action.title,
+        data.action.description,
+        () => executeAction(data.action, userMessage)
+      );
+    }
+  } catch (error) {
+    console.error('Error calling Haiku API:', error);
+    addChatMessage('Error al procesar. Intenta de nuevo.', 'assistant');
+  }
+}
+
+function executeAction(action, originalMessage) {
+  // Aquí se ejecutan las acciones confirmadas
+  // Haiku regresa qué hacer, nosotros lo ejecutamos
+  
+  if (action.type === 'add_task') {
+    tasks.push({
+      id: 't_' + Date.now(),
+      title: action.data.title,
+      date: action.data.date,
+      time: action.data.time || '09:00',
+      consultant: action.data.consultant,
+      type: action.data.type,
+      color: '#c8e060'
+    });
+    saveData();
     if (activeView === 'calendar') renderCalendar();
+    addChatMessage(`✓ Tarea "${action.data.title}" agregada para ${action.data.date}`, 'assistant');
   }
   
-  // Detectar preguntas sobre consultores
-  else if (lowerMsg.includes('cuántos consultores') || lowerMsg.includes('cuantos consultores')) {
-    response = `Tienes ${consultants.length} consultor${consultants.length !== 1 ? 'es' : ''}. ${consultants.map(c => c.name).join(', ')}`;
-    found = true;
-  }
-  
-  // Detectar preguntas sobre tareas
-  else if (lowerMsg.includes('tareas') || lowerMsg.includes('pendientes')) {
-    const pending = tasks.length;
-    response = `Tienes ${pending} tarea${pending !== 1 ? 's' : ''} en total.`;
-    found = true;
-  }
-  
-  // Detectar si pregunta sobre un consultor específico
-  else if (selectedConsultantForChat) {
-    const c = consultants.find(x => x.id === selectedConsultantForChat);
-    if (lowerMsg.includes('horario') || lowerMsg.includes('horarios')) {
-      response = c.schedule ? `Horarios de ${c.name}: ${c.schedule}` : `No hay horarios registrados para ${c.name}`;
-      found = true;
-    } else if (lowerMsg.includes('contacto') || lowerMsg.includes('teléfono') || lowerMsg.includes('email')) {
-      response = `${c.name}: ${c.email || 'Sin email'} | ${c.phone || 'Sin teléfono'}`;
-      found = true;
-    } else if (lowerMsg.includes('documentos') || lowerMsg.includes('archivos')) {
-      const docs = c.documents || [];
-      response = docs.length > 0 ? `${c.name} tiene ${docs.length} documento${docs.length !== 1 ? 's' : ''}: ${docs.map(d => d.name).join(', ')}` : `No hay documentos para ${c.name}`;
-      found = true;
+  else if (action.type === 'add_index') {
+    const c = consultants.find(x => x.id === action.data.consultant);
+    if (c) {
+      if (!c.index) c.index = [];
+      c.index.push(action.data);
+      saveData();
+      if (activeView === 'index') renderIndex();
+      addChatMessage(`✓ Plano "${action.data.nombre}" agregado`, 'assistant');
     }
   }
   
-  // Respuesta genérica
-  if (!found) {
-    response = 'Para agregar una tarea, incluye una fecha (ej: "Revisar 15/04/2025"). Puedo responder preguntas sobre tus consultores, horarios, documentos, etc.';
+  else if (action.type === 'delete_index') {
+    const c = consultants.find(x => x.id === action.data.consultant);
+    if (c && c.index) {
+      c.index.splice(action.data.index, 1);
+      saveData();
+      if (activeView === 'index') renderIndex();
+      addChatMessage(`✓ Plano eliminado`, 'assistant');
+    }
   }
-  
-  setTimeout(() => {
-    addChatMessage(response, 'assistant');
-  }, 300);
 }
 
 function addChatMessage(text, role) {
