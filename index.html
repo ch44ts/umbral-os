@@ -71,35 +71,14 @@ header span {
   text-transform: uppercase;
 }
 
-.hdr-right {
-  margin-left: auto;
+.layout-wrapper {
   display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sync-badge {
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
   flex: 1;
   overflow: hidden;
-  position: relative;
 }
 
 .sidebar {
+  width: 240px;
   border-right: 1px solid var(--border);
   background: var(--surface);
   display: flex;
@@ -190,7 +169,9 @@ header span {
   font-size: 10.5px;
 }
 
-.main-area {
+/* MAIN CONTENT - TABS */
+.main-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -201,7 +182,6 @@ header span {
   border-bottom: 1px solid var(--border);
   background: var(--surface);
   flex-shrink: 0;
-  overflow-x: auto;
 }
 
 .tab {
@@ -225,25 +205,377 @@ header span {
   border-bottom-color: var(--accent);
 }
 
-.view-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
-  padding-bottom: 0;
-}
-
 .view {
   flex: 1;
-  overflow-y: auto;
-  padding: 16px 20px;
+  overflow: hidden;
   display: none;
-  scrollbar-width: thin;
 }
 
 .view.active {
-  display: block;
+  display: flex;
+}
+
+/* CALENDAR VIEW */
+.calendar-view {
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cal-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cal-header h3 {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.cal-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.cal-nav button {
+  padding: 4px 10px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 10px;
+  transition: all 0.2s;
+}
+
+.cal-nav button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.calendar-grid {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cal-days-row {
+  display: grid;
+  grid-template-columns: 50px repeat(7, 1fr);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.cal-day-header {
+  padding: 10px 4px;
+  text-align: center;
+  font-size: 8px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.cal-day-header:first-child {
+  border-right: 1px solid var(--border);
+}
+
+.cal-day-header:last-child {
+  border-right: none;
+}
+
+.cal-day-header .day-name {
+  font-weight: 600;
+}
+
+.cal-day-header .day-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.cal-day-header.today {
+  background: rgba(200, 224, 96, 0.1);
+  border-radius: 0;
+}
+
+.cal-day-header.today .day-num {
+  background: var(--accent);
+  color: var(--bg);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cal-hours-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  scrollbar-width: thin;
+}
+
+.cal-time-labels {
+  width: 50px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.cal-time-label {
+  height: 48px;
+  padding: 4px;
+  text-align: right;
+  font-size: 8px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  line-height: 1;
+}
+
+.cal-days-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+
+.cal-day-column {
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.cal-day-column:last-child {
+  border-right: none;
+}
+
+.cal-hours-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cal-slot {
+  height: 48px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cal-slot:hover {
+  background: rgba(200, 224, 96, 0.05);
+}
+
+.cal-slot:last-child {
+  border-bottom: none;
+}
+
+.cal-event {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-size: 8px;
+  font-weight: 500;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cal-event:hover {
+  filter: brightness(1.15);
+  z-index: 10;
+}
+
+/* CHAT - CENTRADO COMO CORAZON */
+.chat-center {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.chat-window {
+  width: 100%;
+  max-width: 700px;
+  height: 75%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
+}
+
+.chat-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.chat-header h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+}
+
+.msg {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: fadeUp 0.3s ease;
+  max-width: 85%;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.msg-label {
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.msg.user {
+  align-self: flex-end;
+}
+
+.msg.user .msg-label {
+  color: var(--accent);
+  text-align: right;
+}
+
+.msg-bubble {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.msg.user .msg-bubble {
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 500;
+}
+
+.msg.assistant .msg-bubble {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.chat-input-area {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.chat-input-wrap {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 12px;
+}
+
+.chat-input-wrap textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 10px 0;
+  resize: none;
+  outline: none;
+  max-height: 100px;
+}
+
+.chat-input-wrap textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.chat-send-btn {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  border: none;
+  color: var(--bg);
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+
+.chat-send-btn:hover {
+  background: var(--accent-dim);
+  transform: scale(1.05);
+}
+
+/* OTROS VIEWS */
+.side-view {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  scrollbar-width: thin;
 }
 
 .section-title {
@@ -264,84 +596,34 @@ header span {
   background: var(--border);
 }
 
-.week-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.week-day {
-  background: var(--card);
-  border: 1px solid var(--border);
+.drop-zone {
+  border: 1px dashed var(--border);
   border-radius: 4px;
-  padding: 12px;
+  padding: 20px;
+  text-align: center;
   cursor: pointer;
   transition: all 0.2s;
-}
-
-.week-day.today {
-  border-color: var(--accent);
-  background: rgba(200, 224, 96, 0.08);
-}
-
-.week-day:hover {
-  border-color: var(--accent);
-}
-
-.week-day-header {
-  font-size: 9px;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-
-.week-day-num {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-
-.task-card {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 12px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.task-title {
-  font-size: 11px;
-  color: var(--text);
-  margin-bottom: 3px;
-  font-weight: 500;
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(200, 224, 96, 0.05);
 }
 
-.task-meta {
-  font-size: 8.5px;
-  color: var(--text-muted);
-}
-
-.task-consultant-badge {
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 8px;
-  font-weight: 500;
-  color: var(--bg);
-  margin-right: 6px;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
+.drop-zone p {
+  font-size: 9px;
   color: var(--text-faint);
-  font-size: 11px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.drop-zone .icon {
+  font-size: 16px;
+  margin-bottom: 6px;
+  opacity: 0.4;
 }
 
 .field {
@@ -370,7 +652,6 @@ header span {
   outline: none;
   border-radius: 3px;
   resize: vertical;
-  min-height: 100px;
 }
 
 .field input:focus,
@@ -383,52 +664,86 @@ header span {
   background: var(--card);
 }
 
-.drop-zone {
-  border: 2px dashed var(--border);
-  border-radius: 5px;
-  padding: 30px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--card);
-  margin-bottom: 20px;
-}
-
-.drop-zone:hover,
-.drop-zone.dragover {
-  border-color: var(--accent);
-  background: rgba(200, 224, 96, 0.05);
-}
-
-.doc-item {
-  background: var(--card);
+/* TABLA INDEX */
+.table-container {
   border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 10px;
-  margin-bottom: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.table-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
 
-.doc-name {
+.table-row {
+  display: flex;
+  border-bottom: 1px solid var(--text-faint);
+  align-items: stretch;
+}
+
+.table-row:hover {
+  background: rgba(200, 224, 96, 0.02);
+}
+
+.table-cell {
+  flex: 1;
+  padding: 10px;
+  border-right: 1px solid var(--border);
   font-size: 10px;
-  color: var(--text);
+  display: flex;
+  align-items: center;
+  min-height: 44px;
 }
 
-.doc-date {
+.table-cell:last-child {
+  border-right: none;
+}
+
+.table-cell-header {
+  font-weight: 600;
   font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 2px;
+}
+
+.table-cell input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  outline: none;
+  padding: 0;
+}
+
+.table-cell input:focus {
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+.table-cell input[type="checkbox"] {
+  width: auto;
+  cursor: pointer;
+  margin: 0;
+}
+
+.table-cell-actions {
+  display: flex;
+  gap: 4px;
 }
 
 .btn-small {
-  padding: 4px 8px;
+  padding: 4px 6px;
   background: none;
   border: 1px solid var(--border);
   color: var(--text-muted);
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 2px;
   font-size: 8px;
   transition: all 0.2s;
 }
@@ -438,7 +753,24 @@ header span {
   color: var(--danger);
 }
 
-.btn-delete-consultant {
+.btn-primary {
+  padding: 8px 14px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--accent-dim);
+}
+
+.btn-danger {
   width: 80px;
   padding: 12px 8px;
   background: var(--danger);
@@ -447,13 +779,40 @@ header span {
   border-radius: 3px;
   font-size: 9px;
   cursor: pointer;
-  margin-top: auto;
   font-weight: 500;
   transition: all 0.2s;
 }
 
-.btn-delete-consultant:hover {
+.btn-danger:hover {
   background: #dc2626;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.info-header {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px;
+  margin-bottom: 16px;
+  border-left: 3px solid var(--accent);
+}
+
+.info-header-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.info-header-area {
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
 .info-container {
@@ -462,189 +821,6 @@ header span {
   height: 100%;
 }
 
-/* CHAT CLAUDE STYLE */
-.chat-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 360px;
-  height: auto;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-  max-height: 500px;
-  min-height: 80px;
-}
-
-.chat-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.chat-header h3 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 13px;
-  color: var(--accent);
-}
-
-.chat-controls {
-  display: flex;
-  gap: 8px;
-}
-
-.chat-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 16px;
-  transition: color 0.2s;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chat-btn:hover {
-  color: var(--text);
-}
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  scrollbar-width: thin;
-  min-height: 0;
-}
-
-.msg {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  animation: fadeUp 0.3s ease;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.msg-label {
-  font-size: 7px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
-.msg.user .msg-label {
-  color: var(--accent);
-}
-
-.msg-bubble {
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 10px;
-  line-height: 1.6;
-}
-
-.msg.user .msg-bubble {
-  background: var(--accent);
-  color: var(--bg);
-  margin-left: auto;
-  max-width: 90%;
-}
-
-.msg.assistant .msg-bubble {
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 9.5px;
-  max-width: 90%;
-}
-
-.chat-input-area {
-  padding: 10px 12px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  flex-shrink: 0;
-}
-
-.chat-input-wrap {
-  flex: 1;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  display: flex;
-  align-items: flex-end;
-  padding: 0 10px;
-}
-
-.chat-input-wrap textarea {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  padding: 8px 0;
-  resize: none;
-  outline: none;
-  max-height: 80px;
-}
-
-.chat-input-wrap textarea::placeholder {
-  color: var(--text-faint);
-}
-
-.chat-action-btn {
-  padding: 0;
-  width: 28px;
-  height: 28px;
-  background: none;
-  border: none;
-  color: var(--accent);
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s;
-}
-
-.chat-action-btn:hover {
-  opacity: 0.8;
-}
-
-.chat-collapsed {
-  height: auto;
-}
-
-.chat-collapsed .chat-messages,
-.chat-collapsed .chat-input-area {
-  display: none;
-}
-
-/* MODAL */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -684,30 +860,16 @@ header span {
   justify-content: flex-end;
 }
 
-.btn {
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
   padding: 8px 14px;
-  border: none;
   border-radius: 3px;
   cursor: pointer;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: all 0.2s;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: var(--bg);
-}
-
-.btn-primary:hover {
-  background: var(--accent-dim);
-}
-
-.btn-ghost {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
 }
 
 .btn-ghost:hover {
@@ -715,115 +877,26 @@ header span {
   color: var(--text);
 }
 
-.calendar-hourly {
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: 0;
+.doc-item {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
-.cal-time-labels {
-  border-right: 1px solid var(--border);
-  background: var(--surface);
-}
-
-.cal-time-label {
-  height: 60px;
-  padding: 4px;
-  font-size: 8px;
-  color: var(--text-muted);
-  text-align: right;
-  border-bottom: 1px solid var(--border);
-  line-height: 1.2;
-}
-
-.cal-slots {
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 8px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.cal-slot {
-  height: 60px;
-  border-bottom: 1px solid var(--border);
-  padding: 2px;
-  cursor: pointer;
-  position: relative;
-  transition: background 0.2s;
-}
-
-.cal-slot:hover {
-  background: rgba(200, 224, 96, 0.03);
-}
-
-.cal-event {
-  position: absolute;
-  left: 2px;
-  right: 2px;
-  padding: 3px;
-  border-radius: 2px;
-  font-size: 8px;
-  color: white;
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.cal-event:hover {
-  filter: brightness(1.1);
-}
-
-.cal-event-menu {
-  position: fixed;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  z-index: 300;
-  min-width: 120px;
-}
-
-.cal-event-menu-item {
-  padding: 8px 12px;
-  cursor: pointer;
+.doc-name {
   font-size: 10px;
   color: var(--text);
-  transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
-.cal-event-menu-item:hover {
-  background: rgba(200, 224, 96, 0.1);
-}
-
-.color-picker {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-}
-
-.color-option {
-  width: 30px;
-  height: 30px;
-  border-radius: 4px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: all 0.2s;
-}
-
-.color-option:hover {
-  border-color: var(--text);
-}
-
-.color-option.selected {
-  border-color: white;
+.doc-date {
+  font-size: 8px;
+  color: var(--text-muted);
+  margin-top: 2px;
 }
 </style>
 </head>
@@ -831,13 +904,10 @@ header span {
 
 <header>
   <h1 onclick="goToDashboard()">Umbral OS</h1>
-  <span>v3 · Ejecutivo</span>
-  <div class="hdr-right">
-    <div class="sync-badge">✓ Sincronizado</div>
-  </div>
+  <span>v4 · Ejecutivo</span>
 </header>
 
-<div class="layout">
+<div class="layout-wrapper">
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-section">
@@ -847,54 +917,81 @@ header span {
     <div class="consultant-list" id="consultantList"></div>
   </div>
 
-  <!-- MAIN AREA -->
-  <div class="main-area">
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
     <div class="tabs">
-      <div class="tab active" data-view="dashboard" onclick="switchView('dashboard')">📊 Dashboard</div>
+      <div class="tab active" data-view="calendar" onclick="switchView('calendar')">📅 Calendario</div>
+      <div class="tab" data-view="chat" onclick="switchView('chat')">💬 Chat</div>
       <div class="tab" data-view="documents" onclick="switchView('documents')">📁 Documentos</div>
+      <div class="tab" data-view="index" onclick="switchView('index')">📐 Index</div>
       <div class="tab" data-view="info" onclick="switchView('info')">⚙️ Info</div>
     </div>
 
-    <div class="view-container">
-      <!-- DASHBOARD -->
-      <div class="view active" id="view-dashboard">
-        <div class="section-title">Esta semana</div>
-        <div class="week-grid" id="weekGrid"></div>
-        
-        <div class="section-title">Tareas pendientes</div>
-        <div id="tasksHome"></div>
+    <!-- CALENDAR VIEW -->
+    <div class="view active" id="view-calendar">
+      <div class="cal-header">
+        <h3>Semana de <span id="calWeekLabel"></span></h3>
+        <div class="cal-nav">
+          <button onclick="calPrevWeek()">← Anterior</button>
+          <button onclick="calToday()">Hoy</button>
+          <button onclick="calNextWeek()">Próxima →</button>
+        </div>
       </div>
+      
+      <div class="calendar-grid">
+        <div class="cal-days-row" id="calDaysRow"></div>
+        
+        <div class="cal-hours-wrapper">
+          <div class="cal-time-labels" id="calTimeLabels"></div>
+          <div class="cal-days-content" id="calDaysContent"></div>
+        </div>
+      </div>
+    </div>
 
-      <!-- DOCUMENTOS -->
-      <div class="view" id="view-documents">
+    <!-- CHAT VIEW - CENTRADO -->
+    <div class="view" id="view-chat">
+      <div class="chat-center">
+        <div class="chat-window">
+          <div class="chat-header">
+            <h3>Chat</h3>
+          </div>
+          
+          <div class="chat-messages" id="chatMessages"></div>
+          
+          <div class="chat-input-area">
+            <div class="chat-input-wrap">
+              <textarea id="chatInput" placeholder="Pregunta o agrega tarea..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}" oninput="autoResizeChat(this)"></textarea>
+            </div>
+            <button class="chat-send-btn" onclick="sendChatMessage()" title="Enviar">↑</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS VIEW -->
+    <div class="view" id="view-documents">
+      <div class="side-view">
         <div id="documentsContent"></div>
       </div>
+    </div>
 
-      <!-- INFO -->
-      <div class="view" id="view-info">
-        <div class="info-container" id="infoContent"></div>
+    <!-- INDEX VIEW -->
+    <div class="view" id="view-index">
+      <div class="side-view">
+        <div class="section-title">Índice de Planos</div>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <button class="btn-primary" onclick="addIndexRow()">+ Agregar Plano</button>
+        </div>
+        <div class="table-container" id="indexTable"></div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- CHAT CLAUDE STYLE -->
-<div class="chat-container" id="chatContainer">
-  <div class="chat-header">
-    <h3>Chat</h3>
-    <div class="chat-controls">
-      <button class="chat-btn" title="Acciones">+</button>
-      <button class="chat-btn" onclick="toggleChat()" title="Minimizar">−</button>
+    <!-- INFO VIEW -->
+    <div class="view" id="view-info">
+      <div class="side-view">
+        <div id="infoContent"></div>
+      </div>
     </div>
-  </div>
-  
-  <div class="chat-messages" id="chatMessages"></div>
-  
-  <div class="chat-input-area">
-    <div class="chat-input-wrap">
-      <textarea id="chatInput" placeholder="Pregunta o agrega tarea..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}" oninput="autoResizeChat(this)"></textarea>
-    </div>
-    <button class="chat-action-btn" onclick="sendChatMessage()" title="Enviar">↑</button>
   </div>
 </div>
 
@@ -911,8 +1008,8 @@ header span {
       <input type="text" id="newConsultantArea" placeholder="Ej. Estructural">
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modalAddConsultant')">Cancelar</button>
-      <button class="btn btn-primary" onclick="addConsultant()">Agregar</button>
+      <button class="btn-ghost" onclick="closeModal('modalAddConsultant')">Cancelar</button>
+      <button class="btn-primary" onclick="addConsultant()">Agregar</button>
     </div>
   </div>
 </div>
@@ -920,10 +1017,10 @@ header span {
 <!-- MODAL AGREGAR EVENTO -->
 <div class="modal-overlay" id="modalAddEvent">
   <div class="modal">
-    <h3>Agregar Evento / Tarea</h3>
+    <h3>Agregar Evento</h3>
     <div class="field">
       <label>Descripción</label>
-      <textarea id="eventDesc" placeholder="Ej. Entrega de planos estructurales" rows="2" style="min-height:60px;resize:vertical"></textarea>
+      <textarea id="eventDesc" placeholder="Ej. Entrega de planos" style="min-height:60px"></textarea>
     </div>
     <div class="field">
       <label>Consultor (opcional)</label>
@@ -932,62 +1029,34 @@ header span {
       </select>
     </div>
     <div class="field">
-      <label>Fecha</label>
-      <input type="date" id="eventDate">
-    </div>
-    <div class="field">
-      <label>Hora</label>
-      <input type="time" id="eventTime" value="09:00">
+      <label>Fecha y Hora</label>
+      <input type="datetime-local" id="eventDateTime">
     </div>
     <div class="field">
       <label>Tipo</label>
       <select id="eventType">
-        <option value="task">Tarea</option>
-        <option value="meeting">Reunión</option>
-        <option value="review">Revisión</option>
-        <option value="delivery">Entrega</option>
+        <option>Tarea</option>
+        <option>Reunión</option>
+        <option>Entrega</option>
       </select>
     </div>
-    <div class="field">
-      <label>Color</label>
-      <div class="color-picker" id="colorPicker"></div>
-    </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modalAddEvent')">Cancelar</button>
-      <button class="btn btn-primary" onclick="addEvent()">Agregar</button>
+      <button class="btn-ghost" onclick="closeModal('modalAddEvent')">Cancelar</button>
+      <button class="btn-primary" onclick="addEvent()">Agregar</button>
     </div>
   </div>
 </div>
 
-<!-- COLOR PICKER MENU EVENTO -->
-<div class="cal-event-menu" id="eventColorMenu" style="display:none">
-  <div class="cal-event-menu-item" style="background:#c8e060" onclick="setEventColor('#c8e060'); closeEventMenu()">Accent</div>
-  <div class="cal-event-menu-item" style="background:#60c882" onclick="setEventColor('#60c882'); closeEventMenu()">Verde</div>
-  <div class="cal-event-menu-item" style="background:#e0b060" onclick="setEventColor('#e0b060'); closeEventMenu()">Naranja</div>
-  <div class="cal-event-menu-item" style="background:#e06060" onclick="setEventColor('#e06060'); closeEventMenu()">Rojo</div>
-  <div class="cal-event-menu-item" style="background:#60a0e0" onclick="setEventColor('#60a0e0'); closeEventMenu()">Azul</div>
-  <div class="cal-event-menu-item" style="background:#a060e0" onclick="setEventColor('#a060e0'); closeEventMenu()">Púrpura</div>
-  <hr style="border:none;border-top:1px solid var(--border);margin:4px 0">
-  <div class="cal-event-menu-item" style="color:var(--danger)" onclick="deleteEventFromMenu(); closeEventMenu()">🗑 Eliminar</div>
-</div>
-
 <script>
-const COLORS = ['#c8e060', '#a060e0', '#e0a060', '#60a0e0', '#e06060', '#a0c860', '#60c8c8', '#c860c8', '#8080e0', '#c89060'];
-const EVENT_COLORS = {
-  '#c8e060': 'Accent',
-  '#60c882': 'Verde',
-  '#e0b060': 'Naranja',
-  '#e06060': 'Rojo',
-  '#60a0e0': 'Azul',
-  '#a060e0': 'Púrpura'
-};
+const COLORS = ['#c8e060', '#a060e0', '#e0a060', '#60a0e0', '#e06060', '#a0c860', '#60c8c8', '#c860c8'];
+const HOURS = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
 
 let consultants = [];
 let tasks = [];
 let selectedConsultantForChat = null;
-let activeView = 'dashboard';
-let eventColorSelected = '#c8e060';
-let contextEvent = null;
+let activeView = 'calendar';
+let calWeekStart = new Date();
+calWeekStart.setDate(calWeekStart.getDate() - calWeekStart.getDay());
 
 // DATA
 function loadData() {
@@ -1004,7 +1073,7 @@ function saveData() {
 
 function goToDashboard() {
   selectedConsultantForChat = null;
-  switchView('dashboard');
+  switchView('calendar');
   updateSidebar();
 }
 
@@ -1013,7 +1082,7 @@ function updateSidebar() {
   const list = document.getElementById('consultantList');
   list.innerHTML = consultants.map((c, i) => `
     <div class="consultant-item ${selectedConsultantForChat === c.id ? 'active' : ''}" onclick="selectConsultant('${c.id}')">
-      <div class="c-avatar" style="background:${COLORS[i%10]};color:var(--bg)">${c.name.charAt(0)}</div>
+      <div class="c-avatar" style="background:${COLORS[i%8]};color:var(--bg)">${c.name.charAt(0)}</div>
       <div class="c-info">
         <div class="c-name">${c.name}</div>
         <div style="font-size:8px;color:var(--text-muted)">${c.area}</div>
@@ -1036,93 +1105,143 @@ function switchView(v) {
   document.querySelectorAll('.view').forEach(v2 => v2.classList.remove('active'));
   document.getElementById('view-' + v).classList.add('active');
   
-  if (v === 'dashboard') renderDashboard();
+  if (v === 'calendar') renderCalendar();
+  else if (v === 'chat') focusChat();
   else if (v === 'documents') renderDocuments();
+  else if (v === 'index') renderIndex();
   else if (v === 'info') renderInfo();
 }
 
-function renderDashboard() {
-  renderWeeklyCalendar();
-  renderTasksHome();
-}
-
-function renderWeeklyCalendar() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
+// CALENDAR
+function renderCalendar() {
+  const days = [];
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   
-  let html = '';
-  for (let i = 0; i < 14; i++) {
-    const d = new Date(today);
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(calWeekStart);
     d.setDate(d.getDate() + i);
-    
-    const isToday = d.getTime() === today.getTime();
-    const isThisWeek = i < 7;
-    const dayEvents = tasks.filter(t => {
-      const tDate = new Date(t.date);
-      tDate.setHours(0, 0, 0, 0);
-      return tDate.getTime() === d.getTime();
-    });
-    
-    html += `
-      <div class="week-day ${isToday?'today':''}" onclick="openEventModal('${d.toISOString().split('T')[0]}')">
-        <div class="week-day-header">${dayNames[d.getDay()]}</div>
-        <div class="week-day-num">${d.getDate()}</div>
-        <div style="font-size:8px;color:var(--text-muted);margin-top:6px">
-          ${dayEvents.length} evento${dayEvents.length!==1?'s':''}
-        </div>
-        ${!isThisWeek ? `<div style="position:absolute;top:4px;right:4px;font-size:9px;opacity:0.4">próxima</div>` : ''}
+    days.push(d);
+  }
+  
+  // Headers (7 días)
+  let headerHtml = '<div class="cal-day-header"></div>';
+  days.forEach(d => {
+    const isToday = d.toDateString() === new Date().toDateString();
+    headerHtml += `
+      <div class="cal-day-header ${isToday ? 'today' : ''}">
+        <div class="day-name">${dayNames[d.getDay()]}</div>
+        <div class="day-num">${d.getDate()}</div>
       </div>
     `;
-  }
-  
-  document.getElementById('weekGrid').innerHTML = html;
-}
-
-function renderTasksHome() {
-  const tasksList = tasks.sort((a, b) => {
-    const aDate = new Date(a.date + ' ' + a.time);
-    const bDate = new Date(b.date + ' ' + b.time);
-    return aDate - bDate;
   });
+  document.getElementById('calDaysRow').innerHTML = headerHtml;
   
-  let html = '';
+  // Time labels (izquierda)
+  let timeLabelHtml = '';
+  HOURS.forEach(hour => {
+    timeLabelHtml += `<div class="cal-time-label">${hour}</div>`;
+  });
+  document.getElementById('calTimeLabels').innerHTML = timeLabelHtml;
   
-  if (tasksList.length === 0) {
-    html = '<div class="empty-state">Sin tareas pendientes</div>';
-  } else {
-    tasksList.slice(0, 5).forEach(t => {
-      const d = new Date(t.date);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const daysLeft = Math.floor((d - today) / (1000 * 60 * 60 * 24));
+  // Days content (7 columnas x horas)
+  let contentHtml = '';
+  days.forEach(d => {
+    const dateStr = d.toISOString().split('T')[0];
+    contentHtml += `<div class="cal-day-column">`;
+    
+    HOURS.forEach(hour => {
+      const dayTasks = tasks.filter(t => t.date === dateStr && t.time.startsWith(hour.split(':')[0]));
       
-      const c = consultants.find(x => x.id === t.consultant);
-      const color = c ? COLORS[consultants.indexOf(c) % 10] : 'var(--text-muted)';
-      
-      let urgColor = 'var(--ok)';
-      if (daysLeft <= 0) urgColor = 'var(--danger)';
-      else if (daysLeft <= 3) urgColor = 'var(--orange)';
-      else if (daysLeft <= 7) urgColor = 'var(--warn)';
-      
-      html += `
-        <div class="task-card" style="border-left:3px solid ${urgColor};background:${t.color}11" onclick="editEvent('${t.id}')">
-          <div style="flex:1">
-            <div class="task-title" style="color:${t.color}">${t.title}</div>
-            <div class="task-meta">
-              ${c ? `<span class="task-consultant-badge" style="background:${color}">${c.name}</span>` : ''}
-              ${t.date} ${t.time} · ${t.type}
-            </div>
-          </div>
-        </div>
-      `;
+      contentHtml += `<div class="cal-slot" onclick="openEventModal('${dateStr}', '${hour}')">`;
+      dayTasks.forEach(t => {
+        contentHtml += `<div class="cal-event" style="background:${t.color}" title="${t.title}" onclick="event.stopPropagation();editEvent('${t.id}')">${t.title}</div>`;
+      });
+      contentHtml += '</div>';
     });
-  }
+    
+    contentHtml += '</div>';
+  });
+  document.getElementById('calDaysContent').innerHTML = contentHtml;
   
-  document.getElementById('tasksHome').innerHTML = html;
+  // Update week label
+  const weekEnd = new Date(calWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+  document.getElementById('calWeekLabel').textContent = `${calWeekStart.getDate()}/${calWeekStart.getMonth()+1} - ${weekEnd.getDate()}/${weekEnd.getMonth()+1}`;
 }
 
+function calPrevWeek() {
+  calWeekStart.setDate(calWeekStart.getDate() - 7);
+  renderCalendar();
+}
+
+function calNextWeek() {
+  calWeekStart.setDate(calWeekStart.getDate() + 7);
+  renderCalendar();
+}
+
+function calToday() {
+  calWeekStart = new Date();
+  calWeekStart.setDate(calWeekStart.getDate() - calWeekStart.getDay());
+  renderCalendar();
+}
+
+// CHAT
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  addChatMessage(message, 'user');
+  input.value = '';
+  
+  const dateMatch = message.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+  if (dateMatch) {
+    const date = `20${dateMatch[3]}`.slice(0, 4) + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[1].padStart(2, '0');
+    
+    tasks.push({
+      id: 't_' + Date.now(),
+      title: message,
+      date,
+      time: '09:00',
+      consultant: selectedConsultantForChat || null,
+      type: 'task',
+      color: '#c8e060'
+    });
+    
+    saveData();
+    const c = consultants.find(x => x.id === selectedConsultantForChat);
+    const scope = c ? `para ${c.name}` : 'general';
+    addChatMessage(`✓ Tarea agregada ${scope} para ${date}`, 'assistant');
+    
+    if (activeView === 'calendar') renderCalendar();
+  } else {
+    addChatMessage('Incluye una fecha: ej. "Revisar planos 15/04/2025"', 'assistant');
+  }
+}
+
+function addChatMessage(text, role) {
+  const container = document.getElementById('chatMessages');
+  const msg = document.createElement('div');
+  msg.className = 'msg ' + role;
+  msg.innerHTML = `
+    <div class="msg-label">${role === 'user' ? 'Tú' : 'Asistente'}</div>
+    <div class="msg-bubble">${text}</div>
+  `;
+  container.appendChild(msg);
+  container.scrollTop = container.scrollHeight;
+}
+
+function focusChat() {
+  setTimeout(() => document.getElementById('chatInput').focus(), 100);
+}
+
+function autoResizeChat(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
+}
+
+// DOCUMENTS
 function renderDocuments() {
   if (!selectedConsultantForChat) {
     document.getElementById('documentsContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
@@ -1131,17 +1250,17 @@ function renderDocuments() {
   
   const c = consultants.find(x => x.id === selectedConsultantForChat);
   const i = consultants.indexOf(c);
-  const color = COLORS[i % 10];
+  const color = COLORS[i % 8];
   
   let html = `
-    <div style="background:${color}15;border:1px solid ${color}44;border-radius:4px;padding:14px;margin-bottom:16px;border-left:3px solid ${color}">
-      <div style="font-size:14px;font-weight:600;color:${color};margin-bottom:4px">${c.name}</div>
-      <div style="font-size:11px;color:var(--text-muted)">${c.area}</div>
+    <div class="info-header" style="border-left-color:${color}">
+      <div class="info-header-name">${c.name}</div>
+      <div class="info-header-area">${c.area}</div>
     </div>
     
     <div class="section-title">Documentos</div>
     <div class="drop-zone" id="dropZone">
-      <div style="font-size:24px;margin-bottom:8px">📄</div>
+      <div class="icon">📄</div>
       <p>Arrastra documentos aquí</p>
     </div>
     
@@ -1163,11 +1282,107 @@ function renderDocuments() {
       </div>
     `;
   });
-  document.getElementById('docList').innerHTML = docsHtml || '<div class="empty-state">Sin documentos</div>';
+  document.getElementById('docList').innerHTML = docsHtml || '<div class="empty-state" style="margin:0;padding:20px">Sin documentos</div>';
   
   setupDropZone(c.id);
 }
 
+function setupDropZone(id) {
+  const dz = document.getElementById('dropZone');
+  if (!dz) return;
+  
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const c = consultants.find(x => x.id === id);
+      if (!c.documents) c.documents = [];
+      c.documents.push({
+        name: file.name,
+        date: new Date().toLocaleDateString('es-MX')
+      });
+      saveData();
+      renderDocuments();
+    }
+  });
+}
+
+function removeDoc(id, idx) {
+  const c = consultants.find(x => x.id === id);
+  if (c && c.documents) {
+    c.documents.splice(idx, 1);
+    saveData();
+    renderDocuments();
+  }
+}
+
+// INDEX
+function renderIndex() {
+  if (!selectedConsultantForChat) {
+    document.getElementById('indexTable').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
+    return;
+  }
+  
+  const c = consultants.find(x => x.id === selectedConsultantForChat);
+  const index = c.index || [];
+  
+  let html = `
+    <div class="table-header">
+      <div class="table-cell table-cell-header" style="flex:0.8">Clave</div>
+      <div class="table-cell table-cell-header" style="flex:2">Descripción</div>
+      <div class="table-cell table-cell-header" style="flex:1">Fecha Entrega</div>
+      <div class="table-cell table-cell-header" style="flex:0.5">✓</div>
+      <div class="table-cell table-cell-header" style="flex:0.5">Rev</div>
+      <div class="table-cell table-cell-header" style="flex:0.3;border:none"></div>
+    </div>
+  `;
+  
+  index.forEach((p, i) => {
+    html += `
+      <div class="table-row">
+        <div class="table-cell" style="flex:0.8"><input type="text" value="${p.clave || ''}" onchange="updateIndex('${c.id}', ${i}, 'clave', this.value)"></div>
+        <div class="table-cell" style="flex:2"><input type="text" value="${p.nombre || ''}" onchange="updateIndex('${c.id}', ${i}, 'nombre', this.value)"></div>
+        <div class="table-cell" style="flex:1"><input type="date" value="${p.fecha || ''}" onchange="updateIndex('${c.id}', ${i}, 'fecha', this.value)"></div>
+        <div class="table-cell" style="flex:0.5;justify-content:center"><input type="checkbox" ${p.delivered ? 'checked' : ''} onchange="updateIndex('${c.id}', ${i}, 'delivered', this.checked)"></div>
+        <div class="table-cell" style="flex:0.5"><input type="text" value="${p.revision || ''}" onchange="updateIndex('${c.id}', ${i}, 'revision', this.value)" placeholder="v1"></div>
+        <div class="table-cell" style="flex:0.3;border:none;padding:0"><button class="btn-small" onclick="removeIndexRow('${c.id}', ${i})">✕</button></div>
+      </div>
+    `;
+  });
+  
+  document.getElementById('indexTable').innerHTML = html || '<div class="empty-state">Sin planos</div>';
+}
+
+function addIndexRow() {
+  if (!selectedConsultantForChat) return;
+  const c = consultants.find(x => x.id === selectedConsultantForChat);
+  if (!c.index) c.index = [];
+  c.index.push({clave: '', nombre: '', fecha: '', delivered: false, revision: ''});
+  saveData();
+  renderIndex();
+}
+
+function updateIndex(id, idx, field, value) {
+  const c = consultants.find(x => x.id === id);
+  if (c && c.index && c.index[idx]) {
+    c.index[idx][field] = value;
+    saveData();
+  }
+}
+
+function removeIndexRow(id, idx) {
+  const c = consultants.find(x => x.id === id);
+  if (c && c.index) {
+    c.index.splice(idx, 1);
+    saveData();
+    renderIndex();
+  }
+}
+
+// INFO
 function renderInfo() {
   if (!selectedConsultantForChat) {
     document.getElementById('infoContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
@@ -1176,108 +1391,62 @@ function renderInfo() {
   
   const c = consultants.find(x => x.id === selectedConsultantForChat);
   const i = consultants.indexOf(c);
-  const color = COLORS[i % 10];
-  const hasContract = c.contract;
+  const color = COLORS[i % 8];
   
   let html = `
-    <div style="background:${color}15;border:1px solid ${color}44;border-radius:4px;padding:14px;margin-bottom:16px;border-left:3px solid ${color}">
-      <div style="font-size:14px;font-weight:600;color:${color};margin-bottom:4px">${c.name}</div>
-      <div style="font-size:11px;color:var(--text-muted)">${c.area}</div>
-    </div>
-    
-    <div class="section-title">Contacto</div>
-    <div class="field">
-      <label>Teléfono</label>
-      <input type="tel" value="${c.phone || ''}" placeholder="+52 1234567890" onchange="updateConsultantInfo('${c.id}', 'phone', this.value)" style="resize:none;min-height:auto;height:auto;padding:6px">
-    </div>
-    <div class="field">
-      <label>Email</label>
-      <input type="email" value="${c.email || ''}" placeholder="consultor@empresa.com" onchange="updateConsultantInfo('${c.id}', 'email', this.value)" style="resize:none;min-height:auto;height:auto;padding:6px">
-    </div>
-    <div class="field">
-      <label>Horarios</label>
-      <textarea onchange="updateConsultantInfo('${c.id}', 'schedule', this.value)">${c.schedule || ''}</textarea>
-    </div>
-    
-    <div class="section-title">Contrato</div>
-    ${hasContract ? `
-      <div class="doc-item" style="margin-bottom:14px">
-        <div>
-          <div class="doc-name">📋 ${hasContract.name}</div>
-          <div class="doc-date">${hasContract.date}</div>
+    <div class="info-container">
+      <div class="info-header" style="border-left-color:${color}">
+        <div class="info-header-name">${c.name}</div>
+        <div class="info-header-area">${c.area}</div>
+      </div>
+      
+      <div class="section-title">Contacto</div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="tel" value="${c.phone || ''}" placeholder="+52 1234567890" onchange="updateConsultantInfo('${c.id}', 'phone', this.value)">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" value="${c.email || ''}" placeholder="consultor@empresa.com" onchange="updateConsultantInfo('${c.id}', 'email', this.value)">
+      </div>
+      <div class="field">
+        <label>Horarios</label>
+        <textarea onchange="updateConsultantInfo('${c.id}', 'schedule', this.value)">${c.schedule || ''}</textarea>
+      </div>
+      
+      <div class="section-title">Contrato</div>
+      ${c.contract ? `
+        <div class="doc-item" style="margin-bottom:14px">
+          <div>
+            <div class="doc-name">📋 ${c.contract.name}</div>
+            <div class="doc-date">${c.contract.date}</div>
+          </div>
+          <button class="btn-small" onclick="removeContract('${c.id}')">✕</button>
         </div>
-        <button class="btn-small" onclick="removeContract('${c.id}')">✕</button>
-      </div>
-      <button class="btn-small" style="background:var(--accent);color:var(--bg);margin-bottom:16px;width:100%" onclick="downloadContract('${c.id}')">Descargar</button>
-    ` : `
-      <div class="drop-zone" id="contractZone" style="margin-bottom:14px;cursor:pointer">
-        <div style="font-size:20px;margin-bottom:8px">📋</div>
-        <p>Arrastra contrato aquí</p>
-      </div>
-    `}
-    
-    <div style="flex:1"></div>
-    <button class="btn-delete-consultant" onclick="deleteConsultant('${c.id}')">Eliminar</button>
+      ` : `
+        <div class="drop-zone" id="contractZone" style="cursor:pointer">
+          <div class="icon">📋</div>
+          <p>Arrastra contrato aquí</p>
+        </div>
+      `}
+      
+      <div style="flex:1"></div>
+      <button class="btn-danger" onclick="deleteConsultant('${c.id}')">Eliminar</button>
+    </div>
   `;
   
   const container = document.getElementById('infoContent');
   container.innerHTML = html;
   
-  if (!hasContract) {
+  if (!c.contract && document.getElementById('contractZone')) {
     const cz = document.getElementById('contractZone');
-    if (cz) {
-      cz.addEventListener('dragover', e => { e.preventDefault(); cz.classList.add('dragover'); });
-      cz.addEventListener('dragleave', () => cz.classList.remove('dragover'));
-      cz.addEventListener('drop', e => {
-        e.preventDefault();
-        cz.classList.remove('dragover');
-        const file = e.dataTransfer.files[0];
-        if (file) uploadContract(c.id, file);
-      });
-    }
-  }
-}
-
-// CONSULTORES
-function openAddConsultant() {
-  openModal('modalAddConsultant');
-  setTimeout(() => document.getElementById('newConsultantName').focus(), 100);
-}
-
-function addConsultant() {
-  const name = document.getElementById('newConsultantName').value.trim();
-  const area = document.getElementById('newConsultantArea').value.trim();
-  
-  if (!name || !area) return;
-  
-  consultants.push({
-    id: 'c_' + Date.now(),
-    name,
-    area,
-    phone: '',
-    email: '',
-    schedule: '',
-    documents: [],
-    contract: null
-  });
-  
-  saveData();
-  closeModal('modalAddConsultant');
-  updateSidebar();
-  updateEventConsultantSelect();
-  
-  document.getElementById('newConsultantName').value = '';
-  document.getElementById('newConsultantArea').value = '';
-}
-
-function deleteConsultant(id) {
-  if (confirm('¿Eliminar este consultor?')) {
-    consultants = consultants.filter(c => c.id !== id);
-    tasks = tasks.filter(t => t.consultant !== id);
-    saveData();
-    selectedConsultantForChat = null;
-    updateSidebar();
-    renderInfo();
+    cz.addEventListener('dragover', e => { e.preventDefault(); cz.classList.add('dragover'); });
+    cz.addEventListener('dragleave', () => cz.classList.remove('dragover'));
+    cz.addEventListener('drop', e => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (file) uploadContract(c.id, file);
+    });
   }
 }
 
@@ -1315,55 +1484,19 @@ function removeContract(id) {
   }
 }
 
-function downloadContract(id) {
-  const c = consultants.find(x => x.id === id);
-  if (c && c.contract) {
-    const link = document.createElement('a');
-    link.href = c.contract.data;
-    link.download = c.contract.name;
-    link.click();
-  }
-}
-
-function removeDoc(id, idx) {
-  const c = consultants.find(x => x.id === id);
-  if (c && c.documents) {
-    c.documents.splice(idx, 1);
+function deleteConsultant(id) {
+  if (confirm('¿Eliminar este consultor?')) {
+    consultants = consultants.filter(c => c.id !== id);
     saveData();
-    renderDocuments();
+    selectedConsultantForChat = null;
+    updateSidebar();
+    renderInfo();
   }
-}
-
-function setupDropZone(id) {
-  const dz = document.getElementById('dropZone');
-  if (!dz) return;
-  
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
-  dz.addEventListener('drop', e => {
-    e.preventDefault();
-    dz.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      const c = consultants.find(x => x.id === id);
-      if (!c.documents) c.documents = [];
-      c.documents.push({
-        name: file.name,
-        date: new Date().toLocaleDateString('es-MX'),
-        size: Math.round(file.size / 1024) + 'KB'
-      });
-      saveData();
-      renderDocuments();
-    }
-  });
 }
 
 // EVENTOS
-function openEventModal(date) {
-  document.getElementById('eventDate').value = date;
-  document.getElementById('eventTime').value = '09:00';
-  eventColorSelected = '#c8e060';
-  renderColorPicker();
+function openEventModal(date, time) {
+  document.getElementById('eventDateTime').value = date + 'T' + time;
   updateEventConsultantSelect();
   openModal('modalAddEvent');
   setTimeout(() => document.getElementById('eventDesc').focus(), 100);
@@ -1375,21 +1508,15 @@ function updateEventConsultantSelect() {
     consultants.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 }
 
-function renderColorPicker() {
-  const cp = document.getElementById('colorPicker');
-  cp.innerHTML = Object.entries(EVENT_COLORS).map(([color, name]) => `
-    <div class="color-option ${color === eventColorSelected ? 'selected' : ''}" style="background:${color}" onclick="eventColorSelected='${color}';renderColorPicker()"></div>
-  `).join('');
-}
-
 function addEvent() {
   const title = document.getElementById('eventDesc').value.trim();
-  const date = document.getElementById('eventDate').value;
-  const time = document.getElementById('eventTime').value;
+  const dt = document.getElementById('eventDateTime').value;
   const consultant = document.getElementById('eventConsultant').value || null;
   const type = document.getElementById('eventType').value;
   
-  if (!title || !date) return;
+  if (!title || !dt) return;
+  
+  const [date, time] = dt.split('T');
   
   tasks.push({
     id: 't_' + Date.now(),
@@ -1398,114 +1525,56 @@ function addEvent() {
     time,
     consultant,
     type,
-    color: eventColorSelected
+    color: '#c8e060'
   });
   
   saveData();
   closeModal('modalAddEvent');
-  
-  if (activeView === 'dashboard') renderDashboard();
-}
-
-function deleteEventFromMenu() {
-  if (contextEvent) {
-    tasks = tasks.filter(t => t.id !== contextEvent);
-    saveData();
-    if (activeView === 'dashboard') renderDashboard();
-    contextEvent = null;
-  }
-}
-
-function setEventColor(color) {
-  if (contextEvent) {
-    const e = tasks.find(t => t.id === contextEvent);
-    if (e) {
-      e.color = color;
-      saveData();
-      if (activeView === 'dashboard') renderDashboard();
-    }
-  }
+  if (activeView === 'calendar') renderCalendar();
 }
 
 function editEvent(id) {
-  contextEvent = id;
   const e = tasks.find(t => t.id === id);
-  if (!e) return;
-  const menu = document.getElementById('eventColorMenu');
-  menu.style.display = 'block';
-  menu.style.left = (event.clientX - 100) + 'px';
-  menu.style.top = (event.clientY + 10) + 'px';
-}
-
-function closeEventMenu() {
-  document.getElementById('eventColorMenu').style.display = 'none';
-}
-
-document.addEventListener('click', e => {
-  if (e.target.id !== 'eventColorMenu' && !e.target.closest('.cal-event-menu')) {
-    closeEventMenu();
-  }
-});
-
-// CHAT
-function sendChatMessage() {
-  const input = document.getElementById('chatInput');
-  const message = input.value.trim();
-  
-  if (!message) return;
-  
-  addChatMessage(message, 'user');
-  input.value = '';
-  
-  const dateMatch = message.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
-  if (dateMatch) {
-    const date = `20${dateMatch[3]}`.slice(0, 4) + '-' + dateMatch[2].padStart(2, '0') + '-' + dateMatch[1].padStart(2, '0');
-    
-    tasks.push({
-      id: 't_' + Date.now(),
-      title: message,
-      date,
-      time: '09:00',
-      consultant: selectedConsultantForChat || null,
-      type: 'task',
-      color: '#c8e060'
-    });
-    
-    saveData();
-    
-    const c = consultants.find(x => x.id === selectedConsultantForChat);
-    const scope = c ? `para ${c.name}` : 'general';
-    addChatMessage(`✓ Tarea agregada ${scope} para ${date}`, 'assistant');
-    
-    if (activeView === 'dashboard') renderDashboard();
-  } else {
-    addChatMessage('Incluye una fecha: ej. "Revisar planos 15/04/2025"', 'assistant');
+  if (e) {
+    // Aquí se abre modal para editar evento
+    // Por ahora solo permite ver/eliminar por click derecho
   }
 }
 
-function addChatMessage(text, role) {
-  const container = document.getElementById('chatMessages');
-  const msg = document.createElement('div');
-  msg.className = 'msg ' + role;
-  msg.innerHTML = `
-    <div class="msg-label">${role === 'user' ? 'Tú' : 'Asistente'}</div>
-    <div class="msg-bubble">${text}</div>
-  `;
-  container.appendChild(msg);
-  container.scrollTop = container.scrollHeight;
+// CONSULTORES
+function openAddConsultant() {
+  openModal('modalAddConsultant');
+  setTimeout(() => document.getElementById('newConsultantName').focus(), 100);
 }
 
-function toggleChat() {
-  const chat = document.getElementById('chatContainer');
-  chat.classList.toggle('chat-collapsed');
+function addConsultant() {
+  const name = document.getElementById('newConsultantName').value.trim();
+  const area = document.getElementById('newConsultantArea').value.trim();
+  
+  if (!name || !area) return;
+  
+  consultants.push({
+    id: 'c_' + Date.now(),
+    name,
+    area,
+    phone: '',
+    email: '',
+    schedule: '',
+    documents: [],
+    contract: null,
+    index: []
+  });
+  
+  saveData();
+  closeModal('modalAddConsultant');
+  updateSidebar();
+  updateEventConsultantSelect();
+  
+  document.getElementById('newConsultantName').value = '';
+  document.getElementById('newConsultantArea').value = '';
 }
 
-function autoResizeChat(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
-}
-
-// MODAL
+// MODALS
 function openModal(id) {
   document.getElementById(id).className = 'modal-overlay open';
 }
@@ -1525,8 +1594,7 @@ function init() {
   loadData();
   updateSidebar();
   updateEventConsultantSelect();
-  renderDashboard();
-  renderColorPicker();
+  renderCalendar();
 }
 
 init();
