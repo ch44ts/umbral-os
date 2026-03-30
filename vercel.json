@@ -1,0 +1,5 @@
+{
+  "name": "umbral-os",
+  "buildCommand": "true",
+  "devCommand": "npx vercel dev"
+}
