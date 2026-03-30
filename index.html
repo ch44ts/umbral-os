@@ -3,15 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Umbral OS</title>
+<title>Umbral OS v6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
   --bg: #0e0f0c;
@@ -19,18 +15,9 @@
   --card: #1c1e17;
   --border: #2a2d22;
   --accent: #c8e060;
-  --accent-dim: #a8bc4a;
   --text: #e8eadf;
   --text-muted: #7a7d6e;
   --text-faint: #3d3f35;
-  --ok: #60c882;
-  --warn: #e0b060;
-  --danger: #e06060;
-  --orange: #e08040;
-}
-
-html, body {
-  height: 100%;
 }
 
 body {
@@ -39,6 +26,7 @@ body {
   font-family: 'DM Mono', monospace;
   display: flex;
   flex-direction: column;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -50,7 +38,6 @@ header {
   gap: 11px;
   background: var(--surface);
   flex-shrink: 0;
-  z-index: 50;
 }
 
 header h1 {
@@ -58,25 +45,12 @@ header h1 {
   font-size: 19px;
   color: var(--accent);
   cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-header h1:hover {
-  opacity: 0.8;
-}
-
-header span {
-  font-size: 9px;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-  text-transform: uppercase;
 }
 
 .layout-wrapper {
   display: flex;
   flex: 1;
   overflow: hidden;
-  position: relative;
 }
 
 .sidebar {
@@ -104,7 +78,6 @@ header span {
   background: none;
   border: 1px solid var(--border);
   color: var(--accent);
-  font-family: 'DM Mono', monospace;
   font-size: 15px;
   width: 21px;
   height: 21px;
@@ -116,9 +89,7 @@ header span {
   transition: all 0.2s;
 }
 
-.btn-add:hover {
-  background: rgba(200, 224, 96, 0.1);
-}
+.btn-add:hover { background: rgba(200, 224, 96, 0.1); }
 
 .consultant-list {
   flex: 1;
@@ -136,9 +107,7 @@ header span {
   gap: 8px;
 }
 
-.consultant-item:hover {
-  background: rgba(200, 224, 96, 0.05);
-}
+.consultant-item:hover { background: rgba(200, 224, 96, 0.05); }
 
 .consultant-item.active {
   background: rgba(200, 224, 96, 0.08);
@@ -158,10 +127,7 @@ header span {
   flex-shrink: 0;
 }
 
-.c-info {
-  flex: 1;
-  min-width: 0;
-}
+.c-info { flex: 1; min-width: 0; }
 
 .c-name {
   color: var(--text);
@@ -183,7 +149,6 @@ header span {
   border-bottom: 1px solid var(--border);
   background: var(--surface);
   flex-shrink: 0;
-  overflow-x: auto;
 }
 
 .tab {
@@ -198,9 +163,7 @@ header span {
   white-space: nowrap;
 }
 
-.tab:hover {
-  color: var(--text);
-}
+.tab:hover { color: var(--text); }
 
 .tab.active {
   color: var(--accent);
@@ -213,6 +176,7 @@ header span {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  padding-bottom: 280px;
 }
 
 .view {
@@ -221,29 +185,71 @@ header span {
   display: none;
 }
 
-.view.active {
-  display: flex;
-}
-
-/* CALENDAR VIEW */
-.calendar-view {
-  flex-direction: column;
-  overflow: hidden;
-}
+.view.active { display: flex; }
 
 .cal-header {
-  padding: 0;
-  border-bottom: none;
-  background: transparent;
-  display: none;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
   flex-shrink: 0;
 }
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-nav button {
+  padding: 4px 8px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.cal-nav button:hover { border-color: var(--accent); color: var(--accent); }
+
+#calWeekLabel {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 600;
+  min-width: 120px;
+  text-align: center;
+}
+
+.cal-btn {
+  padding: 4px 10px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 9px;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.cal-btn:hover { border-color: var(--accent); color: var(--accent); }
 
 .calendar-grid {
   flex: 1;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 50px repeat(7, 1fr);
+  grid-template-rows: auto auto auto 1fr;
 }
 
 .cal-days-row {
@@ -251,13 +257,13 @@ header span {
   grid-template-columns: 50px repeat(7, 1fr);
   border-bottom: 1px solid var(--border);
   background: var(--surface);
-  flex-shrink: 0;
+  grid-column: 1 / -1;
 }
 
 .cal-day-header {
   padding: 10px 4px;
   text-align: center;
-  font-size: 8px;
+  font-size: 11px;
   color: var(--text-muted);
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -269,14 +275,15 @@ header span {
   gap: 4px;
 }
 
-.cal-day-header:last-child {
-  border-right: none;
+.cal-day-header .day-name { font-weight: 600; }
+
+.cal-day-header .day-num {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
 }
 
-.cal-day-header .day-name {
-  font-weight: 600;
-  font-size: 8px;
-}
+.cal-day-header:last-child { border-right: none; }
 
 .cal-day-header .day-num {
   font-size: 16px;
@@ -300,6 +307,7 @@ header span {
 }
 
 .cal-hours-wrapper {
+  grid-column: 1 / -1;
   flex: 1;
   overflow-y: auto;
   display: flex;
@@ -316,10 +324,10 @@ header span {
 }
 
 .cal-time-label {
-  height: 48px;
+  height: 60px;
   padding: 4px 4px;
   text-align: right;
-  font-size: 7px;
+  font-size: 11px;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -333,393 +341,74 @@ header span {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0;
+  padding-right: 12px;
 }
 
 .cal-day-column {
   border-right: 1px solid var(--border);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
-.cal-day-column:last-child {
-  border-right: none;
+.cal-day-column:last-child { border-right: none; }
+
+.cal-slots {
+  position: relative;
+  height: 100%;
 }
 
 .cal-slot {
-  height: 48px;
+  height: 60px;
   border-bottom: 1px solid var(--border);
   position: relative;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.cal-slot:hover {
-  background: rgba(200, 224, 96, 0.05);
-}
+.cal-slot:hover { background: rgba(200, 224, 96, 0.05); }
 
 .cal-event {
   position: absolute;
   left: 2px;
   right: 2px;
-  padding: 2px 4px;
-  border-radius: 2px;
-  font-size: 8px;
+  padding: 5px 7px;
+  border-radius: 3px;
+  font-size: 11px;
   font-weight: 500;
-  color: white;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  cursor: pointer;
+  cursor: grab;
   transition: all 0.2s;
+  border: 1px solid rgba(0,0,0,0.2);
+  color: #000;
+  user-select: none;
 }
+
+.cal-event:active { cursor: grabbing; }
 
 .cal-event:hover {
-  filter: brightness(1.15);
+  filter: brightness(0.95);
   z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* OTHER VIEWS */
+.cal-event-resize {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  cursor: ns-resize;
+  background: rgba(0,0,0,0.3);
+  border-radius: 0 0 2px 2px;
+}
+
 .side-view {
   flex: 1;
   overflow-y: auto;
   padding: 16px 20px;
   scrollbar-width: thin;
-}
-
-.section-title {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.section-title:first-child {
-  margin-top: 0;
-}
-
-.section-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-.info-header {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 14px;
-  margin-bottom: 16px;
-  border-left: 3px solid var(--accent);
-}
-
-.info-header-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: 4px;
-}
-
-.info-header-area {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.field {
-  margin-bottom: 12px;
-}
-
-.field label {
-  display: block;
-  font-size: 8px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  padding: 8px;
-  outline: none;
-  border-radius: 3px;
-  resize: vertical;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: var(--accent);
-}
-
-.drop-zone {
-  border: 1px dashed var(--border);
-  border-radius: 4px;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--card);
-  margin-bottom: 16px;
-}
-
-.drop-zone:hover,
-.drop-zone.dragover {
-  border-color: var(--accent);
-  background: rgba(200, 224, 96, 0.05);
-}
-
-.drop-zone p {
-  font-size: 9px;
-  color: var(--text-faint);
-  margin: 0;
-  letter-spacing: 0.5px;
-}
-
-.drop-zone .icon {
-  font-size: 16px;
-  margin-bottom: 6px;
-  opacity: 0.4;
-}
-
-.doc-item {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 10px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.doc-name {
-  font-size: 10px;
-  color: var(--text);
-}
-
-.doc-date {
-  font-size: 8px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-.btn-small {
-  padding: 4px 6px;
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  cursor: pointer;
-  border-radius: 2px;
-  font-size: 8px;
-  transition: all 0.2s;
-}
-
-.btn-small:hover {
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-.btn-danger {
-  width: 80px;
-  padding: 12px 8px;
-  background: var(--danger);
-  color: white;
-  border: none;
-  border-radius: 3px;
-  font-size: 9px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-  margin-top: auto;
-}
-
-.btn-danger:hover {
-  background: #dc2626;
-}
-
-.info-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-/* INDEX TABLE */
-.table-wrapper {
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 16px;
-  position: relative;
-}
-
-.table-header {
-  display: flex;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-}
-
-.table-cell-header {
-  padding: 10px;
-  font-size: 8px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  font-weight: 600;
-  border-right: 1px solid var(--border);
-  position: relative;
-  user-select: none;
-  flex: 1;
-}
-
-.table-cell-header:last-child {
-  border-right: none;
-}
-
-.resize-handle {
-  position: absolute;
-  right: -3px;
-  top: 0;
-  bottom: 0;
-  width: 6px;
-  cursor: col-resize;
-  background: transparent;
-}
-
-.resize-handle:hover {
-  background: var(--accent);
-  opacity: 0.7;
-}
-
-.table-row {
-  display: flex;
-  border-bottom: 1px solid var(--text-faint);
-  align-items: stretch;
-}
-
-.table-row:hover {
-  background: rgba(200, 224, 96, 0.02);
-}
-
-.table-row:last-child {
-  border-bottom: none;
-}
-
-.table-cell {
-  padding: 10px;
-  border-right: 1px solid var(--border);
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  flex: 1;
-}
-
-.table-cell:last-child {
-  border-right: none;
-}
-
-.table-cell input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  outline: none;
-  padding: 0;
-}
-
-.table-cell input:focus {
-  border-bottom: 1px solid var(--accent);
-  padding-bottom: 2px;
-}
-
-.table-cell input[type="checkbox"] {
-  width: auto;
-  cursor: pointer;
-  margin: 0;
-  flex: 0 0 auto;
-}
-
-.table-add-row {
-  display: flex;
-  border-top: 2px solid var(--border);
-  background: rgba(200, 224, 96, 0.03);
-}
-
-.table-add-cell {
-  padding: 10px;
-  border-right: 1px solid var(--border);
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  flex: 1;
-}
-
-.table-add-cell:last-child {
-  border-right: none;
-}
-
-.table-add-cell input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  outline: none;
-  padding: 0;
-}
-
-.table-add-cell input:focus {
-  border-bottom: 1px solid var(--accent);
-  padding-bottom: 2px;
-}
-
-.table-add-cell input[type="checkbox"] {
-  width: auto;
-  cursor: pointer;
-  flex: 0 0 auto;
-}
-
-.table-actions {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-
-.btn-primary {
-  padding: 6px 12px;
-  background: var(--accent);
-  color: var(--bg);
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.btn-primary:hover {
-  background: var(--accent-dim);
 }
 
 .empty-state {
@@ -729,9 +418,8 @@ header span {
   font-size: 11px;
 }
 
-/* CHAT FIJO ABAJO */
 .chat-bottom {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
@@ -754,34 +442,10 @@ header span {
 
 .chat-header h3 {
   font-family: 'DM Serif Display', serif;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--accent);
   letter-spacing: 0.5px;
-}
-
-.chat-header-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.chat-action-btn {
-  width: 24px;
-  height: 24px;
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  cursor: pointer;
-  border-radius: 3px;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.chat-action-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  font-weight: 400;
 }
 
 .chat-messages {
@@ -798,20 +462,10 @@ header span {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  animation: fadeUp 0.3s ease;
   max-width: 85%;
 }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+.msg.user { align-self: flex-end; }
 
 .msg-label {
   font-size: 7px;
@@ -820,14 +474,7 @@ header span {
   color: var(--text-faint);
 }
 
-.msg.user {
-  align-self: flex-end;
-}
-
-.msg.user .msg-label {
-  color: var(--accent);
-  text-align: right;
-}
+.msg.user .msg-label { color: var(--accent); text-align: right; }
 
 .msg-bubble {
   padding: 8px 11px;
@@ -854,7 +501,6 @@ header span {
   display: flex;
   gap: 8px;
   flex-shrink: 0;
-  align-items: flex-end;
 }
 
 .chat-input-wrap {
@@ -880,9 +526,7 @@ header span {
   max-height: 60px;
 }
 
-.chat-input-wrap textarea::placeholder {
-  color: var(--text-faint);
-}
+.chat-input-wrap textarea::placeholder { color: var(--text-faint); }
 
 .chat-send-btn {
   padding: 6px 10px;
@@ -896,98 +540,8 @@ header span {
   transition: all 0.2s;
 }
 
-.chat-send-btn:hover {
-  background: var(--accent-dim);
-}
+.chat-send-btn:hover { background: #a8bc4a; }
 
-/* CONFIRMATION BANNER */
-.confirmation-banner {
-  position: fixed;
-  bottom: 280px;
-  left: 0;
-  right: 0;
-  background: var(--danger);
-  color: white;
-  padding: 16px 20px;
-  display: none;
-  align-items: center;
-  gap: 16px;
-  z-index: 35;
-  box-shadow: 0 -4px 12px rgba(224, 96, 96, 0.3);
-  font-family: 'DM Serif Display', serif;
-  font-size: 13px;
-}
-
-.confirmation-banner.show {
-  display: flex;
-}
-
-.confirmation-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.confirmation-action {
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.confirmation-description {
-  font-size: 11px;
-  opacity: 0.95;
-  font-family: 'DM Mono', monospace;
-}
-
-.confirmation-buttons {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.btn-confirm {
-  background: white;
-  color: var(--danger);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: all 0.2s;
-}
-
-.btn-confirm:hover {
-  background: #f0f0f0;
-  transform: scale(1.05);
-}
-
-.btn-cancel {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid white;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: all 0.2s;
-}
-
-.btn-cancel:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.view-wrapper {
-  padding-bottom: 280px;
-}
-
-/* MODAL */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -998,9 +552,7 @@ header span {
   z-index: 200;
 }
 
-.modal-overlay.open {
-  display: flex;
-}
+.modal-overlay.open { display: flex; }
 
 .modal {
   background: var(--card);
@@ -1020,12 +572,54 @@ header span {
   color: var(--accent);
 }
 
+.field {
+  margin-bottom: 12px;
+}
+
+.field label {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.field input, .field select, .field textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 8px;
+  outline: none;
+  border-radius: 3px;
+}
+
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+
 .modal-footer {
   display: flex;
   gap: 8px;
   margin-top: 16px;
   justify-content: flex-end;
 }
+
+.btn-primary {
+  padding: 8px 14px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.btn-primary:hover { background: #a8bc4a; }
 
 .btn-ghost {
   background: transparent;
@@ -1036,24 +630,115 @@ header span {
   cursor: pointer;
   font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.btn-ghost:hover {
-  border-color: var(--text);
-  color: var(--text);
+.btn-ghost:hover { border-color: var(--text); color: var(--text); }
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
 }
+
+.color-option {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.color-option:hover { border-color: #fff; }
+
+.color-option.selected { border-color: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.5); }
+
+.consultant-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.filter-chip {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 9px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: #000;
+  font-weight: 500;
+}
+
+.filter-chip:hover { opacity: 0.8; }
+
+.filter-chip.selected { border: 2px solid #fff; box-shadow: 0 0 8px rgba(255,255,255,0.4); }
+
+.context-menu {
+  position: fixed;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 0;
+  z-index: 300;
+  display: none;
+  min-width: 150px;
+}
+
+.context-menu.open { display: block; }
+
+.context-menu-item {
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 9px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.context-menu-item:hover { background: rgba(200, 224, 96, 0.2); }
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.color-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px 12px;
+}
+
+.color-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.color-circle:hover { transform: scale(1.1); border-color: #fff; }
 </style>
 </head>
 <body>
 
 <header>
   <h1 onclick="goToDashboard()">Umbral OS</h1>
-  <span>v5 · Ejecutivo</span>
 </header>
 
 <div class="layout-wrapper">
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-section">
       Consultores
@@ -1062,7 +747,6 @@ header span {
     <div class="consultant-list" id="consultantList"></div>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="main-content">
     <div class="tabs">
       <div class="tab active" data-view="calendar" onclick="switchView('calendar')">📅 Calendario</div>
@@ -1072,20 +756,26 @@ header span {
     </div>
 
     <div class="view-wrapper">
-      <!-- CALENDAR -->
       <div class="view active" id="view-calendar">
-        <div style="padding:8px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface)">
-          <div id="calWeekLabel" style="font-size:11px;color:var(--text);font-weight:600;letter-spacing:1px"></div>
-          <div style="display:flex;gap:6px">
-            <button onclick="calPrevWeek()" style="padding:4px 10px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;border-radius:3px;font-size:9px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">← Anterior</button>
-            <button onclick="calToday()" style="padding:4px 10px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;border-radius:3px;font-size:9px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Hoy</button>
-            <button onclick="calNextWeek()" style="padding:4px 10px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;border-radius:3px;font-size:9px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Próxima →</button>
-          </div>
-        </div>
-        
         <div class="calendar-grid">
+          <div style="grid-column:1/-1;padding:8px 16px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:12px;justify-content:space-between">
+            <div class="cal-nav">
+              <button onclick="calPrevWeek()">‹</button>
+              <div id="calWeekLabel"></div>
+              <button onclick="calNextWeek()">›</button>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="cal-btn" onclick="toggleConsultantFilter()">👥 Consultores</button>
+              <button class="cal-btn" onclick="calToday()">Hoy</button>
+            </div>
+          </div>
+
+          <div id="consultantFilterPanel" style="display:none;grid-column:1/-1;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--card)">
+            <div style="font-size:8px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Filtrar por consultor</div>
+            <div class="consultant-filter" id="consultantFilter"></div>
+          </div>
+
           <div class="cal-days-row" id="calDaysRow"></div>
-          
           <div class="cal-hours-wrapper">
             <div class="cal-time-labels" id="calTimeLabels"></div>
             <div class="cal-days-content" id="calDaysContent"></div>
@@ -1093,66 +783,26 @@ header span {
         </div>
       </div>
 
-      <!-- DOCUMENTS -->
       <div class="view" id="view-documents">
-        <div class="side-view">
-          <div id="documentsContent"></div>
-        </div>
+        <div class="side-view" id="documentsContent"></div>
       </div>
 
-      <!-- INDEX -->
       <div class="view" id="view-index">
-        <div class="side-view">
-          <div class="section-title">Índice de Planos</div>
-          <div class="table-wrapper" id="indexTable"></div>
-        </div>
+        <div class="side-view" id="indexContent"></div>
       </div>
 
-      <!-- INFO -->
       <div class="view" id="view-info">
-        <div class="side-view">
-          <div class="info-container" id="infoContent"></div>
-        </div>
+        <div class="side-view" id="infoContent"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CONFIRMATION BANNER -->
-<div class="confirmation-banner" id="confirmationBanner">
-  <div class="confirmation-content">
-    <div class="confirmation-action" id="confirmationAction">Acción pendiente</div>
-    <div class="confirmation-description" id="confirmationDescription">Confirma esta acción</div>
-  </div>
-  <div class="confirmation-buttons">
-    <button class="btn-confirm" onclick="confirmAction()">✓ Confirmar</button>
-    <button class="btn-cancel" onclick="cancelAction()">✕ Cancelar</button>
-  </div>
-</div>
-
-<!-- CHAT FIJO ABAJO -->
 <div class="chat-bottom">
   <div class="chat-header">
     <h3>Chat</h3>
-    <div class="chat-header-actions">
-      <button class="chat-action-btn" title="Filtrar por consultor" onclick="toggleConsultantFilter()">👤</button>
-      <button class="chat-action-btn" title="Agregar documento" onclick="toggleDocUpload()">📎</button>
-    </div>
   </div>
-  
-  <div id="consultantFilter" style="display:none;padding:8px 16px;border-bottom:1px solid var(--border);background:var(--card);max-height:80px;overflow-y:auto">
-    <div style="font-size:8px;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Consultor</div>
-    <div id="consultantChips" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-  </div>
-  
-  <div id="docUploadArea" style="display:none;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--card)">
-    <div style="font-size:8px;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Subir documento</div>
-    <input type="file" id="chatFileInput" style="display:none" onchange="handleChatFileUpload(this.files[0])">
-    <button class="btn-small" style="background:var(--accent);color:var(--bg);cursor:pointer;width:100%" onclick="document.getElementById('chatFileInput').click()">Seleccionar archivo</button>
-  </div>
-  
   <div class="chat-messages" id="chatMessages"></div>
-  
   <div class="chat-input-area">
     <div class="chat-input-wrap">
       <textarea id="chatInput" placeholder="Pregunta o agrega tarea..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}" oninput="autoResizeChat(this)"></textarea>
@@ -1161,7 +811,28 @@ header span {
   </div>
 </div>
 
-<!-- MODAL AGREGAR CONSULTOR -->
+<div class="modal-overlay" id="modalAddEvent">
+  <div class="modal">
+    <h3>Agregar Evento</h3>
+    <div class="field">
+      <label>Descripción</label>
+      <textarea id="eventDesc" placeholder="Ej. Reunión con García" style="min-height:60px"></textarea>
+    </div>
+    <div class="field">
+      <label>Consultor</label>
+      <select id="eventConsultant"><option value="">General</option></select>
+    </div>
+    <div class="field">
+      <label>Color</label>
+      <div class="color-grid" id="colorPicker"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('modalAddEvent')">Cancelar</button>
+      <button class="btn-primary" onclick="addEvent()">Agregar</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modalAddConsultant">
   <div class="modal">
     <h3>Agregar Consultor</h3>
@@ -1180,42 +851,17 @@ header span {
   </div>
 </div>
 
-<!-- MODAL AGREGAR EVENTO -->
-<div class="modal-overlay" id="modalAddEvent">
-  <div class="modal">
-    <h3>Agregar Evento</h3>
-    <div class="field">
-      <label>Descripción</label>
-      <textarea id="eventDesc" placeholder="Ej. Entrega de planos" style="min-height:60px"></textarea>
-    </div>
-    <div class="field">
-      <label>Consultor (opcional)</label>
-      <select id="eventConsultant">
-        <option value="">General</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Fecha y Hora</label>
-      <input type="datetime-local" id="eventDateTime">
-    </div>
-    <div class="field">
-      <label>Tipo</label>
-      <select id="eventType">
-        <option>Tarea</option>
-        <option>Reunión</option>
-        <option>Entrega</option>
-      </select>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-ghost" onclick="closeModal('modalAddEvent')">Cancelar</button>
-      <button class="btn-primary" onclick="addEvent()">Agregar</button>
-    </div>
-  </div>
+<div class="context-menu" id="contextMenu">
+  <div class="color-options-grid" id="contextColorOptions"></div>
+  <div style="border-top:1px solid var(--border);margin-top:4px"></div>
+  <div class="context-menu-item" onclick="deleteEvent()">🗑 Eliminar</div>
 </div>
 
 <script>
-const COLORS = ['#c8e060', '#a060e0', '#e0a060', '#60a0e0', '#e06060', '#a0c860', '#60c8c8', '#c860c8'];
-const HOURS = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+const COLORS = ['#c8e060', '#a060e0', '#e0a060', '#60a0e0', '#e06060', '#a0c860'];
+const COLOR_NAMES = ['Importante', 'Reunión', 'Entrega', 'Urgente', 'Crítico', 'Normal'];
+
+const HOURS = Array.from({length: 12}, (_, i) => `${String(i+8).padStart(2, '0')}:00`);
 
 let consultants = [];
 let tasks = [];
@@ -1224,33 +870,23 @@ let activeView = 'calendar';
 let calWeekStart = new Date();
 calWeekStart.setDate(calWeekStart.getDate() - calWeekStart.getDay());
 
-// CONFIRMATION
-let pendingAction = null;
-let pendingActionData = null;
+let selectedEventColor = COLORS[0];
+let eventModalDate = null;
+let eventModalTime = null;
+let filteredConsultants = [];
+let draggedEvent = null;
+let contextMenuEvent = null;
 
-function showConfirmation(action, description, callback) {
-  pendingAction = callback;
-  pendingActionData = null;
-  
-  document.getElementById('confirmationAction').textContent = action;
-  document.getElementById('confirmationDescription').textContent = description;
-  document.getElementById('confirmationBanner').classList.add('show');
-}
+// INIT
+window.addEventListener('load', () => {
+  loadData();
+  updateSidebar();
+  renderCalendar();
+  renderColorPicker();
+  renderContextColorMenu();
+  addChatMessage('Bienvenido a Umbral OS v6. ¿Qué necesitas?', 'assistant');
+});
 
-function confirmAction() {
-  if (pendingAction) {
-    pendingAction(pendingActionData);
-  }
-  cancelAction();
-}
-
-function cancelAction() {
-  document.getElementById('confirmationBanner').classList.remove('show');
-  pendingAction = null;
-  pendingActionData = null;
-}
-
-// DATA
 function loadData() {
   const c = localStorage.getItem('umbral_consultants');
   const t = localStorage.getItem('umbral_tasks');
@@ -1263,102 +899,507 @@ function saveData() {
   localStorage.setItem('umbral_tasks', JSON.stringify(tasks));
 }
 
-function goToDashboard() {
-  selectedConsultantForChat = null;
-  switchView('calendar');
-  updateSidebar();
-}
-
-// SIDEBAR
 function updateSidebar() {
   const list = document.getElementById('consultantList');
   list.innerHTML = consultants.map((c, i) => `
     <div class="consultant-item ${selectedConsultantForChat === c.id ? 'active' : ''}" onclick="selectConsultant('${c.id}')">
-      <div class="c-avatar" style="background:${COLORS[i%8]};color:var(--bg)">${c.name.charAt(0)}</div>
+      <div class="c-avatar" style="background:${COLORS[i%6]}">${c.name.charAt(0)}</div>
       <div class="c-info">
         <div class="c-name">${c.name}</div>
         <div style="font-size:8px;color:var(--text-muted)">${c.company}</div>
       </div>
     </div>
   `).join('');
+  updateConsultantFilter();
+  updateEventConsultantSelect();
+}
+
+function updateConsultantFilter() {
+  const filter = document.getElementById('consultantFilter');
+  filter.innerHTML = consultants.map((c, i) => `
+    <div class="filter-chip ${filteredConsultants.includes(c.id) ? 'selected' : ''}" onclick="toggleConsultantInFilter('${c.id}')" style="background:${COLORS[i%6]}">
+      ${c.name}
+    </div>
+  `).join('');
+}
+
+function toggleConsultantInFilter(id) {
+  if (filteredConsultants.includes(id)) {
+    filteredConsultants = filteredConsultants.filter(x => x !== id);
+  } else {
+    filteredConsultants.push(id);
+  }
+  renderCalendar();
+}
+
+function toggleConsultantFilter() {
+  const panel = document.getElementById('consultantFilterPanel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
 }
 
 function selectConsultant(id) {
-  selectedConsultantForChat = id;
+  selectedConsultantForChat = selectedConsultantForChat === id ? null : id;
   updateSidebar();
-  if (activeView === 'documents') renderDocuments();
+  renderCurrentView();
+}
+
+function switchView(view) {
+  activeView = view;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[data-view="${view}"]`).classList.add('active');
+  renderCurrentView();
+}
+
+function renderCurrentView() {
+  if (activeView === 'calendar') renderCalendar();
+  else if (activeView === 'documents') renderDocuments();
   else if (activeView === 'index') renderIndex();
   else if (activeView === 'info') renderInfo();
 }
 
-// VIEWS
-function switchView(v) {
-  activeView = v;
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
-  document.querySelectorAll('.view').forEach(v2 => v2.classList.remove('active'));
-  document.getElementById('view-' + v).classList.add('active');
-  
-  if (v === 'calendar') renderCalendar();
-  else if (v === 'documents') renderDocuments();
-  else if (v === 'index') renderIndex();
-  else if (v === 'info') renderInfo();
+function renderColorPicker() {
+  const picker = document.getElementById('colorPicker');
+  picker.innerHTML = COLORS.map((col, i) => `
+    <div class="color-option ${selectedEventColor === col ? 'selected' : ''}" style="background:${col}" onclick="selectedEventColor='${col}';document.querySelectorAll('.color-option').forEach(el=>el.classList.remove('selected'));this.classList.add('selected')" title="${COLOR_NAMES[i]}"></div>
+  `).join('');
 }
 
-// CALENDAR
+function renderContextColorMenu() {
+  const menu = document.getElementById('contextColorOptions');
+  menu.innerHTML = COLORS.map((col, i) => `
+    <div class="color-circle" style="background:${col}" onclick="changeEventColor('${col}')" title="Color ${i+1}"></div>
+  `).join('');
+}
+
+function updateEventConsultantSelect() {
+  const sel = document.getElementById('eventConsultant');
+  sel.innerHTML = '<option value="">General</option>' + consultants.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
 function renderCalendar() {
-  const days = [];
-  const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-  
+  const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const weekEnd = new Date(calWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+  let weekLabel = calWeekStart.getMonth() === weekEnd.getMonth() 
+    ? `${monthNames[calWeekStart.getMonth()]} ${calWeekStart.getFullYear()}`
+    : `${monthNames[calWeekStart.getMonth()]} - ${monthNames[weekEnd.getMonth()]} ${weekEnd.getFullYear()}`;
+  document.getElementById('calWeekLabel').textContent = weekLabel;
+
+  // Days row
+  const daysRow = document.getElementById('calDaysRow');
+  let daysHtml = '<div></div>';
   for (let i = 0; i < 7; i++) {
     const d = new Date(calWeekStart);
     d.setDate(d.getDate() + i);
-    days.push(d);
-  }
-  
-  // Headers
-  let headerHtml = '<div class="cal-day-header"></div>';
-  days.forEach(d => {
     const isToday = d.toDateString() === new Date().toDateString();
-    headerHtml += `
-      <div class="cal-day-header ${isToday ? 'today' : ''}">
-        <div class="day-name">${dayNames[d.getDay()]}</div>
-        <div class="day-num">${d.getDate()}</div>
-      </div>
-    `;
-  });
-  document.getElementById('calDaysRow').innerHTML = headerHtml;
-  
+    daysHtml += `<div class="cal-day-header ${isToday ? 'today' : ''}">
+      <div class="day-name">${['D', 'L', 'M', 'M', 'J', 'V', 'S'][i]}</div>
+      <div class="day-num">${d.getDate()}</div>
+    </div>`;
+  }
+  daysRow.innerHTML = daysHtml;
+
   // Time labels
-  let timeLabelHtml = '';
-  HOURS.forEach(hour => {
-    timeLabelHtml += `<div class="cal-time-label">${hour}</div>`;
-  });
-  document.getElementById('calTimeLabels').innerHTML = timeLabelHtml;
-  
-  // Days content
+  const timeLabels = document.getElementById('calTimeLabels');
+  timeLabels.innerHTML = '<div></div>' + HOURS.map(h => `<div class="cal-time-label">${h}</div>`).join('');
+
+  // Calendar grid
+  const content = document.getElementById('calDaysContent');
   let contentHtml = '';
-  days.forEach(d => {
+  for (let day = 0; day < 7; day++) {
+    const d = new Date(calWeekStart);
+    d.setDate(d.getDate() + day);
     const dateStr = d.toISOString().split('T')[0];
-    contentHtml += '<div class="cal-day-column">';
     
-    HOURS.forEach(hour => {
-      const dayTasks = tasks.filter(t => t.date === dateStr && t.time.startsWith(hour.split(':')[0]));
-      
-      contentHtml += `<div class="cal-slot" onclick="openEventModal('${dateStr}', '${hour}')">`;
-      dayTasks.forEach(t => {
-        contentHtml += `<div class="cal-event" style="background:${t.color}" title="${t.title}" onclick="event.stopPropagation()">${t.title}</div>`;
-      });
-      contentHtml += '</div>';
+    // Filter tasks by consultant if selected
+    const dayTasks = tasks.filter(t => t.date === dateStr && 
+      (filteredConsultants.length === 0 || !t.consultant || filteredConsultants.includes(t.consultant)));
+    
+    let columnHtml = `<div class="cal-day-column" data-date="${dateStr}" ondrop="handleDrop(event)" ondragover="handleDragOver(event)"><div class="cal-slots">`;
+    
+    for (let hour = 0; hour < HOURS.length; hour++) {
+      columnHtml += `<div class="cal-slot" data-hour="${hour}" data-date="${dateStr}" onclick="openEventModal('${dateStr}', ${hour})"></div>`;
+    }
+
+    // Add events
+    // Agrupar eventos por hora para detectar simultáneos
+    const eventsByHour = {};
+    dayTasks.forEach(task => {
+      const startHour = parseInt(task.time.split(':')[0]) - 8;
+      if (startHour >= 0 && startHour < HOURS.length) {
+        if (!eventsByHour[startHour]) eventsByHour[startHour] = [];
+        eventsByHour[startHour].push(task);
+      }
     });
     
-    contentHtml += '</div>';
-  });
-  document.getElementById('calDaysContent').innerHTML = contentHtml;
+    dayTasks.forEach(task => {
+      const startHour = parseInt(task.time.split(':')[0]) - 8;
+      const duration = task.duration || 1;
+      if (startHour >= 0 && startHour < HOURS.length) {
+        const eventsAtHour = eventsByHour[startHour] || [];
+        const eventIndex = eventsAtHour.findIndex(t => t.id === task.id);
+        const totalEvents = eventsAtHour.length;
+        
+        const top = startHour * 60 + 2;
+        const height = Math.max(20, duration * 60 - 4);
+        let width = 100;
+        let left = 0;
+        
+        // Si hay múltiples eventos en la misma hora, dividir solo ancho
+        if (totalEvents > 1) {
+          width = 100 / totalEvents;
+          left = (width * eventIndex);
+        }
+        
+        const consIdx = consultants.findIndex(c => c.id === task.consultant);
+        const bgCol = COLORS[consIdx >= 0 ? consIdx : 0];
+        columnHtml += `<div class="cal-event" data-task-id="${task.id}" style="top:${top}px;height:${height}px;left:${left}%;width:${width}%;background:${task.color || bgCol}" draggable="true">
+          ${task.title}
+          <div class="cal-event-resize"></div>
+        </div>`;
+      }
+    });
+
+    columnHtml += '</div></div>';
+    contentHtml += columnHtml;
+  }
+  content.innerHTML = contentHtml;
+
+  // Agregar listeners a eventos
+  setTimeout(() => {
+    document.querySelectorAll('.cal-event').forEach(el => {
+      el.addEventListener('dragstart', handleDragStart);
+      el.addEventListener('dragend', handleDragEnd);
+      el.addEventListener('contextmenu', (e) => {
+        const taskId = el.getAttribute('data-task-id');
+        showContextMenu(e, taskId);
+      });
+      
+      // Resize listener
+      const resize = el.querySelector('.cal-event-resize');
+      if (resize) {
+        resize.addEventListener('mousedown', (e) => {
+          const taskId = el.getAttribute('data-task-id');
+          startResizeEvent(e, taskId);
+        });
+      }
+    });
+  }, 0);
+}
+
+function startResizeEvent(e, taskId) {
+  e.stopPropagation();
+  const task = tasks.find(t => t.id === taskId);
+  if (!task) return;
   
-  // Week label
-  const weekEnd = new Date(calWeekStart);
-  weekEnd.setDate(weekEnd.getDate() + 6);
-  document.getElementById('calWeekLabel').textContent = `${calWeekStart.getDate()}/${calWeekStart.getMonth()+1} - ${weekEnd.getDate()}/${weekEnd.getMonth()+1}`;
+  const eventEl = document.querySelector(`[data-task-id="${taskId}"]`);
+  const startY = e.clientY;
+  const startHeight = eventEl.offsetHeight;
+  
+  const onMouseMove = (me) => {
+    const diff = me.clientY - startY;
+    const newHeight = Math.max(20, startHeight + diff);
+    const newDuration = Math.max(1, Math.round(newHeight / 60));
+    task.duration = newDuration;
+    renderCalendar();
+  };
+  
+  const onMouseUp = () => {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+    saveData();
+  };
+  
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+}
+
+function handleDragStart(e) {
+  if (!e.target.classList.contains('cal-event')) return;
+  draggedEvent = e.target.getAttribute('data-task-id');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('taskId', draggedEvent);
+  e.target.style.opacity = '0.5';
+}
+
+function handleDragEnd(e) {
+  if (e.target.classList.contains('cal-event')) {
+    e.target.style.opacity = '1';
+  }
+  draggedEvent = null;
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  const taskId = e.dataTransfer.getData('taskId');
+  if (!taskId) return;
+  
+  const task = tasks.find(t => t.id === taskId);
+  if (!task) return;
+  
+  const column = e.currentTarget.closest('.cal-day-column');
+  if (!column) return;
+  
+  const newDate = column.getAttribute('data-date');
+  
+  // Calcular nueva hora basada en posición Y
+  const slotY = e.clientY - column.querySelector('.cal-slots').getBoundingClientRect().top;
+  const slotHeight = 60;
+  const hourIndex = Math.floor(slotY / slotHeight);
+  
+  if (hourIndex >= 0 && hourIndex < HOURS.length) {
+    task.date = newDate;
+    task.time = HOURS[hourIndex];
+    saveData();
+    renderCalendar();
+  }
+}
+
+function openEventModal(date, hour) {
+  eventModalDate = date;
+  eventModalTime = HOURS[hour];
+  document.getElementById('eventDesc').value = '';
+  document.getElementById('eventConsultant').value = selectedConsultantForChat || '';
+  selectedEventColor = COLORS[0];
+  renderColorPicker();
+  document.getElementById('modalAddEvent').classList.add('open');
+}
+
+function addEvent() {
+  const desc = document.getElementById('eventDesc').value.trim();
+  if (!desc) return;
+  
+  tasks.push({
+    id: 't_' + Date.now(),
+    title: desc,
+    date: eventModalDate,
+    time: eventModalTime,
+    duration: 1,
+    consultant: document.getElementById('eventConsultant').value || null,
+    color: selectedEventColor
+  });
+  
+  saveData();
+  renderCalendar();
+  closeModal('modalAddEvent');
+  addChatMessage(`✓ Evento "${desc}" agregado para ${eventModalTime}`, 'assistant');
+}
+
+function showContextMenu(e, taskId) {
+  e.preventDefault();
+  contextMenuEvent = taskId;
+  const menu = document.getElementById('contextMenu');
+  menu.style.left = e.clientX + 'px';
+  menu.style.top = e.clientY + 'px';
+  menu.classList.add('open');
+  
+  document.addEventListener('click', closeContextMenu);
+}
+
+function closeContextMenu() {
+  document.getElementById('contextMenu').classList.remove('open');
+  document.removeEventListener('click', closeContextMenu);
+}
+
+function changeEventColor(color) {
+  const event = tasks.find(t => t.id === contextMenuEvent);
+  if (event) {
+    event.color = color;
+    saveData();
+    renderCalendar();
+  }
+  closeContextMenu();
+}
+
+function deleteEvent() {
+  tasks = tasks.filter(t => t.id !== contextMenuEvent);
+  saveData();
+  renderCalendar();
+  closeContextMenu();
+}
+
+function openAddConsultant() {
+  document.getElementById('newConsultantName').value = '';
+  document.getElementById('newConsultantCompany').value = '';
+  document.getElementById('modalAddConsultant').classList.add('open');
+}
+
+function addConsultant() {
+  const name = document.getElementById('newConsultantName').value.trim();
+  const company = document.getElementById('newConsultantCompany').value.trim();
+  if (!name) return;
+  
+  consultants.push({
+    id: 'c_' + Date.now(),
+    name,
+    company,
+    email: '',
+    phone: '',
+    schedule: '',
+    documents: [],
+    index: []
+  });
+  
+  saveData();
+  updateSidebar();
+  closeModal('modalAddConsultant');
+}
+
+function renderDocuments() {
+  if (!selectedConsultantForChat) {
+    document.getElementById('documentsContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
+    return;
+  }
+  
+  const c = consultants.find(x => x.id === selectedConsultantForChat);
+  const docs = c.documents || [];
+  let html = `<h2 style="font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:12px;color:var(--accent)">${c.name}</h2>`;
+  
+  if (docs.length === 0) {
+    html += '<div class="empty-state">Sin documentos</div>';
+  } else {
+    html += docs.map((d, i) => `<div style="padding:8px;background:var(--card);border:1px solid var(--border);border-radius:3px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+      <div><div style="font-size:10px;color:var(--text)">${d.name}</div><div style="font-size:8px;color:var(--text-muted)">${d.date}</div></div>
+      <button class="btn-ghost" style="padding:4px 8px;font-size:8px" onclick="removeDocument('${c.id}', ${i})">✕</button>
+    </div>`).join('');
+  }
+  
+  document.getElementById('documentsContent').innerHTML = html;
+}
+
+function renderIndex() {
+  if (!selectedConsultantForChat) {
+    document.getElementById('indexContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
+    return;
+  }
+  
+  const c = consultants.find(x => x.id === selectedConsultantForChat);
+  document.getElementById('indexContent').innerHTML = `<h2 style="font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:12px;color:var(--accent)">${c.name}</h2><p style="color:var(--text-muted)">Index en desarrollo...</p>`;
+}
+
+function renderInfo() {
+  if (!selectedConsultantForChat) {
+    document.getElementById('infoContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
+    return;
+  }
+  
+  const c = consultants.find(x => x.id === selectedConsultantForChat);
+  document.getElementById('infoContent').innerHTML = `<h2 style="font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:12px;color:var(--accent)">${c.name}</h2><p style="font-size:10px;color:var(--text)">${c.company}</p>`;
+}
+
+function removeDocument(cid, idx) {
+  const c = consultants.find(x => x.id === cid);
+  if (c) {
+    c.documents.splice(idx, 1);
+    saveData();
+    renderDocuments();
+  }
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function goToDashboard() {
+  selectedConsultantForChat = null;
+  updateSidebar();
+  switchView('calendar');
+}
+
+function autoResizeChat(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 60) + 'px';
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  
+  addChatMessage(msg, 'user');
+  input.value = '';
+  input.style.height = 'auto';
+  
+  // Mostrar indicador de procesamiento
+  addChatMessage('Procesando...', 'assistant');
+  
+  // Llamar a Haiku a través del backend
+  callHaikuAPI(msg);
+}
+
+async function callHaikuAPI(userMessage) {
+  try {
+    // Preparar contexto del programa
+    const context = {
+      consultants: consultants.map(c => ({ id: c.id, name: c.name, company: c.company })),
+      tasks: tasks.length,
+      selectedConsultant: selectedConsultantForChat ? consultants.find(c => c.id === selectedConsultantForChat)?.name : 'General',
+      currentView: activeView,
+      currentWeek: {
+        start: calWeekStart.toISOString().split('T')[0],
+        end: new Date(calWeekStart.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      }
+    };
+    
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: userMessage,
+        context: context
+      })
+    });
+    
+    const chatMessages = document.getElementById('chatMessages');
+    
+    // Remover mensaje de "Procesando..."
+    if (chatMessages.lastChild && chatMessages.lastChild.textContent.includes('Procesando')) {
+      chatMessages.removeChild(chatMessages.lastChild);
+    }
+    
+    if (!response.ok) {
+      const error = await response.text();
+      console.error('API Error:', response.status, error);
+      addChatMessage('Error al conectar con el servidor. Verifica que la API key esté configurada en Vercel.', 'assistant');
+      return;
+    }
+    
+    const data = await response.json();
+    
+    // Mostrar respuesta de Haiku
+    if (data.response) {
+      addChatMessage(data.response, 'assistant');
+    }
+    
+  } catch (error) {
+    console.error('Error calling Haiku API:', error);
+    
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages.lastChild && chatMessages.lastChild.textContent.includes('Procesando')) {
+      chatMessages.removeChild(chatMessages.lastChild);
+    }
+    
+    addChatMessage('No se pudo conectar al servidor. Verifica la configuración de Vercel.', 'assistant');
+  }
+}
+
+function addChatMessage(text, role) {
+  const container = document.getElementById('chatMessages');
+  const msg = document.createElement('div');
+  msg.className = 'msg ' + role;
+  msg.innerHTML = `
+    <div class="msg-label">${role === 'user' ? 'Tú' : 'Asistente'}</div>
+    <div class="msg-bubble">${text}</div>
+  `;
+  container.appendChild(msg);
+  container.scrollTop = container.scrollHeight;
 }
 
 function calPrevWeek() {
@@ -1376,585 +1417,6 @@ function calToday() {
   calWeekStart.setDate(calWeekStart.getDate() - calWeekStart.getDay());
   renderCalendar();
 }
-
-// DOCUMENTS
-function renderDocuments() {
-  if (!selectedConsultantForChat) {
-    document.getElementById('documentsContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
-    return;
-  }
-  
-  const c = consultants.find(x => x.id === selectedConsultantForChat);
-  const i = consultants.indexOf(c);
-  const color = COLORS[i % 8];
-  
-  let html = `
-    <div class="info-header" style="border-left-color:${color}">
-      <div class="info-header-name">${c.name}</div>
-      <div class="info-header-area">${c.company}</div>
-    </div>
-    
-    <div class="section-title">Documentos</div>
-    <div class="drop-zone" id="dropZone">
-      <div class="icon">📄</div>
-      <p>Arrastra documentos aquí</p>
-    </div>
-    
-    <div id="docList"></div>
-  `;
-  
-  document.getElementById('documentsContent').innerHTML = html;
-  
-  const docs = c.documents || [];
-  let docsHtml = '';
-  docs.forEach((doc, idx) => {
-    docsHtml += `
-      <div class="doc-item">
-        <div>
-          <div class="doc-name">📄 ${doc.name}</div>
-          <div class="doc-date">${doc.date}</div>
-        </div>
-        <button class="btn-small" onclick="removeDoc('${c.id}', ${idx})">✕</button>
-      </div>
-    `;
-  });
-  document.getElementById('docList').innerHTML = docsHtml || '<div class="empty-state" style="margin:0;padding:20px">Sin documentos</div>';
-  
-  setupDropZone(c.id);
-}
-
-function setupDropZone(id) {
-  const dz = document.getElementById('dropZone');
-  if (!dz) return;
-  
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
-  dz.addEventListener('drop', e => {
-    e.preventDefault();
-    dz.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      const c = consultants.find(x => x.id === id);
-      if (!c.documents) c.documents = [];
-      c.documents.push({
-        name: file.name,
-        date: new Date().toLocaleDateString('es-MX')
-      });
-      saveData();
-      renderDocuments();
-    }
-  });
-}
-
-function removeDoc(id, idx) {
-  const c = consultants.find(x => x.id === id);
-  if (c && c.documents) {
-    c.documents.splice(idx, 1);
-    saveData();
-    renderDocuments();
-  }
-}
-
-// INDEX
-function renderIndex() {
-  if (!selectedConsultantForChat) {
-    document.getElementById('indexTable').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
-    return;
-  }
-  
-  const c = consultants.find(x => x.id === selectedConsultantForChat);
-  const index = c.index || [];
-  
-  let html = `
-    <div class="table-header">
-      <div class="table-cell-header" style="flex:0.8">Clave<div class="resize-handle" data-col="0"></div></div>
-      <div class="table-cell-header" style="flex:2">Descripción<div class="resize-handle" data-col="1"></div></div>
-      <div class="table-cell-header" style="flex:1">F. Entrega<div class="resize-handle" data-col="2"></div></div>
-      <div class="table-cell-header" style="flex:0.5">✓<div class="resize-handle" data-col="3"></div></div>
-      <div class="table-cell-header" style="flex:0.5">Rev<div class="resize-handle" data-col="4"></div></div>
-      <div class="table-cell-header" style="flex:0.3"></div>
-    </div>
-  `;
-  
-  index.forEach((p, i) => {
-    html += `
-      <div class="table-row">
-        <div class="table-cell" style="flex:0.8"><input type="text" value="${p.clave || ''}" onchange="updateIndex('${c.id}', ${i}, 'clave', this.value)"></div>
-        <div class="table-cell" style="flex:2"><input type="text" value="${p.nombre || ''}" onchange="updateIndex('${c.id}', ${i}, 'nombre', this.value)"></div>
-        <div class="table-cell" style="flex:1"><input type="date" value="${p.fecha || ''}" onchange="updateIndex('${c.id}', ${i}, 'fecha', this.value)"></div>
-        <div class="table-cell" style="flex:0.5;justify-content:center"><input type="checkbox" ${p.delivered ? 'checked' : ''} onchange="updateIndex('${c.id}', ${i}, 'delivered', this.checked)"></div>
-        <div class="table-cell" style="flex:0.5"><input type="text" value="${p.revision || ''}" onchange="updateIndex('${c.id}', ${i}, 'revision', this.value)" placeholder="v1"></div>
-        <div class="table-cell" style="flex:0.3;justify-content:center"><button class="btn-small" onclick="removeIndexRow('${c.id}', ${i})">✕</button></div>
-      </div>
-    `;
-  });
-  
-  html += `
-    <div class="table-add-row">
-      <div class="table-add-cell" style="flex:0.8"><input type="text" id="addClave" placeholder="P-001"></div>
-      <div class="table-add-cell" style="flex:2"><input type="text" id="addNombre" placeholder="Plano estructural"></div>
-      <div class="table-add-cell" style="flex:1"><input type="date" id="addFecha"></div>
-      <div class="table-add-cell" style="flex:0.5;justify-content:center"><input type="checkbox" id="addDelivered"></div>
-      <div class="table-add-cell" style="flex:0.5"><input type="text" id="addRevision" placeholder="v1"></div>
-      <div class="table-add-cell" style="flex:0.3;justify-content:center"><button class="btn-small" style="background:var(--accent);color:var(--bg);cursor:pointer" onclick="addIndexRow('${c.id}')">+</button></div>
-    </div>
-  `;
-  
-  document.getElementById('indexTable').innerHTML = html;
-  
-  // Setup resize handlers
-  setTimeout(() => {
-    document.querySelectorAll('.resize-handle').forEach(handle => {
-      handle.addEventListener('mousedown', startResize);
-    });
-  }, 0);
-}
-
-function addIndexRow(id) {
-  const clave = document.getElementById('addClave').value;
-  const nombre = document.getElementById('addNombre').value;
-  const fecha = document.getElementById('addFecha').value;
-  const delivered = document.getElementById('addDelivered').checked;
-  const revision = document.getElementById('addRevision').value;
-  
-  if (!clave || !nombre) return;
-  
-  const c = consultants.find(x => x.id === id);
-  if (!c.index) c.index = [];
-  c.index.push({ clave, nombre, fecha, delivered, revision });
-  
-  saveData();
-  renderIndex();
-}
-
-function updateIndex(id, idx, field, value) {
-  const c = consultants.find(x => x.id === id);
-  if (c && c.index && c.index[idx]) {
-    c.index[idx][field] = value;
-    saveData();
-  }
-}
-
-function removeIndexRow(id, idx) {
-  const c = consultants.find(x => x.id === id);
-  if (c && c.index) {
-    c.index.splice(idx, 1);
-    saveData();
-    renderIndex();
-  }
-}
-
-// INFO
-function renderInfo() {
-  if (!selectedConsultantForChat) {
-    document.getElementById('infoContent').innerHTML = '<div class="empty-state">Selecciona un consultor</div>';
-    return;
-  }
-  
-  const c = consultants.find(x => x.id === selectedConsultantForChat);
-  const i = consultants.indexOf(c);
-  const color = COLORS[i % 8];
-  
-  let html = `
-    <div class="info-header" style="border-left-color:${color}">
-      <div class="info-header-name">${c.name}</div>
-      <div class="info-header-area">${c.company}</div>
-    </div>
-    
-    <div class="section-title">Contacto</div>
-    <div class="field">
-      <label>Teléfono</label>
-      <input type="tel" value="${c.phone || ''}" placeholder="+52 1234567890" onchange="updateConsultantInfo('${c.id}', 'phone', this.value)">
-    </div>
-    <div class="field">
-      <label>Email</label>
-      <input type="email" value="${c.email || ''}" placeholder="consultor@empresa.com" onchange="updateConsultantInfo('${c.id}', 'email', this.value)">
-    </div>
-    <div class="field">
-      <label>Horarios</label>
-      <textarea onchange="updateConsultantInfo('${c.id}', 'schedule', this.value)">${c.schedule || ''}</textarea>
-    </div>
-    
-    <div class="section-title">Contrato</div>
-    ${c.contract ? `
-      <div class="doc-item" style="margin-bottom:14px">
-        <div>
-          <div class="doc-name">📋 ${c.contract.name}</div>
-          <div class="doc-date">${c.contract.date}</div>
-        </div>
-        <button class="btn-small" onclick="removeContract('${c.id}')">✕</button>
-      </div>
-    ` : `
-      <div class="drop-zone" id="contractZone">
-        <div class="icon">📋</div>
-        <p>Arrastra contrato aquí</p>
-      </div>
-    `}
-    
-    <div style="flex:1"></div>
-    <button class="btn-danger" onclick="deleteConsultant('${c.id}')">Eliminar</button>
-  `;
-  
-  const container = document.getElementById('infoContent');
-  container.innerHTML = html;
-  
-  if (!c.contract && document.getElementById('contractZone')) {
-    const cz = document.getElementById('contractZone');
-    cz.addEventListener('dragover', e => { e.preventDefault(); cz.classList.add('dragover'); });
-    cz.addEventListener('dragleave', () => cz.classList.remove('dragover'));
-    cz.addEventListener('drop', e => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      if (file) uploadContract(c.id, file);
-    });
-  }
-}
-
-function updateConsultantInfo(id, field, value) {
-  const c = consultants.find(x => x.id === id);
-  if (c) {
-    c[field] = value;
-    saveData();
-  }
-}
-
-function uploadContract(id, file) {
-  const c = consultants.find(x => x.id === id);
-  if (c) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      c.contract = {
-        name: file.name,
-        date: new Date().toLocaleDateString('es-MX'),
-        data: e.target.result
-      };
-      saveData();
-      renderInfo();
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
-function removeContract(id) {
-  const c = consultants.find(x => x.id === id);
-  if (c) {
-    delete c.contract;
-    saveData();
-    renderInfo();
-  }
-}
-
-function deleteConsultant(id) {
-  if (confirm('¿Eliminar este consultor?')) {
-    consultants = consultants.filter(c => c.id !== id);
-    tasks = tasks.filter(t => t.consultant !== id);
-    saveData();
-    selectedConsultantForChat = null;
-    updateSidebar();
-    renderInfo();
-  }
-}
-
-// CHAT
-let resizingColumn = null;
-let resizeStartX = 0;
-
-function toggleConsultantFilter() {
-  const filter = document.getElementById('consultantFilter');
-  filter.style.display = filter.style.display === 'none' ? 'flex' : 'none';
-  if (filter.style.display !== 'none') {
-    updateConsultantChips();
-  }
-}
-
-function updateConsultantChips() {
-  const chips = document.getElementById('consultantChips');
-  chips.innerHTML = `<div class="chip" style="padding:4px 12px;border-radius:20px;border:1px solid var(--border);cursor:pointer;background:${selectedConsultantForChat === null ? 'rgba(200,224,96,0.2)' : ''};border-color:${selectedConsultantForChat === null ? 'var(--accent)' : 'var(--border)'};color:var(--text);font-size:9px" onclick="selectedConsultantForChat=null;updateConsultantChips()">General</div>` + 
-    consultants.map((c, i) => `
-      <div class="chip" style="padding:4px 12px;border-radius:20px;border:1px solid var(--border);cursor:pointer;background:${selectedConsultantForChat === c.id ? 'rgba(200,224,96,0.2)' : ''};border-color:${selectedConsultantForChat === c.id ? 'var(--accent)' : 'var(--border)'};color:var(--text);font-size:9px" onclick="selectedConsultantForChat='${c.id}';updateConsultantChips()">${c.name}</div>
-    `).join('');
-}
-
-function toggleDocUpload() {
-  const upload = document.getElementById('docUploadArea');
-  upload.style.display = upload.style.display === 'none' ? 'block' : 'none';
-}
-
-function handleChatFileUpload(file) {
-  if (!file || !selectedConsultantForChat) {
-    addChatMessage('Selecciona un consultor primero', 'assistant');
-    return;
-  }
-  
-  const c = consultants.find(x => x.id === selectedConsultantForChat);
-  if (!c.documents) c.documents = [];
-  
-  c.documents.push({
-    name: file.name,
-    date: new Date().toLocaleDateString('es-MX')
-  });
-  
-  saveData();
-  addChatMessage(`✓ Documento "${file.name}" agregado para ${c.name}`, 'assistant');
-  document.getElementById('chatFileInput').value = '';
-  toggleDocUpload();
-}
-
-function sendChatMessage() {
-  const input = document.getElementById('chatInput');
-  const message = input.value.trim();
-  
-  if (!message) return;
-  
-  addChatMessage(message, 'user');
-  input.value = '';
-  input.style.height = 'auto';
-  
-  // Mostrar indicador de carga
-  addChatMessage('Procesando...', 'assistant');
-  
-  // Llamar a Haiku a través del backend (Vercel)
-  callHaikuAPI(message);
-}
-
-async function callHaikuAPI(userMessage) {
-  try {
-    // Preparar contexto del programa
-    const context = {
-      consultants: consultants,
-      tasks: tasks,
-      selectedConsultant: consultants.find(c => c.id === selectedConsultantForChat),
-      currentView: activeView,
-      currentWeek: {
-        start: calWeekStart.toISOString().split('T')[0],
-        end: new Date(calWeekStart.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-      }
-    };
-    
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: userMessage,
-        context: context
-      })
-    });
-    
-    const data = await response.json();
-    
-    // Remover mensaje de "Procesando..."
-    const messages = document.getElementById('chatMessages');
-    messages.removeChild(messages.lastChild);
-    
-    // Mostrar respuesta de Haiku
-    if (data.response) {
-      addChatMessage(data.response, 'assistant');
-    }
-    
-    // Si hay una acción pendiente de confirmación
-    if (data.action) {
-      showConfirmation(
-        data.action.title,
-        data.action.description,
-        () => executeAction(data.action, userMessage)
-      );
-    }
-  } catch (error) {
-    console.error('Error calling Haiku API:', error);
-    addChatMessage('Error al procesar. Intenta de nuevo.', 'assistant');
-  }
-}
-
-function executeAction(action, originalMessage) {
-  // Aquí se ejecutan las acciones confirmadas
-  // Haiku regresa qué hacer, nosotros lo ejecutamos
-  
-  if (action.type === 'add_task') {
-    tasks.push({
-      id: 't_' + Date.now(),
-      title: action.data.title,
-      date: action.data.date,
-      time: action.data.time || '09:00',
-      consultant: action.data.consultant,
-      type: action.data.type,
-      color: '#c8e060'
-    });
-    saveData();
-    if (activeView === 'calendar') renderCalendar();
-    addChatMessage(`✓ Tarea "${action.data.title}" agregada para ${action.data.date}`, 'assistant');
-  }
-  
-  else if (action.type === 'add_index') {
-    const c = consultants.find(x => x.id === action.data.consultant);
-    if (c) {
-      if (!c.index) c.index = [];
-      c.index.push(action.data);
-      saveData();
-      if (activeView === 'index') renderIndex();
-      addChatMessage(`✓ Plano "${action.data.nombre}" agregado`, 'assistant');
-    }
-  }
-  
-  else if (action.type === 'delete_index') {
-    const c = consultants.find(x => x.id === action.data.consultant);
-    if (c && c.index) {
-      c.index.splice(action.data.index, 1);
-      saveData();
-      if (activeView === 'index') renderIndex();
-      addChatMessage(`✓ Plano eliminado`, 'assistant');
-    }
-  }
-}
-
-function addChatMessage(text, role) {
-  const container = document.getElementById('chatMessages');
-  const msg = document.createElement('div');
-  msg.className = 'msg ' + role;
-  msg.innerHTML = `
-    <div class="msg-label">${role === 'user' ? 'Tú' : 'Asistente'}</div>
-    <div class="msg-bubble">${text}</div>
-  `;
-  container.appendChild(msg);
-  container.scrollTop = container.scrollHeight;
-}
-
-function autoResizeChat(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 60) + 'px';
-}
-
-function startResize(e) {
-  if (!e.target.classList.contains('resize-handle')) return;
-  
-  resizingColumn = e.target;
-  resizeStartX = e.clientX;
-  const header = resizingColumn.closest('.table-cell-header');
-  
-  const onMouseMove = (moveEvent) => {
-    const diff = moveEvent.clientX - resizeStartX;
-    const currentFlex = parseFloat(header.style.flex) || 1;
-    const newFlex = Math.max(0.3, currentFlex + (diff / 200));
-    
-    header.style.flex = newFlex;
-    
-    // Actualizar todas las filas con el mismo índice
-    const colIndex = Array.from(header.parentElement.children).indexOf(header);
-    document.querySelectorAll('.table-row').forEach(row => {
-      row.children[colIndex].style.flex = newFlex;
-    });
-    document.querySelectorAll('.table-add-row').forEach(row => {
-      row.children[colIndex].style.flex = newFlex;
-    });
-    
-    resizeStartX = moveEvent.clientX;
-  };
-  
-  const onMouseUp = () => {
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-    resizingColumn = null;
-  };
-  
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
-}
-
-// CONSULTORES
-function openAddConsultant() {
-  openModal('modalAddConsultant');
-  setTimeout(() => document.getElementById('newConsultantName').focus(), 100);
-}
-
-function addConsultant() {
-  const name = document.getElementById('newConsultantName').value.trim();
-  const company = document.getElementById('newConsultantCompany').value.trim();
-  
-  if (!name || !company) return;
-  
-  consultants.push({
-    id: 'c_' + Date.now(),
-    name,
-    company,
-    phone: '',
-    email: '',
-    schedule: '',
-    documents: [],
-    contract: null,
-    index: []
-  });
-  
-  saveData();
-  closeModal('modalAddConsultant');
-  updateSidebar();
-  updateEventConsultantSelect();
-  
-  document.getElementById('newConsultantName').value = '';
-  document.getElementById('newConsultantCompany').value = '';
-}
-
-// EVENTOS
-function openEventModal(date, time) {
-  document.getElementById('eventDateTime').value = date + 'T' + time;
-  updateEventConsultantSelect();
-  openModal('modalAddEvent');
-  setTimeout(() => document.getElementById('eventDesc').focus(), 100);
-}
-
-function updateEventConsultantSelect() {
-  const sel = document.getElementById('eventConsultant');
-  sel.innerHTML = '<option value="">General</option>' + 
-    consultants.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-}
-
-function addEvent() {
-  const title = document.getElementById('eventDesc').value.trim();
-  const dt = document.getElementById('eventDateTime').value;
-  const consultant = document.getElementById('eventConsultant').value || null;
-  const type = document.getElementById('eventType').value;
-  
-  if (!title || !dt) return;
-  
-  const [date, time] = dt.split('T');
-  
-  tasks.push({
-    id: 't_' + Date.now(),
-    title,
-    date,
-    time,
-    consultant,
-    type,
-    color: '#c8e060'
-  });
-  
-  saveData();
-  closeModal('modalAddEvent');
-  if (activeView === 'calendar') renderCalendar();
-}
-
-// MODAL
-function openModal(id) {
-  document.getElementById(id).className = 'modal-overlay open';
-}
-
-function closeModal(id) {
-  document.getElementById(id).className = 'modal-overlay';
-}
-
-document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', e => {
-    if (e.target === m) m.className = 'modal-overlay';
-  });
-});
-
-// INIT
-function init() {
-  loadData();
-  updateSidebar();
-  updateEventConsultantSelect();
-  renderCalendar();
-}
-
-init();
 </script>
 
 </body>
