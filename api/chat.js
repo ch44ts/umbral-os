@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  // Permitir CORS
+  // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -15,47 +15,33 @@ export default async function handler(req, res) {
   }
 
   const { message, context } = req.body;
-  const apiKey = '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';
+  const apiKey = process.env.ANTHROPIC_API_KEY;
 
   if (!apiKey) {
     return res.status(500).json({ 
-      error: 'API key not configured',
-      response: 'Error: La API key no está disponible.'
+      response: '❌ Error: API key no configurada. Agrega ANTHROPIC_API_KEY en Vercel Settings → Environment Variables.'
     });
   }
 
   try {
-    // Preparar prompt para Haiku
-    const systemPrompt = `Eres un asistente inteligente para Umbral OS, un gestor de consultores de proyectos.
+    // Prompt para Haiku
+    const systemPrompt = `Eres un asistente inteligente para Umbral OS, un gestor de consultores y calendario de proyectos.
 
 CONTEXTO ACTUAL:
-- Consultores: ${context.consultants?.map(c => \`\${c.name} (\${c.company})\`)?.join(', ') || 'Ninguno'}
-- Tareas pendientes: \${context.tasks?.length || 0}
-- Consultor seleccionado: \${context.selectedConsultant?.name || 'Ninguno'}
-- Vista actual: \${context.currentView || 'calendario'}
+- Consultores: ${context.consultants.map(c => c.name).join(', ') || 'Ninguno'}
+- Eventos en calendario: ${context.tasks}
+- Consultor seleccionado: ${context.selectedConsultant}
+- Vista actual: ${context.currentView}
+- Semana: ${context.currentWeek.start} a ${context.currentWeek.end}
 
 INSTRUCCIONES:
-1. Responde en español de forma natural
-2. Si el usuario quiere agregar/eliminar datos SIGNIFICATIVOS, proporciona una acción JSON
-3. Para cambios simples, responde directamente
-4. Sé conciso y útil
+1. Responde en español de forma natural y conversacional
+2. Sé conciso pero útil
+3. Si el usuario pide agregar eventos, cambiar colores o hacer cambios significativos, hazlo directamente
+4. Responde preguntas sobre consultores, tareas, horarios, etc
+5. Puedes hacer consultas sobre el estado del calendario
 
-RESPONDE SIEMPRE EN JSON:
-{
-  "response": "Tu respuesta al usuario",
-  "action": null
-}
-
-SI hay acción a confirmar:
-{
-  "response": "Descripción de lo que haré",
-  "action": {
-    "type": "add_task|add_index|delete_index",
-    "title": "Título de la acción",
-    "description": "Descripción clara",
-    "data": { }
-  }
-}`;
+Responde de forma amigable y directa.`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -66,7 +52,7 @@ SI hay acción a confirmar:
       },
       body: JSON.stringify({
         model: 'claude-3-5-haiku-20241022',
-        max_tokens: 500,
+        max_tokens: 300,
         system: systemPrompt,
         messages: [
           {
@@ -81,36 +67,21 @@ SI hay acción a confirmar:
       const error = await response.json();
       console.error('Anthropic API error:', error);
       return res.status(response.status).json({ 
-        response: 'Error al conectar con Anthropic.',
-        error: error.error?.message,
-        action: null
+        response: '❌ Error de API: ' + (error.error?.message || 'Error desconocido')
       });
     }
 
     const data = await response.json();
     const content = data.content[0].text;
 
-    // Intentar parsear como JSON
-    let result = { response: content, action: null };
-    
-    try {
-      const parsed = JSON.parse(content);
-      result = {
-        response: parsed.response || content,
-        action: parsed.action || null
-      };
-    } catch (e) {
-      // Si no es JSON válido, mantener como respuesta de texto
-      result = { response: content, action: null };
-    }
-
-    return res.status(200).json(result);
+    return res.status(200).json({
+      response: content
+    });
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({ 
-      response: 'Error del servidor. Intenta de nuevo.',
-      error: error.message,
-      action: null
+      response: '❌ Error del servidor: ' + error.message
     });
   }
 }
+
