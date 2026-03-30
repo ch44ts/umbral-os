@@ -645,6 +645,54 @@ function sendChatMessage() {
 
 async function callHaikuAPI(userMessage) {
   try {
+    const GEMINI_API_KEY = 'AIzaSyDITiZmH5wRGN9fu8gZz7LoynFkxGR_ga4'; // Reemplaza con tu API key de Gemini
+    
+    const systemPrompt = `Eres un asistente inteligente para Umbral OS, un gestor de calendario y consultores.
+
+CONTEXTO:
+- Consultores: ${consultants.map(c => c.name).join(', ') || 'Ninguno'}
+- Eventos: ${tasks.length}
+- Consultor seleccionado: ${selectedConsultantForChat ? consultants.find(c => c.id === selectedConsultantForChat)?.name : 'General'}
+
+Responde en español, de forma concisa y amigable. Máximo 2-3 líneas.`;
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: systemPrompt + '\n\nUsuario: ' + userMessage
+          }]
+        }]
+      })
+    });
+    
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages.lastChild && chatMessages.lastChild.textContent.includes('Procesando')) {
+      chatMessages.removeChild(chatMessages.lastChild);
+    }
+    
+    if (!response.ok) {
+      addChatMessage('❌ Error: ' + response.status, 'assistant');
+      return;
+    }
+    
+    const data = await response.json();
+    const content = data.candidates[0].content.parts[0].text;
+    
+    if (content) {
+      addChatMessage(content, 'assistant');
+    }
+  } catch (error) {
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages.lastChild && chatMessages.lastChild.textContent.includes('Procesando')) {
+      chatMessages.removeChild(chatMessages.lastChild);
+    }
+    addChatMessage('❌ Error: ' + error.message, 'assistant');
+  }
+}
+  try {
     const context = {
       consultants: consultants.map(c => ({ id: c.id, name: c.name, company: c.company })),
       tasks: tasks.length,
