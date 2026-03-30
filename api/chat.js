@@ -1,13 +1,4 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
   if (req.method !== 'POST') {
     return res.status(405).json({ response: 'Method not allowed' });
   }
@@ -16,21 +7,18 @@ export default async function handler(req, res) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ response: '❌ API key no configurada en Vercel' });
+    return res.status(500).json({ response: 'API key not configured' });
   }
 
   try {
-    const systemPrompt = `Eres un asistente inteligente para Umbral OS.
+    const systemPrompt = `Eres un asistente para Umbral OS.
+Consultores: ${context.consultants.map(c => c.name).join(', ') || 'Ninguno'}
+Eventos: ${context.tasks}
+Seleccionado: ${context.selectedConsultant}
 
-CONTEXTO:
-- Consultores: ${context.consultants.map(c => c.name).join(', ') || 'Ninguno'}
-- Eventos: ${context.tasks}
-- Consultor seleccionado: ${context.selectedConsultant}
-- Vista: ${context.currentView}
+Responde en español, breve y amigable.`;
 
-Responde en español, de forma concisa y amigable.`;
-
-    const apiResponse = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,22 +27,20 @@ Responde en español, de forma concisa y amigable.`;
       },
       body: JSON.stringify({
         model: 'claude-3-5-haiku-20241022',
-        max_tokens: 300,
+        max_tokens: 200,
         system: systemPrompt,
         messages: [{ role: 'user', content: message }]
       })
     });
 
-    if (!apiResponse.ok) {
-      const error = await apiResponse.json();
-      return res.status(apiResponse.status).json({ response: '❌ Error de API: ' + error.error?.message });
+    if (!response.ok) {
+      const error = await response.json();
+      return res.status(response.status).json({ response: 'API Error: ' + error.error?.message });
     }
 
-    const data = await apiResponse.json();
-    const content = data.content[0].text;
-
-    return res.status(200).json({ response: content });
+    const data = await response.json();
+    return res.status(200).json({ response: data.content[0].text });
   } catch (error) {
-    return res.status(500).json({ response: '❌ Error: ' + error.message });
+    return res.status(500).json({ response: 'Error: ' + error.message });
   }
 }
